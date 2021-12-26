@@ -1,4 +1,6 @@
 # SFCC
 SFCC - SIMPLE FUCKING CALORIE COUNTER
 
-C# .NET learning project as well as personal usecase I think I am not alone with, of there being not a single good, simple, non-bloated calorie tracker on the face of this planet.
+Simple Calorie Counter app, since apparently nobody on this planet is able to fulfill the simple usecases of tracking your nutrition with an intuitive and simple ui.
+No, instead everyone blows their app up with useless features and tries to make it a social media platform.
+Why not call it Fatbook then?
