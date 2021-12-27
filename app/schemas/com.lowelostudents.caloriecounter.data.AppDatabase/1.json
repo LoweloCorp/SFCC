@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "aca1c3532e401797469cd89d8895ec7b",
+    "identityHash": "d47b58c9873cd76c6d6653cd53296654",
     "entities": [
       {
         "tableName": "Day",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL, `calTotal` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL, `gramTotal` INTEGER NOT NULL, `calTotal` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "foodId",
@@ -97,7 +97,7 @@
           {
             "fieldPath": "calPerGram",
             "columnName": "calPerGram",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -148,12 +148,65 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Meal",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mealId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mealName` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "mealId",
+            "columnName": "mealId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mealName",
+            "columnName": "mealName",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mealId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Meal_Food",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mealId` INTEGER NOT NULL, `foodId` INTEGER NOT NULL, PRIMARY KEY(`mealId`, `foodId`))",
+        "fields": [
+          {
+            "fieldPath": "mealId",
+            "columnName": "mealId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "foodId",
+            "columnName": "foodId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mealId",
+            "foodId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aca1c3532e401797469cd89d8895ec7b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd47b58c9873cd76c6d6653cd53296654')"
     ]
   }
 }

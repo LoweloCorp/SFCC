@@ -1,4 +1,4 @@
-package com.lowelostudents.caloriecounter.models;
+package com.lowelostudents.caloriecounter.models.daos;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -7,6 +7,8 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
+import com.lowelostudents.caloriecounter.models.Day;
+
 import java.util.List;
 
 @Dao
@@ -14,20 +16,21 @@ public interface DayDao {
     @Insert
     void insertAll(Day... days);
 
-    @Transaction
     @Query("SELECT * FROM Day")
-    List<Day_Food_Relation> getDays();
+    List<Day> getAll();
 
-    @Transaction
     @Query("SELECT * FROM Day WHERE dayId = :date")
-    Day_Food_Relation getDay(int date);
+    Day getOne(int date);
 
     @Update
-    void updateDay(Day day);
+    void updateOne(Day day);
 
     @Update
-    void updateDays(List<Day> days);
+    void updateAll(Day... days);
 
     @Delete
-    void deleteDay(Day day);
+    void deleteOne(Day day);
+
+    @Delete
+    void deleteAll(Day... days);
 }

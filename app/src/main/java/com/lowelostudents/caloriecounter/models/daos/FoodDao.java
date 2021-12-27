@@ -1,10 +1,12 @@
-package com.lowelostudents.caloriecounter.models;
+package com.lowelostudents.caloriecounter.models.daos;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.lowelostudents.caloriecounter.models.Food;
 
 import java.util.List;
 
@@ -14,17 +16,20 @@ public interface FoodDao {
     void insertAll(Food... foods);
 
     @Query("SELECT * FROM Food")
-    List<Food> getFoods();
+    List<Food> getAll();
 
     @Query("SELECT * FROM Food WHERE foodId = :id")
-    Food getFood(long id);
+    Food getOne(long id);
 
     @Update
-    void updateFood(Food food);
+    void updateOne(Food food);
 
     @Update
-    void updateFoods(List<Food> foods);
+    void updateAll(Food... foods);
 
     @Delete
-    void deleteFood(Food food);
+    void deleteOne(Food food);
+
+    @Delete
+    void deleteAll(Food... foods);
 }
