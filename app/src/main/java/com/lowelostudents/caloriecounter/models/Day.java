@@ -13,10 +13,8 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Day {
     @PrimaryKey
-    @EqualsAndHashCode.Include
     private int dayId;
     private String name;
 

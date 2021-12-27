@@ -1,7 +1,12 @@
 package com.lowelostudents.caloriecounter.models;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.lowelostudents.caloriecounter.services.NutrientService;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,16 +24,19 @@ public class Food {
     private int fatGram, fatCal;
     private int portionSize;
     private int calPerPortion;
-    private int calPerGram;
+    private double calPerGram;
     private int gramTotal;
     private int calTotal;
+    @Ignore
+    private NutrientService nutrientService = NutrientService.getNutrientService();
 
     public Food(String name, int carbsGramPortion, int proteinGramPortion, int fatGramPortion, int gramTotal) {
         this.name = name;
         this.carbsGram = carbsGramPortion;
-        this.proteinGram=proteinGramPortion;
+        this.proteinGram = proteinGramPortion;
         this.fatGram = fatGramPortion;
         this.gramTotal = gramTotal;
+        nutrientService.calcCalories(this);
     }
 
     public Food(String name, int gramTotal, int calPerPortion, int portionSize) {
@@ -36,5 +44,11 @@ public class Food {
         this.gramTotal = gramTotal;
         this.calPerPortion = calPerPortion;
         this.portionSize = portionSize;
+        nutrientService.calcCalories(this);
+    }
+
+    @Ignore
+    public Food(){
+
     }
 }

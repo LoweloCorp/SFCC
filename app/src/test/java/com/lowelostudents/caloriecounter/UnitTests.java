@@ -17,10 +17,13 @@ import java.util.Date;
  */
 public class UnitTests {
     @Test
-    public void foodConstructor1() {
+    public void foodConstructor() {
         Food food = new Food("Name", 1, 1, 1, 3);
         Food food2 = new Food("Name", 1, 1, 1, 3);
+        Food food3 = new Food("Name", 10, 5, 2);
+        Food food4 = new Food("Name", 10, 5, 2);
 
+        assertEquals(food3, food4);
         assertEquals(food, food2);
     }
 
@@ -34,15 +37,27 @@ public class UnitTests {
 
     @Test
     public void nutrientServiceCalories(){
-        Food food = new Food("Name", 1, 1, 1, 3);
+        Food food = new Food(), food2 = new Food();
+        food.setName("Name");
+        food.setCarbsGram(1);
+        food.setProteinGram(1);
+        food.setFatGram(1);
+        food.setGramTotal(3);
+        food2.setName("Name2");
+        food2.setGramTotal(10);
+        food2.setCalPerPortion(5);
+        food2.setPortionSize(2);
 
         NutrientService ms = new NutrientService();
         ms.calcCalories(food);
+        ms.calcCalories(food2);
+
 
         assertEquals(3, food.getPortionSize());
         assertEquals(17, food.getCalPerPortion());
-        assertEquals(6, food.getCalPerGram());
-        assertEquals(18, food.getCalTotal());
+        assertEquals(17, food.getCalTotal());
+
+        assertEquals(25, food2.getCalTotal());
     }
 
     @Test
