@@ -10,6 +10,8 @@ import com.lowelostudents.caloriecounter.services.NutrientService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+
+//TODO add constructor with total calories parameter
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
