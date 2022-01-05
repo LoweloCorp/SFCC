@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface DayDao {
     @Insert
-    void insertAll(Day... days);
+    long[] insertAll(Day... days);
 
     @Query("SELECT * FROM Day")
     List<Day> getAll();

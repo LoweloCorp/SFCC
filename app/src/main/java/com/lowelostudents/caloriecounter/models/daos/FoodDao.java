@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface FoodDao {
     @Insert
-    void insertAll(Food... foods);
+    long[] insertAll(Food... foods);
 
     @Query("SELECT * FROM Food")
     List<Food> getAll();

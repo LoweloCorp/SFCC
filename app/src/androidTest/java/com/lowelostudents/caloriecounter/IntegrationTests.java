@@ -1,6 +1,7 @@
 package com.lowelostudents.caloriecounter;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -12,13 +13,17 @@ import static org.junit.Assert.*;
 
 import com.lowelostudents.caloriecounter.data.AppDatabase;
 import com.lowelostudents.caloriecounter.models.Day;
+import com.lowelostudents.caloriecounter.models.Day_Food;
 import com.lowelostudents.caloriecounter.models.Meal;
+import com.lowelostudents.caloriecounter.models.Meal_Food;
 import com.lowelostudents.caloriecounter.models.daos.DayDao;
 import com.lowelostudents.caloriecounter.models.daos.Day_FoodDao;
 import com.lowelostudents.caloriecounter.models.daos.MealDao;
+import com.lowelostudents.caloriecounter.models.daos.Meal_FoodDao;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 import com.lowelostudents.caloriecounter.models.Food;
 import com.lowelostudents.caloriecounter.models.daos.FoodDao;
+import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 
 import java.util.Calendar;
 import java.util.List;
@@ -86,4 +91,66 @@ public class IntegrationTests {
     }
 
     //TODO RelationTests
+
+    @Test
+    public void createAndReadDayFood(){
+        DayDao dayDao = appdb.dayDao();
+        FoodDao foodDao = appdb.foodDao();
+        Day_FoodDao day_foodDao = appdb.day_foodDao();
+
+        Food food = new Food();
+        Day day = new Day();
+
+        // insertAll Returns array of generated IDs for inserted entities, so that I do not need to query them to create the relation
+        long foodId = foodDao.insertAll(food)[0];
+        long dayId = dayDao.insertAll(day)[0];
+
+        Day_Food dayFood = new Day_Food();
+        dayFood.setFoodId(foodId);
+        dayFood.setDayId((int) dayId);
+
+        day_foodDao.insertAll(dayFood);
+
+        Day_Food_Relation dayFoods = day_foodDao.getAll().get(0);
+        List<Food> retrievedFoods = dayFoods.getFoods();
+        Day retrievedDay = dayFoods.getDay();
+
+        assertNotNull(dayFoods);
+        assertNotNull(retrievedFoods);
+        assertNotNull(retrievedDay);
+
+        assertEquals(foodId, retrievedFoods.get(0).getFoodId());
+        assertEquals(dayId, retrievedDay.getDayId());
+    }
+
+    @Test
+    public void createAndReadMealFood(){
+        MealDao mealDao = appdb.mealDao();
+        FoodDao foodDao = appdb.foodDao();
+        Meal_FoodDao meal_foodDao = appdb.meal_foodDao();
+
+        Food food = new Food();
+        Meal meal= new Meal("HappyMeal");
+
+        // insertAll Returns array of generated IDs for inserted entities, so that I do not need to query them to create the relation
+        long foodId = foodDao.insertAll(food)[0];
+        long mealId = mealDao.insertall(meal)[0];
+
+        Meal_Food mealFood = new Meal_Food();
+        mealFood.setFoodId(foodId);
+        mealFood.setMealId(mealId);
+
+        meal_foodDao.insertAll(mealFood);
+
+        Meal_Food_Relation mealFoods = meal_foodDao.getAll().get(0);
+        List<Food> retrievedFoods = mealFoods.getFoods();
+        Meal retrievedMeal = mealFoods.getMeal();
+
+        assertNotNull(mealFoods);
+        assertNotNull(retrievedFoods);
+        assertNotNull(retrievedMeal);
+
+        assertEquals(foodId, retrievedFoods.get(0).getFoodId());
+        assertEquals(mealId, retrievedMeal.getMealId());
+    }
 }
