@@ -1,6 +1,7 @@
 package com.lowelostudents.caloriecounter;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -25,6 +26,7 @@ import com.lowelostudents.caloriecounter.models.Food;
 import com.lowelostudents.caloriecounter.models.daos.FoodDao;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -103,7 +105,15 @@ public class IntegrationTests {
 
         // insertAll Returns array of generated IDs for inserted entities, so that I do not need to query them to create the relation
         long foodId = foodDao.insertAll(food)[0];
-        long dayId = dayDao.insertAll(day)[0];
+        long dayId;
+
+        try {
+            dayId = dayDao.insertAll(day)[0];
+        } catch (SQLiteConstraintException e) {
+            Calendar cal = Calendar.getInstance();
+            dayId = dayDao.getOne(cal.get(Calendar.DATE)).getDayId();
+            Log.w("Day already exists", Arrays.toString(e.getStackTrace()));
+        }
 
         Day_Food dayFood = new Day_Food();
         dayFood.setFoodId(foodId);
