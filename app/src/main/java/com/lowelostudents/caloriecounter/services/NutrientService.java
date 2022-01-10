@@ -1,6 +1,10 @@
 package com.lowelostudents.caloriecounter.services;
 
 import com.lowelostudents.caloriecounter.models.Food;
+import com.lowelostudents.caloriecounter.models.Meal;
+import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
+
+import java.util.List;
 
 public class NutrientService {
     private static NutrientService nutrientService;
@@ -15,6 +19,13 @@ public class NutrientService {
             food.setCalPerPortion(food.getFatCal()+food.getProteinCal()+ food.getCarbsCal());
         food.setCalPerGram((double) food.getCalPerPortion()/food.getPortionSize());
         food.setCalTotal((int) Math.round(food.getCalPerGram() * food.getGramTotal()));
+    }
+
+    public void calcCalories(Meal meal, List<Food> foodList){
+        foodList.forEach(food -> {
+            meal.setCalTotal(meal.getCalTotal() + food.getCalTotal());
+            meal.setGramTotal(meal.getGramTotal() + food.getGramTotal());
+        });
     }
 
     public static synchronized NutrientService getNutrientService(){

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d47b58c9873cd76c6d6653cd53296654",
+    "identityHash": "90086a0319e84280b5a7853cd8b1b63b",
     "entities": [
       {
         "tableName": "Day",
@@ -151,7 +151,7 @@
       },
       {
         "tableName": "Meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mealId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mealName` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mealId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "mealId",
@@ -160,10 +160,22 @@
             "notNull": true
           },
           {
-            "fieldPath": "mealName",
-            "columnName": "mealName",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "calTotal",
+            "columnName": "calTotal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gramTotal",
+            "columnName": "gramTotal",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -206,7 +218,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd47b58c9873cd76c6d6653cd53296654')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '90086a0319e84280b5a7853cd8b1b63b')"
     ]
   }
 }
