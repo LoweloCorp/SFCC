@@ -23,4 +23,8 @@ public interface Day_FoodDao {
     @Transaction
     @Query("SELECT * FROM Day WHERE dayId = :date")
     Day_Food_Relation getOne(int date);
+
+    @Transaction
+    @Query("SELECT * FROM Day WHERE dayId >= :date")
+    List<Day_Food_Relation> getAllUntil(int date);
 }

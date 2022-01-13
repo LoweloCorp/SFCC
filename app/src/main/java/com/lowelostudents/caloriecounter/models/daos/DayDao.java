@@ -22,15 +22,16 @@ public interface DayDao {
     @Query("SELECT * FROM Day WHERE dayId = :date")
     Day getOne(int date);
 
-    @Update
-    void updateOne(Day day);
+    @Query("SELECT * FROM Day WHERE dayId = (SELECT MAX(dayId) FROM Day)")
+    Day getLatest();
 
     @Update
     void updateAll(Day... days);
 
     @Delete
-    void deleteOne(Day day);
-
-    @Delete
     void deleteAll(Day... days);
+
+    @Query("DELETE FROM Day WHERE dayId = :dayId")
+    void deleteSpecific(int dayId);
+
 }

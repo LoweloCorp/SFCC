@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.lowelostudents.caloriecounter"
-        minSdk 24
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -39,10 +39,13 @@ android {
 }
 
 dependencies {
+    def work_version = "2.7.1"
+    def room_version = "2.4.0"
+
+    implementation "androidx.work:work-runtime:$work_version"
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    def room_version = "2.4.0"
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     implementation "androidx.room:room-runtime:$room_version"

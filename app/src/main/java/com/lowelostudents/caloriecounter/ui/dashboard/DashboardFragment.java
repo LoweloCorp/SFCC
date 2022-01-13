@@ -4,22 +4,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.FragmentDashboardBinding;
+import com.lowelostudents.caloriecounter.models.Food;
+import com.lowelostudents.caloriecounter.models.Meal;
+import com.lowelostudents.caloriecounter.ui.RecyclerViewAdapter;
+
+import java.util.ArrayList;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
     private FragmentDashboardBinding binding;
-
+    private ArrayList<Object> items = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -29,13 +32,27 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
+        items.add(new Food("Name", 1, 1, 1, 3));
+        items.add(new Food("AndererName", 1, 1, 1, 3));
+        items.add(new Food("AndererName", 1, 1, 1, 3));
+        items.add(new Food("AndererName", 1, 1, 1, 3));
+        items.add(new Food("AndererName", 1, 1, 1, 3));
+        items.add(new Food("AndererName", 1, 1, 1, 3));
+
+        items.add(new Meal("Mahlzeit"));
+        items.add(new Meal("Mahlzeit2"));
+        items.add(new Meal("Mahlzeit2"));
+        items.add(new Meal("Mahlzeit2"));
+        items.add(new Meal("Mahlzeit2"));
+        items.add(new Meal("Mahlzeit2"));
+        items.add(new Meal("Mahlzeit2"));
+
+        final RecyclerView foodList = binding.foodList;
+        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this.getContext(), items);
+        foodList.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        foodList.setAdapter(recyclerViewAdapter);
+
         return root;
     }
 

@@ -1,11 +1,10 @@
-package com.lowelostudents.caloriecounter.ui.foodhub;
+package com.lowelostudents.caloriecounter.ui;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,16 +15,18 @@ import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.models.Food;
 import com.lowelostudents.caloriecounter.models.Meal;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.ViewHolder> {
+
+// TODO Generify maybe
+
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private List<?> dataSet;
     private LayoutInflater layoutInflater;
 
     // data is passed into the constructor
-    FoodListAdapter(Context context, List<?> foodList) {
+    public RecyclerViewAdapter(Context context, List<?> foodList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.dataSet = foodList;
     }
