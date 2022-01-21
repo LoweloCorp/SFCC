@@ -58,6 +58,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String nutrients = food.getGramTotal() + "g" + " / " + (food.getCalTotal() + "cal");
         holder.cardNutrients.setText(nutrients);
     }
+    // TODO Use this to generify via extending some common class with Day / Food / Meal etc pp
+/*    public static <T extends Common Class> void add(T food) {
+
+    } */
 
     private void init(Meal meal, ViewHolder holder){
         holder.cardTitle.setText(meal.getName());

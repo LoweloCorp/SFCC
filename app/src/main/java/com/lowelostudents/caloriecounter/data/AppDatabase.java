@@ -17,6 +17,8 @@ import com.lowelostudents.caloriecounter.models.daos.MealDao;
 import com.lowelostudents.caloriecounter.models.Meal_Food;
 import com.lowelostudents.caloriecounter.models.daos.Meal_FoodDao;
 
+import java.io.File;
+
 @Database(entities = {Day.class, Food.class, Day_Food.class, Meal.class, Meal_Food.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "SFCCDatabase";

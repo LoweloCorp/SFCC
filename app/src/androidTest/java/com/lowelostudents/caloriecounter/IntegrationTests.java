@@ -26,6 +26,7 @@ import com.lowelostudents.caloriecounter.models.Food;
 import com.lowelostudents.caloriecounter.models.daos.FoodDao;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +39,8 @@ import java.util.Locale;
  */
 @RunWith(AndroidJUnit4.class)
 public class IntegrationTests {
-    AppDatabase appdb = AppDatabase.getInMemoryInstance(InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext());
+    Context context = InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
+    AppDatabase appdb = AppDatabase.getInMemoryInstance(context);
 
     @Test
     public void useAppContext() {
@@ -162,5 +164,42 @@ public class IntegrationTests {
 
         assertEquals(foodId, retrievedFoods.get(0).getFoodId());
         assertEquals(mealId, retrievedMeal.getMealId());
+    }
+
+    @Test
+    public void testDBSize(){
+        int foodAmount = 20;
+        int dayAmount = 2000;
+        Day[] day = new Day[dayAmount];
+        Food[] food = new Food[foodAmount];
+        Day_Food[] day_foods = new Day_Food[dayAmount];
+
+        DayDao dayDao = appdb.dayDao();
+        FoodDao foodDao = appdb.foodDao();
+        Day_FoodDao day_foodDao = appdb.day_foodDao();
+
+        for (int i = 0; i < dayAmount; i++) {
+            day[i] = new Day();
+            day[i].setDayId(i);
+        }
+
+        for (int i = 0; i < foodAmount ; i++) {
+            food[i] = new Food("Name", 1, 1, 1, 3);
+        }
+
+        long[] dayIds = dayDao.insertAll(day);
+        long[] foodIds = foodDao.insertAll(food);
+
+        for (int i = 0; i < dayAmount; i++) {
+            for (int z = 0; z < foodAmount ; z++) {
+                day_foods[z] = new Day_Food();
+                day_foods[z].setDayId((int) dayIds[i]);
+                day_foods[z].setFoodId((int) foodIds[z]);
+                day_foodDao.insertAll(day_foods[z]);
+            }
+        }
+        File file = context.getDatabasePath(appdb.getOpenHelper().getDatabaseName());
+
+        Log.i("dBSIZE", String.valueOf(file.length()));
     }
 }

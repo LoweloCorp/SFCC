@@ -21,7 +21,7 @@ public class DataPopulationTask extends Worker {
     public DataPopulationTask(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
-
+    //TODO do generify so that user ultimately can decide how many days are saved locally
     @NonNull
     @Override
     public Result doWork() {
@@ -40,13 +40,16 @@ public class DataPopulationTask extends Worker {
 
             dayDao.insertAll(day);
         } else {
-            int delay = 24 - cal.get(Calendar.HOUR_OF_DAY);
+            int delay = ((24 - cal.get(Calendar.HOUR_OF_DAY))*60)+cal.get(Calendar.MINUTE);
+            Log.i("MINUTE", String.valueOf(delay));
+
             PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(DataPopulationTask.class, 1440, TimeUnit.MINUTES)
-                    .setInitialDelay(5, TimeUnit.HOURS)
+                    .setInitialDelay(delay, TimeUnit.MINUTES)
                     .build();
 
             WorkManager workManager = WorkManager.getInstance(getApplicationContext());
         }
+
         return Result.success();
     }
 }

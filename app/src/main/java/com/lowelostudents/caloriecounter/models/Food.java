@@ -1,6 +1,5 @@
 package com.lowelostudents.caloriecounter.models;
 
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -30,7 +29,7 @@ public class Food {
     private int gramTotal;
     private int calTotal;
     @Ignore
-    private NutrientService nutrientService = NutrientService.getNutrientService();
+    private NutrientService nutrientService = NutrientService.getInstance();
 
     public Food(String name, int carbsGramPortion, int proteinGramPortion, int fatGramPortion, int gramTotal) {
         this.name = name;
