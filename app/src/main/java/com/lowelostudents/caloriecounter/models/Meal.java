@@ -20,7 +20,7 @@ public class Meal {
     private int calTotal;
     private int gramTotal;
     @Ignore
-    private NutrientService nutrientService = NutrientService.getNutrientService();
+    private NutrientService nutrientService = NutrientService.getInstance();
 
     @Ignore
     public Meal() {

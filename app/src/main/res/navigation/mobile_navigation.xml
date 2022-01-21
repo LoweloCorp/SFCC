@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_graphs"
         android:name="com.lowelostudents.caloriecounter.ui.stats.StatsFragment"
-        android:label="@string/title_home"
+        android:label="@string/title_graphs"
         tools:layout="@layout/fragment_stats" />
 
     <fragment

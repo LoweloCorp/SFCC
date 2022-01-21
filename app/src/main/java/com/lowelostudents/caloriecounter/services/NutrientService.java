@@ -28,7 +28,7 @@ public class NutrientService {
         });
     }
 
-    public static synchronized NutrientService getNutrientService(){
+    public static synchronized NutrientService getInstance(){
         if(nutrientService == null) nutrientService = new NutrientService();
 
         return nutrientService;

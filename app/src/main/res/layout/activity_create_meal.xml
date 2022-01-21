@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.CalorieCounter.FullscreenContainer"
+    tools:context=".ui.modals.CreateMeal">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="Enter Food Name"
+            android:inputType="textPersonName"
+            android:textColor="@drawable/fuckgoogle"
+            android:textColorHint="@drawable/fuckgoogle"
+            tools:ignore="PrivateResource" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Fat (g/Portion)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@drawable/fuckgoogle" />
+
+        <EditText
+            android:id="@+id/editTextNumberDecimal3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Carbs (g/Portion)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@drawable/fuckgoogle" />
+
+        <EditText
+            android:id="@+id/editTextNumberDecimal4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Protein (g/Portion)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@drawable/fuckgoogle" />
+
+        <EditText
+            android:id="@+id/editTextNumberDecimal5"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Portion (g)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@drawable/fuckgoogle" />
+
+        <EditText
+            android:id="@+id/editTextNumberDecimal6"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Cal. (cal./Portion)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@drawable/fuckgoogle" />
+
+        <EditText
+            android:id="@+id/editTextNumberDecimal7"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Total weight (g)"
+            android:inputType="numberDecimal"
+            android:textColorHint="@drawable/fuckgoogle" />
+
+        <EditText
+            android:id="@+id/editTextNumberDecimal8"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Total calories"
+            android:inputType="numberDecimal"
+            android:textColorHint="@drawable/fuckgoogle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <CheckedTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="2.5dp"
+                android:paddingRight="2.5dp"
+                android:text="CheckedTextView"
+                android:textColor="@drawable/fuckgoogle" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fullscreen_content_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="100dp"
+            tools:context=".ui.HeaderFragment">
+
+            <ImageButton
+                android:id="@+id/dummy_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                android:background="@color/teal_700"
+                android:padding="1.75dp"
+                android:src="@drawable/ic_baseline_qr_code_scanner_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tint="@color/White" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/teal_700"
+                android:text="Cancel"
+                android:textColor="@color/White"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.49583" />
+
+            <Button
+                android:id="@+id/confirm_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/teal_700"
+                android:text="Save"
+                android:textColor="@color/White"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.49583" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
