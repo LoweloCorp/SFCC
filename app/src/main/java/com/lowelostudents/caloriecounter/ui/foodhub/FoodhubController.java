@@ -1,8 +1,11 @@
 package com.lowelostudents.caloriecounter.ui.foodhub;
 
+import android.app.Activity;
 import android.util.Log;
 
-public class FoodhubController {
+import com.lowelostudents.caloriecounter.GenericController;
+
+public class FoodhubController extends GenericController {
     private static FoodhubController foodhubControllerInstance;
 
     public static synchronized FoodhubController getInstance() {
@@ -12,11 +15,30 @@ public class FoodhubController {
         return foodhubControllerInstance;
     }
 
-    public void createFood() {
-        Log.i("foodCrated", "true");
+    @Override
+    public <T extends Activity> void finish(T activity) {
+        activity.finish();
     }
 
-    public void createMeal() {
-        Log.i("mealCreated", "true");
+    public long create(Object... parameters) {
+        Log.i("Test", "Test");
+        return 0;
+    }
+
+    public long create(String x) {
+        Log.i("Test", "Test" + x);
+        return 0;
+    }
+
+    public void read() {
+
+    }
+
+    public long update(Object... paremeters) {
+        return 0;
+    }
+
+    public void delete() {
+
     }
 }

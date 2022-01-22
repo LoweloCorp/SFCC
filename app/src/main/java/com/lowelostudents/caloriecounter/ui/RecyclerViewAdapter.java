@@ -1,7 +1,6 @@
 package com.lowelostudents.caloriecounter.ui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.models.Food;
 import com.lowelostudents.caloriecounter.models.Meal;
+import com.lowelostudents.caloriecounter.services.EventHandlingService;
+import com.lowelostudents.caloriecounter.ui.actions.CreateMeal;
 
 import java.util.List;
 
@@ -24,10 +25,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private List<?> dataSet;
     private LayoutInflater layoutInflater;
+    private Context context;
 
     // data is passed into the constructor
     public RecyclerViewAdapter(Context context, List<?> foodList) {
-        this.layoutInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.layoutInflater = LayoutInflater.from(this.context);
         this.dataSet = foodList;
     }
 
@@ -90,20 +93,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             cardNutrients = itemView.findViewById(R.id.cardNutrients);
             cardToggleForDay = itemView.findViewById(R.id.toggleForDay);
 
-            cardItem.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    Log.i("DIESE FUNKTIONIERT", "DIESE FUNKTIONIERT CARDVIEW");
-                }
-            });
+            setEventHandlers(cardItem);
+        }
 
-            cardToggleForDay.setOnClickListener(new View.OnClickListener(){
+        //TODO toggleForDay
 
-                @Override
-                public void onClick(View view) {
-                    Log.i("DIESE AUCH FUNKTIONIERT", "DIESE FUNKTIONIERT ADDBUTTON");
-                }
-            });
+        private void setEventHandlers(View view) {
+            EventHandlingService eventHandlingService = EventHandlingService.getInstance();
+            eventHandlingService.onClickStartActivityFromContext(view, context, CreateMeal.class);
         }
     }
 

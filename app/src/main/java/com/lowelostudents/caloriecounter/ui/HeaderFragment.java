@@ -1,50 +1,29 @@
 package com.lowelostudents.caloriecounter.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.lowelostudents.caloriecounter.databinding.FragmentHeaderBinding;
-import com.lowelostudents.caloriecounter.ui.foodhub.FoodhubController;
-import com.lowelostudents.caloriecounter.ui.modals.CreateFood;
-import com.lowelostudents.caloriecounter.ui.modals.CreateMeal;
+import com.lowelostudents.caloriecounter.services.EventHandlingService;
+import com.lowelostudents.caloriecounter.ui.actions.CreateFood;
+import com.lowelostudents.caloriecounter.ui.actions.CreateMeal;
 
 public class HeaderFragment extends Fragment {
 
     private HeaderViewModel headerViewModel;
     private FragmentHeaderBinding binding;
 
-    private void setEventListeners() {
-        // TODO Search
-        FoodhubController foodhubController = FoodhubController.getInstance();
+    private void setEventHandlers() {
+        EventHandlingService eventHandlingService = EventHandlingService.getInstance();
 
-        binding.createFood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CreateFood.class);
-                startActivity(intent);
-
-                foodhubController.createFood();
-            }
-        });
-
-        binding.createMeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CreateMeal.class);
-                startActivity(intent);
-
-                foodhubController.createMeal();
-            }
-        });
+        eventHandlingService.onClickStartActivityFromContext(binding.createFood, this.getContext(), CreateFood.class);
+        eventHandlingService.onClickStartActivityFromContext(binding.createMeal, this.getContext(), CreateMeal.class);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,7 +32,7 @@ public class HeaderFragment extends Fragment {
 
         binding = FragmentHeaderBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        setEventListeners();
+        setEventHandlers();
 
         return root;
     }
