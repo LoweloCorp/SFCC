@@ -1,4 +1,4 @@
-package com.lowelostudents.caloriecounter.ui.modals;
+package com.lowelostudents.caloriecounter.ui.actions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
