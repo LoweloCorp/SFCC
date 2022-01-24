@@ -8,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import com.lowelostudents.caloriecounter.models.CrudDao;
+import com.lowelostudents.caloriecounter.models.CRUDDao;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class Meal_Food {
     private long foodId;
 
     @Dao
-    public interface  Meal_FoodDao extends CrudDao<Meal_Food> {
+    public interface  Meal_FoodDao extends CRUDDao<Meal_Food> {
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         void insertAll(Meal_Food... meal_foods);
 

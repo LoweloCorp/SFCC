@@ -7,7 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.Query;
 
-import com.lowelostudents.caloriecounter.models.CrudDao;
+import com.lowelostudents.caloriecounter.models.CRUDDao;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class Food {
     }
 
     @Dao
-    public interface FoodDao extends CrudDao<Food> {
+    public interface FoodDao extends CRUDDao<Food> {
         @Query("SELECT * FROM Food WHERE foodId = :id")
         Food getById(long id);
 

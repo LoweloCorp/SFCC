@@ -1,11 +1,11 @@
-package com.lowelostudents.caloriecounter;
+package com.lowelostudents.caloriecounter.ui;
 
 import android.app.Activity;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 
-import com.lowelostudents.caloriecounter.data.repositories.CrudRepository;
+import com.lowelostudents.caloriecounter.data.CRUDRepository;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public class GenericViewModel<T> extends AndroidViewModel {
+public class CRUDViewModel<T> extends AndroidViewModel {
     @Getter @Setter
-    private CrudRepository<T> crudRepository;
+    private CRUDRepository<T> crudRepository;
 
-    public GenericViewModel(Application context) {
+    public CRUDViewModel(Application context) {
         super(context);
     }
 

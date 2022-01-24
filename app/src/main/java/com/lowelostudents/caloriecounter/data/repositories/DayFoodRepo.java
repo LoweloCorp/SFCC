@@ -4,8 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.lowelostudents.caloriecounter.data.AppDatabase;
-import com.lowelostudents.caloriecounter.models.CrudDao;
+import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 import lombok.Getter;
 
-public class DayFoodRepo extends CrudRepository<Day_Food> {
+public class DayFoodRepo extends CRUDRepository<Day_Food> {
     @Getter
     private final LiveData<List<Day_Food_Relation>> day_foods;
 

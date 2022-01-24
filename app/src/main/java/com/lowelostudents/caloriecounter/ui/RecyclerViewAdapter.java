@@ -1,6 +1,7 @@
 package com.lowelostudents.caloriecounter.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private LayoutInflater layoutInflater;
     private Context context;
 
-    // data is passed into the constructor
-    public RecyclerViewAdapter(Context context, List<?> foodList) {
+    public RecyclerViewAdapter(Context context) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(this.context);
-        this.dataSet = foodList;
     }
 
     // inflates the row layout from xml when needed
@@ -56,16 +55,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             init((Meal) data, holder);
     }
 
+    // total number of rows
+    @Override
+    public int getItemCount() {
+        return (dataSet != null) ? dataSet.size() : 0;
+    }
+
     private void init(Food food, ViewHolder holder) {
         holder.cardTitle.setText(food.getName());
         String nutrients = food.getGramTotal() + "g" + " / " + (food.getCalTotal() + "cal");
         holder.cardNutrients.setText(nutrients);
     }
-
-    // TODO Use this to generify via extending some common class with Day / Food / Meal etc pp
-/*    public static <T extends Common Class> void add(T food) {
-
-    } */
 
     private void init(Meal meal, ViewHolder holder){
         holder.cardTitle.setText(meal.getName());
@@ -73,12 +73,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.cardNutrients.setText(nutrients);
     }
 
-    // total number of rows
-    @Override
-    public int getItemCount() {
-        return dataSet.size();
-    }
 
+    public void handleDatasetChanged(final List<?> dataSet) {
+        if(this.dataSet != null) this.dataSet.clear();
+        Log.i("DATSET", dataSet.toString());
+        this.dataSet = dataSet;
+        notifyDataSetChanged();
+    }
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder {

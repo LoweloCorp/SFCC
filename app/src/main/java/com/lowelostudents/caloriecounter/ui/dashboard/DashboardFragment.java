@@ -20,9 +20,11 @@ import java.util.ArrayList;
 
 public class DashboardFragment extends Fragment {
 
+    // TODO Observable and dummy functionality
+
     private DashboardViewModel dashboardViewModel;
     private FragmentDashboardBinding binding;
-    private ArrayList<Object> items = new ArrayList<>();
+//    private ArrayList<Object> items = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         final RecyclerView foodList = binding.foodList;
-        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this.getContext(), items);
+        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this.getContext());
         foodList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         foodList.setAdapter(recyclerViewAdapter);
 

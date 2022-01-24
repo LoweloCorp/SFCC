@@ -2,13 +2,18 @@ package com.lowelostudents.caloriecounter.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 
-import com.lowelostudents.caloriecounter.GenericViewModel;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
 import com.lowelostudents.caloriecounter.ui.actions.CreateFood;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class EventHandlingService {
     private static EventHandlingService instance;
@@ -29,7 +34,7 @@ public class EventHandlingService {
         });
     }
 
-    public <T extends GenericViewModel> void onClickInvokeMethod(View view, T controller, Method method){
+    public <T> void onClickInvokeMethod(View view, T controller, Method method){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,12 +47,26 @@ public class EventHandlingService {
         });
     }
 
-    public <T extends GenericViewModel> void onClickInvokeMethod(View view, T controller, Method method, Object... parameters){
+    public <T> void onClickInvokeMethod(View view, T controller, Method method, Object... parameters){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
+                    Log.i("Parameters", Arrays.toString(parameters));
                     method.invoke(controller, parameters);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public <T> void onChangedInvokeMethod(LifecycleOwner lifecycleOwner, LiveData<?> dataSet, T controller, Method method) {
+        dataSet.observe(lifecycleOwner, new Observer<Object>() {
+            @Override
+            public void onChanged(Object o) {
+                try {
+                    method.invoke(controller, o);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }

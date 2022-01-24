@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="100dp"
-    tools:context=".ui.HeaderFragment"
+    tools:context=".ui.header.HeaderFragment"
     >
 
     <SearchView

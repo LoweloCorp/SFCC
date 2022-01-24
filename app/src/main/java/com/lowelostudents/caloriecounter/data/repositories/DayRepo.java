@@ -4,13 +4,14 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.Day;
 
 import java.util.List;
 
 import lombok.Getter;
 
-public class DayRepo extends CrudRepository<Day>{
+public class DayRepo extends CRUDRepository<Day> {
     @Getter
     private final LiveData<List<Day>> days;
 

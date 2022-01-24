@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import com.lowelostudents.caloriecounter.models.CrudDao;
+import com.lowelostudents.caloriecounter.models.CRUDDao;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class Day_Food {
     private int dayId;
 
     @Dao
-    public interface Day_FoodDao extends CrudDao<Day_Food> {
+    public interface Day_FoodDao extends CRUDDao<Day_Food> {
         @Transaction
         @Query("SELECT * FROM Day")
         List<Day_Food_Relation> getAll();

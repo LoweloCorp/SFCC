@@ -5,6 +5,7 @@ import com.lowelostudents.caloriecounter.models.entities.Meal;
 
 import java.util.List;
 
+//TODO calculation water
 public class NutrientService {
     private static NutrientService nutrientService;
 
@@ -13,6 +14,7 @@ public class NutrientService {
         food.setProteinCal(food.getProteinGram()*4);
         food.setFatCal(food.getFatGram()*9);
         if(food.getPortionSize() == 0)
+            // TODO CHECK wrong calculation if water
             food.setPortionSize(food.getCarbsGram()+ food.getProteinGram()+ food.getFatGram());
         if(food.getCalPerPortion() == 0)
             food.setCalPerPortion(food.getFatCal()+food.getProteinCal()+ food.getCarbsCal());
