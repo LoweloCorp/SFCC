@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Dao
-public interface CrudDao<T> {
+public interface CRUDDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Long[] insert(List<T> obj);
 

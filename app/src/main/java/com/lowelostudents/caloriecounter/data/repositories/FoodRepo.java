@@ -4,13 +4,14 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 
 import java.util.List;
 
 import lombok.Getter;
 
-public class FoodRepo extends CrudRepository<Food> {
+public class FoodRepo extends CRUDRepository<Food> {
     @Getter
     private final LiveData<List<Food>> food;
 

@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData;
 
 import com.lowelostudents.caloriecounter.data.repositories.MealRepo;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
-import com.lowelostudents.caloriecounter.GenericViewModel;
+import com.lowelostudents.caloriecounter.ui.CRUDViewModel;
 
 import java.util.List;
 
 import lombok.Getter;
 
-public class MealViewModel extends GenericViewModel<Meal> {
+public class MealViewModel extends CRUDViewModel<Meal> {
     @Getter
     private LiveData<List<Meal>> meals;
 

@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.Query;
 
-import com.lowelostudents.caloriecounter.models.CrudDao;
+import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import java.util.Calendar;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Day {
     }
 
     @Dao
-    public interface DayDao extends CrudDao<Day> {
+    public interface DayDao extends CRUDDao<Day> {
         @Query("SELECT * FROM Day WHERE dayId = (SELECT MAX(dayId) FROM Day)")
         Day getLatest();
 

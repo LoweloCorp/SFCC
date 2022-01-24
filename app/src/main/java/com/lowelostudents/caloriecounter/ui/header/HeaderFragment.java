@@ -1,4 +1,4 @@
-package com.lowelostudents.caloriecounter.ui;
+package com.lowelostudents.caloriecounter.ui.header;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

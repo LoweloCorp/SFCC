@@ -1,32 +1,30 @@
-package com.lowelostudents.caloriecounter.data.repositories;
+package com.lowelostudents.caloriecounter.data;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.lowelostudents.caloriecounter.data.AppDatabase;
-import com.lowelostudents.caloriecounter.models.CrudDao;
+import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
 
 import lombok.Data;
 
 @Data
-public class CrudRepository<T> {
+public class CRUDRepository<T> {
     public final AppDatabase appdb;
     private final Context context;
-    private CrudDao<T> crudDao;
+    private CRUDDao<T> crudDao;
     private static ExecutorService executor = Executors.newFixedThreadPool(4);
 
-    public CrudRepository(Context context) {
+    public CRUDRepository(Context context) {
         this.context = context;
         this.appdb = AppDatabase.getInMemoryInstance(context);
     }
 
-    public CrudRepository(Context context, CrudDao<T> crudDao) {
+    public CRUDRepository(Context context, CRUDDao<T> crudDao) {
         this.context = context;
         this.appdb = AppDatabase.getInMemoryInstance(context);
         this.crudDao = crudDao;

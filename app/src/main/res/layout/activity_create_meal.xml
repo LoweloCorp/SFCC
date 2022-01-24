@@ -140,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:minHeight="100dp"
-            tools:context=".ui.HeaderFragment">
+            tools:context=".ui.header.HeaderFragment">
 
             <ImageButton
                 android:id="@+id/scan_button"
