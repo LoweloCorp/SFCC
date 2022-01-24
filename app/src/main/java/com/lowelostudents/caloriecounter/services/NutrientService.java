@@ -1,8 +1,7 @@
 package com.lowelostudents.caloriecounter.services;
 
-import com.lowelostudents.caloriecounter.models.Food;
-import com.lowelostudents.caloriecounter.models.Meal;
-import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
+import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
 
 import java.util.List;
 

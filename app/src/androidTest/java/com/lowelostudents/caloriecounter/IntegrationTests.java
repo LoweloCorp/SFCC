@@ -13,20 +13,17 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 import com.lowelostudents.caloriecounter.data.AppDatabase;
-import com.lowelostudents.caloriecounter.models.Day;
-import com.lowelostudents.caloriecounter.models.Day_Food;
-import com.lowelostudents.caloriecounter.models.Meal;
-import com.lowelostudents.caloriecounter.models.Meal_Food;
-import com.lowelostudents.caloriecounter.models.daos.DayDao;
-import com.lowelostudents.caloriecounter.models.daos.Day_FoodDao;
-import com.lowelostudents.caloriecounter.models.daos.MealDao;
-import com.lowelostudents.caloriecounter.models.daos.Meal_FoodDao;
+import com.lowelostudents.caloriecounter.models.entities.Day;
+import com.lowelostudents.caloriecounter.models.entities.Day_Food;
+import com.lowelostudents.caloriecounter.models.entities.GenericQueries;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
+import com.lowelostudents.caloriecounter.models.entities.Meal_Food;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
-import com.lowelostudents.caloriecounter.models.Food;
-import com.lowelostudents.caloriecounter.models.daos.FoodDao;
+import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -42,6 +39,8 @@ public class IntegrationTests {
     Context context = InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
     AppDatabase appdb = AppDatabase.getInMemoryInstance(context);
 
+    Day.DayDao dayDao;
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -51,30 +50,33 @@ public class IntegrationTests {
 
     @Test
     public void createAndReadDay(){
-        DayDao dayDao = appdb.dayDao();
-        Day_FoodDao day_foodDao = appdb.day_foodDao();
+        Day.DayDao dayDao = appdb.dayDao();
+        Day_Food.Day_FoodDao day_foodDao = appdb.day_foodDao();
         Day day = new Day();
 
-        dayDao.insertAll(day);
+        dayDao.insert(day);
 
         List<Day_Food_Relation> dfr = day_foodDao.getAll();
         Calendar cal = Calendar.getInstance();
 
         assertEquals(cal.get(Calendar.DATE), dfr.get(0).getDay().getDayId());
         assertEquals(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()), dfr.get(0).getDay().getName());
-        assertEquals(day.getDayId() , day_foodDao.getOne(cal.get(Calendar.DATE)).getDay().getDayId());
+        assertEquals(day.getDayId() , day_foodDao.getByDate(cal.get(Calendar.DATE)).getDay().getDayId());
     }
 
     @Test
     public void createAndReadFood(){
-        FoodDao foodDao = appdb.foodDao();
-        Food food = new Food();
-        Food food2 = new Food();
+        Food.FoodDao foodDao = appdb.foodDao();
+        List<Food> foods = new ArrayList<>();
+        foods.add(new Food());
+        foods.add(new Food());
 
-        foodDao.insertAll(food, food2);
+        foodDao.insert(foods);
 
-        Food retrievedFood = foodDao.getOne(1);
-        List<Food> retrievedFoods = foodDao.getAll();
+        Food retrievedFood = foodDao.getById(1);
+
+        GenericQueries genericQueries = new GenericQueries(foods.get(0));
+        List<Food> retrievedFoods = foodDao.getAll(genericQueries.GET);
 
         assertNotNull(retrievedFood);
         assertNotNull(retrievedFoods);
@@ -82,13 +84,14 @@ public class IntegrationTests {
 
     @Test
     public void createAndReadMeal(){
-        MealDao mealDao = appdb.mealDao();
+        Meal.MealDao mealDao = appdb.mealDao();
         Meal meal = new Meal("MyMeal");
 
-        mealDao.insertall(meal);
+        mealDao.insert(meal);
 
-        Meal retrievedMeal = mealDao.getOne(1);
-        List<Meal> retrievedMeals = mealDao.getAll();
+        Meal retrievedMeal = mealDao.getById(1);
+        GenericQueries genericQueries = new GenericQueries(meal);
+        List<Meal> retrievedMeals = mealDao.getAll(genericQueries.GET);
 
         assertNotNull(retrievedMeal);
         assertNotNull(retrievedMeals);
@@ -98,22 +101,25 @@ public class IntegrationTests {
 
     @Test
     public void createAndReadDayFood(){
-        DayDao dayDao = appdb.dayDao();
-        FoodDao foodDao = appdb.foodDao();
-        Day_FoodDao day_foodDao = appdb.day_foodDao();
+        Day.DayDao dayDao = appdb.dayDao();
+        Food.FoodDao foodDao = appdb.foodDao();
+        Day_Food.Day_FoodDao day_foodDao = appdb.day_foodDao();
 
         Food food = new Food();
         Day day = new Day();
 
         // insertAll Returns array of generated IDs for inserted entities, so that I do not need to query them to create the relation
-        long foodId = foodDao.insertAll(food)[0];
+        long foodId = foodDao.insert(food);
         long dayId;
 
         try {
-            dayId = dayDao.insertAll(day)[0];
+            dayId = dayDao.insert(day);
         } catch (SQLiteConstraintException e) {
             Calendar cal = Calendar.getInstance();
-            dayId = dayDao.getOne(cal.get(Calendar.DATE)).getDayId();
+
+            GenericQueries genericQueries = new GenericQueries(day, "dayId", String.valueOf(cal.get(Calendar.DATE)));
+
+            dayId = dayDao.get(genericQueries.GET).getDayId();
             Log.w("Day already exists", Arrays.toString(e.getStackTrace()));
         }
 
@@ -121,7 +127,7 @@ public class IntegrationTests {
         dayFood.setFoodId(foodId);
         dayFood.setDayId((int) dayId);
 
-        day_foodDao.insertAll(dayFood);
+        day_foodDao.insert(dayFood);
 
         Day_Food_Relation dayFoods = day_foodDao.getAll().get(0);
         List<Food> retrievedFoods = dayFoods.getFoods();
@@ -137,23 +143,22 @@ public class IntegrationTests {
 
     @Test
     public void createAndReadMealFood(){
-        MealDao mealDao = appdb.mealDao();
-        FoodDao foodDao = appdb.foodDao();
-        Meal_FoodDao meal_foodDao = appdb.meal_foodDao();
+        Meal.MealDao mealDao = appdb.mealDao();
+        Food.FoodDao foodDao = appdb.foodDao();
+        Meal_Food.Meal_FoodDao meal_foodDao = appdb.meal_foodDao();
 
         Food food = new Food();
         Meal meal= new Meal("HappyMeal");
 
         // insertAll Returns array of generated IDs for inserted entities, so that I do not need to query them to create the relation
-        long foodId = foodDao.insertAll(food)[0];
-        long mealId = mealDao.insertall(meal)[0];
+        long foodId = foodDao.insert(food);
+        long mealId = mealDao.insert(meal);
 
         Meal_Food mealFood = new Meal_Food();
         mealFood.setFoodId(foodId);
         mealFood.setMealId(mealId);
 
-        meal_foodDao.insertAll(mealFood);
-
+        meal_foodDao.insert(mealFood);
         Meal_Food_Relation mealFoods = meal_foodDao.getAll().get(0);
         List<Food> retrievedFoods = mealFoods.getFoods();
         Meal retrievedMeal = mealFoods.getMeal();
@@ -166,7 +171,6 @@ public class IntegrationTests {
         assertEquals(mealId, retrievedMeal.getMealId());
     }
 
-    @Test
     public void testDBSize(){
         int foodAmount = 20;
         int dayAmount = 2000;
@@ -174,9 +178,9 @@ public class IntegrationTests {
         Food[] food = new Food[foodAmount];
         Day_Food[] day_foods = new Day_Food[dayAmount];
 
-        DayDao dayDao = appdb.dayDao();
-        FoodDao foodDao = appdb.foodDao();
-        Day_FoodDao day_foodDao = appdb.day_foodDao();
+        Day.DayDao dayDao = appdb.dayDao();
+        Food.FoodDao foodDao = appdb.foodDao();
+        Day_Food.Day_FoodDao day_foodDao = appdb.day_foodDao();
 
         for (int i = 0; i < dayAmount; i++) {
             day[i] = new Day();
@@ -187,15 +191,16 @@ public class IntegrationTests {
             food[i] = new Food("Name", 1, 1, 1, 3);
         }
 
-        long[] dayIds = dayDao.insertAll(day);
-        long[] foodIds = foodDao.insertAll(food);
+        Long[] dayIds;
+        dayIds = dayDao.insert(Arrays.asList(day));
+        Long[] foodIds = foodDao.insert(Arrays.asList(food));
 
         for (int i = 0; i < dayAmount; i++) {
             for (int z = 0; z < foodAmount ; z++) {
                 day_foods[z] = new Day_Food();
-                day_foods[z].setDayId((int) dayIds[i]);
-                day_foods[z].setFoodId((int) foodIds[z]);
-                day_foodDao.insertAll(day_foods[z]);
+                day_foods[z].setDayId((int) dayIds[i].intValue());
+                day_foods[z].setFoodId((int) foodIds[z].intValue());
+                day_foodDao.insert(day_foods[z]);
             }
         }
         File file = context.getDatabasePath(appdb.getOpenHelper().getDatabaseName());

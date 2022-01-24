@@ -3,13 +3,10 @@ package com.lowelostudents.caloriecounter.models.relations;
 import androidx.room.Embedded;
 import androidx.room.Junction;
 import androidx.room.Relation;
-
-import com.lowelostudents.caloriecounter.models.Day;
-import com.lowelostudents.caloriecounter.models.Day_Food;
-import com.lowelostudents.caloriecounter.models.Food;
-
+import com.lowelostudents.caloriecounter.models.entities.Day;
+import com.lowelostudents.caloriecounter.models.entities.Day_Food;
+import com.lowelostudents.caloriecounter.models.entities.Food;
 import java.util.List;
-
 import lombok.Data;
 
 @Data
