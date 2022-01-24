@@ -11,15 +11,15 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lowelostudents.caloriecounter.R;
-import com.lowelostudents.caloriecounter.models.Food;
-import com.lowelostudents.caloriecounter.models.Meal;
+import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.ui.actions.CreateMeal;
 
 import java.util.List;
 
 
-// TODO Generify maybe
+// TODO Generify definitely.
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -61,6 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String nutrients = food.getGramTotal() + "g" + " / " + (food.getCalTotal() + "cal");
         holder.cardNutrients.setText(nutrients);
     }
+
     // TODO Use this to generify via extending some common class with Day / Food / Meal etc pp
 /*    public static <T extends Common Class> void add(T food) {
 

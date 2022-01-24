@@ -2,8 +2,7 @@ package com.lowelostudents.caloriecounter.ui.foodhub;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +14,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lowelostudents.caloriecounter.GenericViewModel;
 import com.lowelostudents.caloriecounter.data.AppDatabase;
 import com.lowelostudents.caloriecounter.databinding.FragmentFoodhubBinding;
-import com.lowelostudents.caloriecounter.models.Day;
-import com.lowelostudents.caloriecounter.models.Food;
-import com.lowelostudents.caloriecounter.models.Meal;
-import com.lowelostudents.caloriecounter.models.daos.DayDao;
-import com.lowelostudents.caloriecounter.models.daos.Day_FoodDao;
-import com.lowelostudents.caloriecounter.models.daos.FoodDao;
+import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.ui.RecyclerViewAdapter;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class FoodhubFragment extends Fragment {
 
-    private FoodhubViewModel foodhubViewModel;
+
+    //TODO Fix Livedata
+
     private FragmentFoodhubBinding binding;
     private ArrayList<Object> items = new ArrayList<>();
     private AppDatabase appdb;
@@ -50,27 +45,22 @@ public class FoodhubFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        foodhubViewModel =
-                new ViewModelProvider(this).get(FoodhubViewModel.class);
+
+        GenericViewModel<?> genericViewModel =
+                new ViewModelProvider(this).get(GenericViewModel.class);
+
+        MealViewModel mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+        FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
+        foodViewModel.insert(new Food());
+        foodViewModel.insert(new Food());
+
+        items.add(new Food());
+
+        Log.i("MYFOOD", String.valueOf(foodViewModel.getFoods().getValue()));
+        Log.i("MYFOOD", String.valueOf(foodViewModel.getFoods()));
 
         binding = FragmentFoodhubBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-
-        items.add(new Food("Name", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-
-        items.add(new Meal("Mahlzeit"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
 
         final RecyclerView foodList = binding.foodList;
         final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this.getContext(), items);

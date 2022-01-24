@@ -4,12 +4,9 @@ import static junit.framework.TestCase.assertEquals;
 
 import org.junit.Test;
 
-import com.lowelostudents.caloriecounter.models.Day;
-import com.lowelostudents.caloriecounter.models.Food;
+import com.lowelostudents.caloriecounter.models.entities.Day;
+import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.NutrientService;
-
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

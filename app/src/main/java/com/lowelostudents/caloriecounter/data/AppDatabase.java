@@ -6,18 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.lowelostudents.caloriecounter.models.Day;
-import com.lowelostudents.caloriecounter.models.daos.DayDao;
-import com.lowelostudents.caloriecounter.models.Day_Food;
-import com.lowelostudents.caloriecounter.models.daos.Day_FoodDao;
-import com.lowelostudents.caloriecounter.models.Food;
-import com.lowelostudents.caloriecounter.models.daos.FoodDao;
-import com.lowelostudents.caloriecounter.models.Meal;
-import com.lowelostudents.caloriecounter.models.daos.MealDao;
-import com.lowelostudents.caloriecounter.models.Meal_Food;
-import com.lowelostudents.caloriecounter.models.daos.Meal_FoodDao;
-
-import java.io.File;
+import com.lowelostudents.caloriecounter.models.CrudDao;
+import com.lowelostudents.caloriecounter.models.entities.Day;
+import com.lowelostudents.caloriecounter.models.entities.Day_Food;
+import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
+import com.lowelostudents.caloriecounter.models.entities.Meal_Food;
 
 @Database(entities = {Day.class, Food.class, Day_Food.class, Meal.class, Meal_Food.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -42,9 +36,9 @@ public abstract class AppDatabase extends RoomDatabase {
         return dbInstance;
     }
 
-    public abstract DayDao dayDao();
-    public abstract FoodDao foodDao();
-    public abstract MealDao mealDao();
-    public abstract Day_FoodDao day_foodDao();
-    public abstract Meal_FoodDao meal_foodDao();
+    public abstract Day.DayDao dayDao();
+    public abstract Food.FoodDao foodDao();
+    public abstract Meal.MealDao mealDao();
+    public abstract Day_Food.Day_FoodDao day_foodDao();
+    public abstract Meal_Food.Meal_FoodDao meal_foodDao();
 }

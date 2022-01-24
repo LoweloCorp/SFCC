@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lowelostudents.caloriecounter.databinding.FragmentDashboardBinding;
-import com.lowelostudents.caloriecounter.models.Food;
-import com.lowelostudents.caloriecounter.models.Meal;
+import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.ui.RecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -31,22 +31,6 @@ public class DashboardFragment extends Fragment {
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-
-        items.add(new Food("Name", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-        items.add(new Food("AndererName", 1, 1, 1, 3));
-
-        items.add(new Meal("Mahlzeit"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
-        items.add(new Meal("Mahlzeit2"));
 
         final RecyclerView foodList = binding.foodList;
         final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this.getContext(), items);
