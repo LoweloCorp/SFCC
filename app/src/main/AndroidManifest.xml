@@ -21,11 +21,15 @@
         </activity>
 
         <activity
-            android:name="com.lowelostudents.caloriecounter.ui.actions.CreateMeal"
+            android:name="com.lowelostudents.caloriecounter.ui.models.CreateMeal"
             android:label="@string/title_activity_create_meal" />
 
         <activity
-            android:name="com.lowelostudents.caloriecounter.ui.actions.CreateFood"
+            android:name="com.lowelostudents.caloriecounter.ui.models.CreateFood"
+            android:label="@string/title_activity_create_food" />
+
+        <activity
+            android:name="com.lowelostudents.caloriecounter.ui.CRUDActivity"
             android:label="@string/title_activity_create_food" />
     </application>
 

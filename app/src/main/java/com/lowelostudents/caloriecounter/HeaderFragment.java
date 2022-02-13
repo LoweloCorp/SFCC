@@ -1,4 +1,4 @@
-package com.lowelostudents.caloriecounter.ui.header;
+package com.lowelostudents.caloriecounter;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,16 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.lowelostudents.caloriecounter.databinding.FragmentHeaderBinding;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
-import com.lowelostudents.caloriecounter.ui.actions.CreateFood;
-import com.lowelostudents.caloriecounter.ui.actions.CreateMeal;
+import com.lowelostudents.caloriecounter.ui.models.CreateFood;
+import com.lowelostudents.caloriecounter.ui.models.CreateMeal;
 
 public class HeaderFragment extends Fragment {
 
-    private HeaderViewModel headerViewModel;
     private FragmentHeaderBinding binding;
 
     private void setEventHandlers() {
@@ -28,9 +26,8 @@ public class HeaderFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        headerViewModel = new ViewModelProvider(this).get(HeaderViewModel.class);
 
-        binding = FragmentHeaderBinding.inflate(inflater, container, false);
+        this.binding = FragmentHeaderBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         setEventHandlers();
 
@@ -40,7 +37,7 @@ public class HeaderFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        this.binding = null;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.lowelostudents.caloriecounter.ui.foodhub;
+package com.lowelostudents.caloriecounter.ui.viewmodels;
 
 import android.app.Application;
 

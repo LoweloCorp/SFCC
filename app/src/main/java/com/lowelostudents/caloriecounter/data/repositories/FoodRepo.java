@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
 import java.util.List;
 

@@ -14,22 +14,22 @@ import java.sql.SQLDataException;
 import java.util.List;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-public class Meal {
+@EqualsAndHashCode(callSuper = true)
+public class Meal extends Nutrients {
     @PrimaryKey(autoGenerate = true)
     private long mealId;
-    private String name;
-    private int calTotal;
-    private int gramTotal;
     @Ignore
     private NutrientService nutrientService = NutrientService.getInstance();
 
     @Ignore
     public Meal() {
-
     }
+
+    //TODO Test whether necessary on update
 
     public Meal(String name, List<Food> foodList, long[] proofOfExistence) throws SQLDataException {
         for (int i = 0; i < proofOfExistence.length; i++) {

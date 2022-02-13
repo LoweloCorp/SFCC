@@ -6,10 +6,8 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
-
-import com.lowelostudents.caloriecounter.ui.actions.CreateFood;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,7 +26,7 @@ public class EventHandlingService {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, CreateFood.class);
+                Intent intent = new Intent(context, activity);
                 context.startActivity(intent);
             }
         });
@@ -61,10 +59,11 @@ public class EventHandlingService {
         });
     }
 
-    public <T> void onChangedInvokeMethod(LifecycleOwner lifecycleOwner, LiveData<?> dataSet, T controller, Method method) {
+    public <T> void onChangedInvokeMethod(LifecycleOwner lifecycleOwner, MediatorLiveData<?> dataSet, T controller, Method method) {
         dataSet.observe(lifecycleOwner, new Observer<Object>() {
             @Override
             public void onChanged(Object o) {
+                Log.i("MEINDATASET", dataSet.getValue().toString());
                 try {
                     method.invoke(controller, o);
                 } catch (IllegalAccessException | InvocationTargetException e) {
@@ -73,4 +72,6 @@ public class EventHandlingService {
             }
         });
     }
+
+
 }

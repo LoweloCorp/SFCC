@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/header_fragment"
-        android:name="com.lowelostudents.caloriecounter.ui.header.HeaderFragment"
+        android:name="com.lowelostudents.caloriecounter.HeaderFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:label="@string/title_home"

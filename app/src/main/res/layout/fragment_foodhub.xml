@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".ui.foodhub.FoodhubFragment">
+    tools:context=".ui.models.FoodhubFragment">
 
     <Switch
         android:id="@+id/foodToggle"
