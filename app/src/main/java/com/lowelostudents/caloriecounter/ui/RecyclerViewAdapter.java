@@ -99,6 +99,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         //TODO toggleForDay
+        // Reflections or any other trigger to open correct activity depending on type (Meal/Food)
 
         private void setEventHandlers(View view) {
             EventHandlingService eventHandlingService = EventHandlingService.getInstance();

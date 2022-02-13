@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter.ui.foodhub;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lowelostudents.caloriecounter.data.AppDatabase;
 import com.lowelostudents.caloriecounter.databinding.FragmentFoodhubBinding;
 import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.ui.RecyclerViewAdapter;
 
@@ -30,7 +34,8 @@ import lombok.SneakyThrows;
 
 public class FoodhubFragment extends Fragment {
     private FragmentFoodhubBinding binding;
-    private LiveData<?> dataSet;
+//    private LiveData<Pair<?, ?>> dataSet;
+    private final MediatorLiveData<List<?>> dataSet = new MediatorLiveData<>();
 
     // TODO generify, interface
     @SneakyThrows
@@ -61,8 +66,12 @@ public class FoodhubFragment extends Fragment {
         foodList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         foodList.setAdapter(recyclerViewAdapter);
 
-        FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
-        dataSet = foodViewModel.getFoods();
+        MealViewModel foodViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+        FoodViewModel mealViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
+
+        dataSet.addSource(foodViewModel.getMeals(), dataSet::setValue);
+
+        dataSet.addSource(mealViewModel.getFoods(), dataSet::setValue);
 
         setEventHandlers(recyclerViewAdapter);
 

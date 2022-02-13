@@ -14,6 +14,8 @@ import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.ui.actions.CreateFood;
 import com.lowelostudents.caloriecounter.ui.actions.CreateMeal;
 
+import org.json.JSONObject;
+
 public class HeaderFragment extends Fragment {
 
     private HeaderViewModel headerViewModel;

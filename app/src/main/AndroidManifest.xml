@@ -27,6 +27,10 @@
         <activity
             android:name="com.lowelostudents.caloriecounter.ui.actions.CreateFood"
             android:label="@string/title_activity_create_food" />
+
+        <activity
+            android:name="com.lowelostudents.caloriecounter.ui.actions.CRUDFragment"
+            android:label="@string/title_activity_create_food" />
     </application>
 
 </manifest>

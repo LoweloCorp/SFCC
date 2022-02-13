@@ -12,23 +12,23 @@ import java.util.concurrent.Executors;
 
 import lombok.Data;
 
-@Data
-public class CRUDRepository<T> {
-    public final AppDatabase appdb;
-    private final Context context;
-    private CRUDDao<T> crudDao;
-    private static ExecutorService executor = Executors.newFixedThreadPool(4);
+    @Data
+    public class CRUDRepository<T> {
+        public final AppDatabase appdb;
+        private final Context context;
+        private CRUDDao<T> crudDao;
+        private static ExecutorService executor = Executors.newFixedThreadPool(4);
 
-    public CRUDRepository(Context context) {
-        this.context = context;
-        this.appdb = AppDatabase.getInMemoryInstance(context);
-    }
+        public CRUDRepository(Context context) {
+            this.context = context;
+            this.appdb = AppDatabase.getInMemoryInstance(context);
+        }
 
-    public CRUDRepository(Context context, CRUDDao<T> crudDao) {
-        this.context = context;
-        this.appdb = AppDatabase.getInMemoryInstance(context);
-        this.crudDao = crudDao;
-    }
+        public CRUDRepository(Context context, CRUDDao<T> crudDao) {
+            this.context = context;
+            this.appdb = AppDatabase.getInMemoryInstance(context);
+            this.crudDao = crudDao;
+        }
 
     public void insert(T t) {
         executor.execute(() -> {

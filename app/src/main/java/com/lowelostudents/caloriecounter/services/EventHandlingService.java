@@ -28,7 +28,7 @@ public class EventHandlingService {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, CreateFood.class);
+                Intent intent = new Intent(context, activity);
                 context.startActivity(intent);
             }
         });
