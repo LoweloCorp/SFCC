@@ -19,21 +19,17 @@ import lombok.EqualsAndHashCode;
 //TODO add constructor with total calories parameter
 @Entity
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Food {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+public class Food extends Nutrients {
     @PrimaryKey(autoGenerate = true)
     @EqualsAndHashCode.Include
     private long foodId;
-    @EqualsAndHashCode.Include
-    private String name;
     private int carbsGram, carbsCal;
     private int proteinGram, proteinCal;
     private int fatGram, fatCal;
     private int portionSize;
     private int calPerPortion;
     private double calPerGram;
-    private int gramTotal;
-    private int calTotal;
     @Ignore
     private NutrientService nutrientService = NutrientService.getInstance();
 

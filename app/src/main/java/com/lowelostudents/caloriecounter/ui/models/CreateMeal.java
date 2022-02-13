@@ -1,46 +1,37 @@
-package com.lowelostudents.caloriecounter.ui.actions;
+package com.lowelostudents.caloriecounter.ui.models;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewbinding.ViewBinding;
-
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 //import com.lowelostudents.caloriecounter.databinding.ActivityCreateMealBinding;
-import com.lowelostudents.caloriecounter.databinding.FragmentMealBinding;
-import com.lowelostudents.caloriecounter.databinding.FragmentPersistenceBinding;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
-import com.lowelostudents.caloriecounter.ui.CRUDViewModel;
-import com.lowelostudents.caloriecounter.ui.foodhub.MealViewModel;
+import com.lowelostudents.caloriecounter.ui.CRUDActivity;
+import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
 import java.lang.reflect.Method;
 
 import lombok.SneakyThrows;
 
-public class CreateMeal extends CRUDFragment<Meal> {
-    EventHandlingService eventHandlingService = EventHandlingService.getInstance();
+public class CreateMeal extends CRUDActivity<Meal> {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init(new ViewModelProvider(this).get(MealViewModel.class));
+        super.init(new ViewModelProvider(this).get(MealViewModel.class));
+        EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Fragment mealFragment = new MealFragment();
 
         getSupportFragmentManager().beginTransaction().add(this.getBinding().getRoot().getId(), mealFragment).commit();
 
-        Meal meal = new Meal("Meal");
-        save(meal);
+        Meal meal = new Meal("Mealeee");
+        save(meal, eventHandlingService);
     }
 
     @Override @SneakyThrows
-    protected void save(Meal meal) {
+    protected void save(Meal meal, EventHandlingService eventHandlingService) {
         Method insert = this.getModel().getClass().getMethod("insert", Object.class);
         eventHandlingService.onClickInvokeMethod(this.getBinding().confirmButton, this.getModel(), insert, meal);
     }

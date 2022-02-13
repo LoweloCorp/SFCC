@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import lombok.Data;
 
     @Data
-    public class CRUDRepository<T> {
+    public abstract class CRUDRepository<T> {
         public final AppDatabase appdb;
         private final Context context;
         private CRUDDao<T> crudDao;

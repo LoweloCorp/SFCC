@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public class CRUDViewModel<T> extends AndroidViewModel {
+public abstract class CRUDViewModel<T> extends AndroidViewModel {
     @Getter @Setter
     private CRUDRepository<T> crudRepository;
 

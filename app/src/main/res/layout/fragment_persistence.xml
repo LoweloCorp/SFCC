@@ -6,7 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
 android:theme="@style/ThemeOverlay.CalorieCounter.FullscreenContainer"
-tools:context=".ui.actions.CRUDFragment"
+tools:context=".ui.CRUDActivity"
     android:id="@+id/CRUDActivity">
 
 <!-- The primary full-screen view. This can be replaced with whatever view
@@ -31,7 +31,7 @@ tools:context=".ui.actions.CRUDFragment"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:minHeight="100dp"
-        tools:context=".ui.header.HeaderFragment">
+        tools:context=".HeaderFragment">
 
         <ImageButton
             android:id="@+id/scan_button"

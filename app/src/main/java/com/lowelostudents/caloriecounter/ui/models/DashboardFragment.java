@@ -1,4 +1,4 @@
-package com.lowelostudents.caloriecounter.ui.dashboard;
+package com.lowelostudents.caloriecounter.ui.models;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lowelostudents.caloriecounter.databinding.FragmentDashboardBinding;
-import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Meal;
-import com.lowelostudents.caloriecounter.ui.RecyclerViewAdapter;
-
-import java.util.ArrayList;
+import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
+import com.lowelostudents.caloriecounter.ui.viewmodels.DashboardViewModel;
 
 public class DashboardFragment extends Fragment {
 
@@ -28,17 +25,16 @@ public class DashboardFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
+        this.dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
-
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        this.binding = FragmentDashboardBinding.inflate(inflater, container, false);
 
         final RecyclerView foodList = binding.foodList;
-        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this.getContext());
+        final GenericRecyclerViewAdapter recyclerViewAdapter = new GenericRecyclerViewAdapter(this.getContext());
         foodList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         foodList.setAdapter(recyclerViewAdapter);
 
+        View root = binding.getRoot();
         return root;
     }
 

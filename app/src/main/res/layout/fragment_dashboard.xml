@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".ui.dashboard.DashboardFragment">
+    tools:context=".ui.models.DashboardFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodList"

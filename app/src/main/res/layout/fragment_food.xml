@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.CalorieCounter.FullscreenContainer"
     android:id="@+id/foodFragment"
-    tools:context=".ui.actions.FoodFragment">
+    tools:context=".ui.models.FoodFragment">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,

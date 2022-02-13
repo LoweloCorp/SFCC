@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_graphs"
-        android:name="com.lowelostudents.caloriecounter.ui.stats.StatsFragment"
+        android:name="com.lowelostudents.caloriecounter.ui.models.StatsFragment"
         android:label="@string/title_graphs"
         tools:layout="@layout/fragment_stats" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.lowelostudents.caloriecounter.ui.dashboard.DashboardFragment"
+        android:name="com.lowelostudents.caloriecounter.ui.models.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_foodhub"
-        android:name="com.lowelostudents.caloriecounter.ui.foodhub.FoodhubFragment"
+        android:name="com.lowelostudents.caloriecounter.ui.models.FoodhubFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_foodhub" />
 </navigation>
