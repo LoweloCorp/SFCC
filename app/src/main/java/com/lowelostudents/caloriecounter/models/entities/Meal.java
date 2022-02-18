@@ -45,9 +45,6 @@ public class Meal extends Nutrients {
 
     @Dao
     public interface MealDao extends CRUDDao<Meal> {
-        @Query("SELECT * FROM Meal WHERE mealId = :mealId")
-        Meal getById(long mealId);
-
         @Query("SELECT * FROM Meal")
         LiveData<List<Meal>> getAllObservable();
 

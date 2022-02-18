@@ -62,8 +62,6 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         holder.cardType.setText(cardType);
         holder.cardTitle.setText(cardTitle);
         holder.cardNutrients.setText(cardNutrients);
-
-
     }
 
     // total number of rows

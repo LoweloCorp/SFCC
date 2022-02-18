@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 import com.lowelostudents.caloriecounter.data.AppDatabase;
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
-import com.lowelostudents.caloriecounter.models.entities.GenericQueries;
+import com.lowelostudents.caloriecounter.services.GenericQueryService;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Meal_Food;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
@@ -73,11 +73,14 @@ public class IntegrationTests {
 
         foodDao.insert(foods);
 
-        Food retrievedFood = foodDao.getById(1);
+        Food retrievedFood = foodDao.get(Food.class, 1);
+        List<Food> genericFoodList = foodDao.getAll(Food.class);
+        Food genericFood = foodDao.get(Food.class, 2);
 
-        GenericQueries genericQueries = new GenericQueries(foods.get(0));
-        List<Food> retrievedFoods = foodDao.getAll(genericQueries.GET);
+        List<Food> retrievedFoods = foodDao.getAll(Food.class);
 
+        assertNotNull(genericFoodList);
+        assertNotNull(genericFood);
         assertNotNull(retrievedFood);
         assertNotNull(retrievedFoods);
     }
@@ -89,9 +92,8 @@ public class IntegrationTests {
 
         mealDao.insert(meal);
 
-        Meal retrievedMeal = mealDao.getById(1);
-        GenericQueries genericQueries = new GenericQueries(meal);
-        List<Meal> retrievedMeals = mealDao.getAll(genericQueries.GET);
+        Meal retrievedMeal = mealDao.get(Meal.class, 1);
+        List<Meal> retrievedMeals = mealDao.getAll(Meal.class);
 
         assertNotNull(retrievedMeal);
         assertNotNull(retrievedMeals);
@@ -117,9 +119,8 @@ public class IntegrationTests {
         } catch (SQLiteConstraintException e) {
             Calendar cal = Calendar.getInstance();
 
-            GenericQueries genericQueries = new GenericQueries(day, "dayId", String.valueOf(cal.get(Calendar.DATE)));
+            dayId = dayDao.get(Day.class, cal.get(Calendar.DATE)).getDayId();
 
-            dayId = dayDao.get(genericQueries.GET).getDayId();
             Log.w("Day already exists", Arrays.toString(e.getStackTrace()));
         }
 

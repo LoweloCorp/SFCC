@@ -23,16 +23,13 @@ public class Meal_Food {
 
     @Dao
     public interface  Meal_FoodDao extends CRUDDao<Meal_Food> {
-        @Insert(onConflict = OnConflictStrategy.IGNORE)
-        void insertAll(Meal_Food... meal_foods);
-
         @Transaction
         @Query("SELECT * FROM Meal")
         List<Meal_Food_Relation> getAll();
 
         @Transaction
         @Query("SELECT * FROM Meal WHERE mealId = :mealId")
-        Meal_Food_Relation getOne(long mealId);
+        Meal_Food_Relation getById(long mealId);
 
         @Transaction
         @Query("SELECT * FROM Meal")
