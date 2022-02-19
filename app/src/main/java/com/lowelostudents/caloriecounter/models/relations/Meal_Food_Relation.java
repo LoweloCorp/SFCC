@@ -12,13 +12,14 @@ import java.util.List;
 
 import lombok.Data;
 
+// TODO generify
 @Data
 public class Meal_Food_Relation {
-    @Embedded
-    private Meal meal;
     @Relation(
             parentColumn = "mealId",
             entityColumn = "foodId",
             associateBy = @Junction(Meal_Food.class))
     List<Food> foods;
+    @Embedded
+    private Meal meal;
 }

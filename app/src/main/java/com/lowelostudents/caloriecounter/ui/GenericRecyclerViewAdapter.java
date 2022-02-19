@@ -62,8 +62,6 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         holder.cardType.setText(cardType);
         holder.cardTitle.setText(cardTitle);
         holder.cardNutrients.setText(cardNutrients);
-
-
     }
 
     // total number of rows
@@ -73,7 +71,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     }
 
     private void setEventHandlers(View cardItem, String cardType) throws ClassNotFoundException {
-        Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create"+ cardType);
+        Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
 
         eventHandlingService.onClickStartActivityFromContext(cardItem, context, cardDataClass);

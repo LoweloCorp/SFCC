@@ -36,8 +36,12 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract Day.DayDao dayDao();
+
     public abstract Food.FoodDao foodDao();
+
     public abstract Meal.MealDao mealDao();
+
     public abstract Day_Food.Day_FoodDao day_foodDao();
+
     public abstract Meal_Food.Meal_FoodDao meal_foodDao();
 }

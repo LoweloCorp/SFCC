@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.lowelostudents.caloriecounter.databinding.FragmentStatsBinding;
 import com.lowelostudents.caloriecounter.ui.viewmodels.StatsViewModel;
 

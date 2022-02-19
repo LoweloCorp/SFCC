@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 import com.lowelostudents.caloriecounter.data.AppDatabase;
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
-import com.lowelostudents.caloriecounter.models.entities.GenericQueries;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Meal_Food;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
@@ -51,17 +50,17 @@ public class IntegrationTests {
     @Test
     public void createAndReadDay(){
         Day.DayDao dayDao = appdb.dayDao();
-        Day_Food.Day_FoodDao day_foodDao = appdb.day_foodDao();
+//        Day_Food.Day_FoodDao day_foodDao = appdb.day_foodDao();
         Day day = new Day();
 
         dayDao.insert(day);
 
-        List<Day_Food_Relation> dfr = day_foodDao.getAll();
+        List<Day_Food_Relation> dfr = dayDao.getWithTransaction(Day.class);
         Calendar cal = Calendar.getInstance();
 
         assertEquals(cal.get(Calendar.DATE), dfr.get(0).getDay().getDayId());
         assertEquals(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()), dfr.get(0).getDay().getName());
-        assertEquals(day.getDayId() , day_foodDao.getByDate(cal.get(Calendar.DATE)).getDay().getDayId());
+        assertEquals(day.getDayId() , dayDao.getWithTransaction(Day.class, cal.get(Calendar.DATE)).getDay().getDayId());
     }
 
     @Test
@@ -73,11 +72,14 @@ public class IntegrationTests {
 
         foodDao.insert(foods);
 
-        Food retrievedFood = foodDao.getById(1);
+        Food retrievedFood = foodDao.get(Food.class, 1);
+        List<Food> genericFoodList = foodDao.get(Food.class);
+        Food genericFood = foodDao.get(Food.class, 2);
 
-        GenericQueries genericQueries = new GenericQueries(foods.get(0));
-        List<Food> retrievedFoods = foodDao.getAll(genericQueries.GET);
+        List<Food> retrievedFoods = foodDao.get(Food.class);
 
+        assertNotNull(genericFoodList);
+        assertNotNull(genericFood);
         assertNotNull(retrievedFood);
         assertNotNull(retrievedFoods);
     }
@@ -89,9 +91,8 @@ public class IntegrationTests {
 
         mealDao.insert(meal);
 
-        Meal retrievedMeal = mealDao.getById(1);
-        GenericQueries genericQueries = new GenericQueries(meal);
-        List<Meal> retrievedMeals = mealDao.getAll(genericQueries.GET);
+        Meal retrievedMeal = mealDao.get(Meal.class, 1);
+        List<Meal> retrievedMeals = mealDao.get(Meal.class);
 
         assertNotNull(retrievedMeal);
         assertNotNull(retrievedMeals);
@@ -117,9 +118,8 @@ public class IntegrationTests {
         } catch (SQLiteConstraintException e) {
             Calendar cal = Calendar.getInstance();
 
-            GenericQueries genericQueries = new GenericQueries(day, "dayId", String.valueOf(cal.get(Calendar.DATE)));
+            dayId = dayDao.get(Day.class, cal.get(Calendar.DATE)).getDayId();
 
-            dayId = dayDao.get(genericQueries.GET).getDayId();
             Log.w("Day already exists", Arrays.toString(e.getStackTrace()));
         }
 
@@ -129,7 +129,7 @@ public class IntegrationTests {
 
         day_foodDao.insert(dayFood);
 
-        Day_Food_Relation dayFoods = day_foodDao.getAll().get(0);
+        Day_Food_Relation dayFoods = dayDao.getWithTransaction(Day.class).get(0);
         List<Food> retrievedFoods = dayFoods.getFoods();
         Day retrievedDay = dayFoods.getDay();
 
@@ -159,7 +159,7 @@ public class IntegrationTests {
         mealFood.setMealId(mealId);
 
         meal_foodDao.insert(mealFood);
-        Meal_Food_Relation mealFoods = meal_foodDao.getAll().get(0);
+        Meal_Food_Relation mealFoods = mealDao.getWithTransaction(Meal.class).get(0);
         List<Food> retrievedFoods = mealFoods.getFoods();
         Meal retrievedMeal = mealFoods.getMeal();
 

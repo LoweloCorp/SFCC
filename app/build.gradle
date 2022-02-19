@@ -7,6 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.lowelostudents.caloriecounter"
+        // TODO CHANGE BACK TO 26 IF NOT GENERIFICATION POSSIBLE
         minSdk 26
         targetSdk 32
         versionCode 1
