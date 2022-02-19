@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.Query;
 
 import com.lowelostudents.caloriecounter.models.CRUDDao;
+import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
 import java.util.List;
@@ -51,16 +52,16 @@ public class Food extends Nutrients {
     }
 
     @Ignore
-    public Food(){
+    public Food() {
 
     }
 
     @Dao
-    public interface FoodDao extends CRUDDao<Food> {
+    public abstract static class FoodDao extends CRUDDao<Food, Day_Food_Relation> {
         @Query("SELECT * FROM Food")
-        LiveData<List<Food>> getAllObservable();
+        public abstract LiveData<List<Food>> getAllObservable();
 
         @Query("SELECT * FROM Food Where foodId = :id")
-        LiveData<Food> getObservable(long id);
+        public abstract LiveData<Food> getObservable(long id);
     }
 }

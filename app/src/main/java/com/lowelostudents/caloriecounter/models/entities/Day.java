@@ -5,8 +5,10 @@ import androidx.room.Dao;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.lowelostudents.caloriecounter.models.CRUDDao;
+import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 
 import java.util.Calendar;
 import java.util.List;
@@ -28,17 +30,22 @@ public class Day {
     }
 
     @Dao
-    public interface DayDao extends CRUDDao<Day> {
+    public abstract static class DayDao extends CRUDDao<Day, Day_Food_Relation> {
         @Query("SELECT * FROM Day WHERE dayId = (SELECT MAX(dayId) FROM Day)")
-        Day getLatest();
-
-        @Query("DELETE FROM Day WHERE dayId = :dayId")
-        void deleteById(int dayId);
+        public abstract Day getLatest();
 
         @Query("SELECT * FROM Day")
-        LiveData<List<Day>> getAllObservable();
+        public abstract LiveData<List<Day>> getAllObservable();
 
         @Query("SELECT * FROM Day WHERE dayId = :date")
-        LiveData<Day> getObservableByDate(int date);
+        public abstract LiveData<Day> getObservableByDate(int date);
+
+        @Transaction
+        @Query("SELECT * FROM Day WHERE dayId = :date")
+        public abstract LiveData<Day_Food_Relation> getObservableByDateTransaction(int date);
+
+        @Transaction
+        @Query("SELECT * FROM Day")
+        public abstract LiveData<List<Day_Food_Relation>> getAllObservableTransaction();
     }
 }

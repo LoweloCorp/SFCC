@@ -2,24 +2,49 @@ package com.lowelostudents.caloriecounter.ui.viewmodels;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.lowelostudents.caloriecounter.data.repositories.MealRepo;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
-import com.lowelostudents.caloriecounter.ui.CRUDViewModel;
 
 import java.util.List;
 
 import lombok.Getter;
 
-public class MealViewModel extends CRUDViewModel<Meal> {
+public class MealViewModel extends AndroidViewModel {
     @Getter
-    private LiveData<List<Meal>> meals;
+    private final LiveData<List<Meal>> meals;
+    private final MealRepo repo;
 
     public MealViewModel(Application context) {
         super(context);
-        setCrudRepository(new MealRepo(context.getApplicationContext()));
-        final MealRepo mealRepo = (MealRepo) getCrudRepository();
-        meals = mealRepo.getMeals();
+        repo = new MealRepo(context.getApplicationContext());
+        meals = repo.getMeals();
+    }
+
+    public Long insert(Meal t) {
+
+        return repo.insert(t);
+    }
+
+    public void insertAll(List<Meal> t) {
+        repo.insert(t);
+    }
+
+    public void update(Meal t) {
+        repo.update(t);
+    }
+
+    public void updateAll(List<Meal> t) {
+        repo.update(t);
+    }
+
+    public void delete(Meal t) {
+        repo.delete(t);
+    }
+
+    public void deleteAll(Meal t) {
+        repo.delete(t);
     }
 }

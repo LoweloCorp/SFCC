@@ -22,7 +22,7 @@ public class EventHandlingService {
         return instance;
     }
 
-    public void onClickStartActivityFromContext(View view, Context context, Class<?> activity){
+    public void onClickStartActivityFromContext(View view, Context context, Class<?> activity) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,7 +32,7 @@ public class EventHandlingService {
         });
     }
 
-    public <T> void onClickInvokeMethod(View view, T controller, Method method){
+    public <T> void onClickInvokeMethod(View view, T controller, Method method) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,7 +45,7 @@ public class EventHandlingService {
         });
     }
 
-    public <T> void onClickInvokeMethod(View view, T controller, Method method, Object... parameters){
+    public <T> void onClickInvokeMethod(View view, T controller, Method method, Object... parameters) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

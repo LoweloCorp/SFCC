@@ -28,9 +28,9 @@
             android:name="com.lowelostudents.caloriecounter.ui.models.CreateFood"
             android:label="@string/title_activity_create_food" />
 
-        <activity
-            android:name="com.lowelostudents.caloriecounter.ui.CRUDActivity"
-            android:label="@string/title_activity_create_food" />
+<!--        <activity-->
+<!--            android:name="com.lowelostudents.caloriecounter.ui.CRUDActivity"-->
+<!--            android:label="@string/title_activity_create_food" />-->
     </application>
 
 </manifest>
