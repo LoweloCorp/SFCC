@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatefoodBinding;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
@@ -26,12 +27,12 @@ public class CreateFood extends AppCompatActivity {
 
 
     @SneakyThrows
-    protected void setEventHandlers(Food meal) {
+    protected void setEventHandlers() {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
-        Method insert = this.getModel().getClass().getMethod("insert", Food.class);
         Method finish = Activity.class.getMethod("finish");
+        Method save = this.getClass().getMethod("save");
 
-        eventHandlingService.onClickInvokeMethod(binding.confirmButton, this.getModel(), insert, meal);
+        eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, save);
         eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
     }
 
@@ -43,7 +44,23 @@ public class CreateFood extends AppCompatActivity {
         this.model = new ViewModelProvider(this).get(FoodViewModel.class);
         setContentView(binding.getRoot());
 
-        Food food = new Food("MeinFressen", 1, 1, 1, 1);
-        setEventHandlers(food);
+//        Food food = new Food("MeinFressen", 1, 1, 1, 1);
+        setEventHandlers();
+    }
+
+    public void save() {
+        // TODO use setters call nutrientService
+
+        Food food = new Food(
+                this.binding.foodName.getText().toString(),
+                Integer.parseInt(this.binding.carbs.getText().toString()),
+                Integer.parseInt(this.binding.protein.getText().toString()),
+                Integer.parseInt(this.binding.fat.getText().toString()),
+                Integer.parseInt(this.binding.totalSize.getText().toString())
+        );
+
+        this.model.insert(food);
+//    public Food(String name, int carbsGramPortion, int proteinGramPortion, int fatGramPortion, int gramTotal) {
+//  public Food(String name, int gramTotal, int calPerPortion, int portionSi
     }
 }

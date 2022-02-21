@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatemealBinding;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
@@ -42,5 +43,8 @@ public class CreateMeal extends AppCompatActivity {
 
         Meal meal = new Meal("Mealeee");
         setEventHandlers(meal);
+    }
+
+    private void save() {
     }
 }

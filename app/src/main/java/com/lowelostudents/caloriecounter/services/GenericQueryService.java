@@ -32,6 +32,6 @@ public final class GenericQueryService<T, R> {
         String tableName = t.getSimpleName();
         String where = tableName.toLowerCase(Locale.ROOT);
 
-        return new SimpleSQLiteQuery("DELETE * FROM " + tableName + " WHERE " + where + "Id" + " = " + id);
+        return new SimpleSQLiteQuery("DELETE FROM " + tableName + " WHERE " + where + "Id" + " = " + id);
     }
 }

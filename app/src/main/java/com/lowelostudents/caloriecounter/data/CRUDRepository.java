@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import lombok.Data;
 
 // TODO byId, Range, Refactor WeirdChamp
+// TODO CHECK IF NECESSARY WHEN USING EXECUTOR IN FRONTEND
 @Data
 public class CRUDRepository<T, R> {
     private static ExecutorService executor = Executors.newFixedThreadPool(4);
