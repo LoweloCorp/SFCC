@@ -32,7 +32,7 @@
             android:layout_marginBottom="15dp">
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/foodName"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:ems="10"
@@ -68,7 +68,7 @@
             android:textColorHint="@drawable/fuckgoogle" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal3"
+            android:id="@+id/carbs"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="@drawable/fuckgoogle"
@@ -78,7 +78,7 @@
             android:textColorHint="@drawable/fuckgoogle" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal4"
+            android:id="@+id/protein"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="@drawable/fuckgoogle"
@@ -88,7 +88,7 @@
             android:textColorHint="@drawable/fuckgoogle" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal5"
+            android:id="@+id/portionSize"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="@drawable/fuckgoogle"
@@ -98,7 +98,7 @@
             android:textColorHint="@drawable/fuckgoogle" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal6"
+            android:id="@+id/calPerPortion"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="@drawable/fuckgoogle"
@@ -108,7 +108,7 @@
             android:textColorHint="@drawable/fuckgoogle" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal7"
+            android:id="@+id/totalSize"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="@drawable/fuckgoogle"
@@ -118,7 +118,7 @@
             android:textColorHint="@drawable/fuckgoogle" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal8"
+            android:id="@+id/totalCalories"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="@drawable/fuckgoogle"

@@ -22,9 +22,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Food extends Nutrients {
-    @PrimaryKey(autoGenerate = true)
-    @EqualsAndHashCode.Include
-    private long foodId;
     private int carbsGram, carbsCal;
     private int proteinGram, proteinCal;
     private int fatGram, fatCal;
@@ -57,11 +54,11 @@ public class Food extends Nutrients {
     }
 
     @Dao
-    public abstract static class FoodDao extends CRUDDao<Food, Day_Food_Relation> {
+    public abstract static class FoodDao extends CRUDDao<Food> {
         @Query("SELECT * FROM Food")
         public abstract LiveData<List<Food>> getAllObservable();
 
-        @Query("SELECT * FROM Food Where foodId = :id")
+        @Query("SELECT * FROM Food Where id = :id")
         public abstract LiveData<Food> getObservable(long id);
     }
 }

@@ -13,12 +13,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import lombok.Data;
 
 // TODO byId, Range, Refactor WeirdChamp
+// TODO CHECK IF NECESSARY WHEN USING EXECUTOR IN FRONTEND
 @Data
-public class CRUDRepository<T, R> {
-    private static ExecutorService executor = Executors.newFixedThreadPool(4);
+public class CRUDRepository<T> {
+    protected static ExecutorService executor = Executors.newFixedThreadPool(4);
     public final AppDatabase appdb;
     private final Context context;
-    private CRUDDao<T, R> crudDao;
+    private CRUDDao<T> crudDao;
 
     public CRUDRepository(Context context) {
         this.context = context;
@@ -70,11 +71,11 @@ public class CRUDRepository<T, R> {
         executor.execute(() -> crudDao.delete(t));
     }
 
-    public List<R> getWithTransaction(Class<T> r) {
-        return crudDao.getWithTransaction(r);
-    }
-
-    public R getWithTransaction(Class<T> r, long id) {
-        return crudDao.getWithTransaction(r, id);
-    }
+//    public List<R> getWithTransaction(Class<T> r) {
+//        return crudDao.getWithTransaction(r);
+//    }
+//
+//    public R getWithTransaction(Class<T> r, long id) {
+//        return crudDao.getWithTransaction(r, id);
+//    }
 }

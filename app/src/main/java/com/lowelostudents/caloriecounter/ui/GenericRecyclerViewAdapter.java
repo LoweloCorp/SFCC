@@ -1,5 +1,6 @@
 package com.lowelostudents.caloriecounter.ui;
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +11,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
+import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,9 +61,9 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         String cardTitle = data.getName();
 
         try {
-            setEventHandlers(holder.cardItem, cardType);
-        } catch (ClassNotFoundException e) {
-            Log.e("ERROR: CLASS NOT FOUND", Arrays.toString(e.getStackTrace()));
+            setEventHandlers(holder.cardItem, cardType, data);
+        } catch (Exception e) {
+            Log.e("ERROR: CLASS OR METHOD NOT FOUND", Arrays.toString(e.getStackTrace()));
         }
 
         holder.cardType.setText(cardType);
@@ -70,11 +77,18 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         return dataSet.size();
     }
 
-    private void setEventHandlers(View cardItem, String cardType) throws ClassNotFoundException {
-        Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
+    private void setEventHandlers(View cardItem, String cardType, Nutrients data) throws Exception {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
+        Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
+        Class<?> nutrientDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.viewmodels." + cardType + "ViewModel");
+        AndroidViewModel viewModel = (AndroidViewModel) nutrientDataClass
+                .getConstructor(Application.class)
+                .newInstance(cardItem.getContext().getApplicationContext());
+        Method method = nutrientDataClass.getMethod("insert", data.getClass());
+        ImageButton button = cardItem.findViewById(R.id.toggleForDay);
 
         eventHandlingService.onClickStartActivityFromContext(cardItem, context, cardDataClass);
+        eventHandlingService.onClickInvokeMethod(button, viewModel, method, data);
     }
 
     public void handleDatasetChanged(final List<Nutrients> dataSet) {

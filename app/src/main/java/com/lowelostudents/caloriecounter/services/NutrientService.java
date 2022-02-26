@@ -5,7 +5,7 @@ import com.lowelostudents.caloriecounter.models.entities.Meal;
 
 import java.util.List;
 
-//TODO calculation water
+//TODO calculation water or any other thing with mass but almost no calories
 public class NutrientService {
     private static NutrientService nutrientService;
 

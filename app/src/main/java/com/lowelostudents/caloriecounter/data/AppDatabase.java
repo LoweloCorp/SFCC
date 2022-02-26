@@ -8,11 +8,12 @@ import androidx.room.RoomDatabase;
 
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
+import com.lowelostudents.caloriecounter.models.entities.Day_Meal;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Meal_Food;
 
-@Database(entities = {Day.class, Food.class, Day_Food.class, Meal.class, Meal_Food.class}, version = 1)
+@Database(entities = {Day.class, Food.class, Day_Food.class, Meal.class, Meal_Food.class, Day_Meal.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "SFCCDatabase";
     private static AppDatabase dbInstance;
@@ -44,4 +45,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract Day_Food.Day_FoodDao day_foodDao();
 
     public abstract Meal_Food.Meal_FoodDao meal_foodDao();
+
+    public abstract Day_Meal.Day_MealDao day_mealDao();
 }
