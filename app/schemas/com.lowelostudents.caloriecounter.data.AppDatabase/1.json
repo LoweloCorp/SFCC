@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "705d2dd2997b343e477dc5beb5b55ac6",
+    "identityHash": "23bb9c0c3b8bb2258f79bf606c8a38a8",
     "entities": [
       {
         "tableName": "Day",
@@ -32,14 +32,8 @@
       },
       {
         "tableName": "Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL)",
         "fields": [
-          {
-            "fieldPath": "foodId",
-            "columnName": "foodId",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "carbsGram",
             "columnName": "carbsGram",
@@ -95,6 +89,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
@@ -115,7 +115,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "foodId"
+            "id"
           ],
           "autoGenerate": true
         },
@@ -124,11 +124,11 @@
       },
       {
         "tableName": "Day_Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodId` INTEGER NOT NULL, `dayId` INTEGER NOT NULL, PRIMARY KEY(`dayId`, `foodId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dayId` INTEGER NOT NULL, PRIMARY KEY(`dayId`, `id`))",
         "fields": [
           {
-            "fieldPath": "foodId",
-            "columnName": "foodId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -142,7 +142,7 @@
         "primaryKey": {
           "columnNames": [
             "dayId",
-            "foodId"
+            "id"
           ],
           "autoGenerate": false
         },
@@ -157,24 +157,24 @@
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Food_dayId` ON `${TABLE_NAME}` (`dayId`)"
           },
           {
-            "name": "index_Day_Food_foodId",
+            "name": "index_Day_Food_id",
             "unique": true,
             "columnNames": [
-              "foodId"
+              "id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Food_foodId` ON `${TABLE_NAME}` (`foodId`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Food_id` ON `${TABLE_NAME}` (`id`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "Meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mealId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL)",
         "fields": [
           {
-            "fieldPath": "mealId",
-            "columnName": "mealId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -199,7 +199,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "mealId"
+            "id"
           ],
           "autoGenerate": true
         },
@@ -208,46 +208,92 @@
       },
       {
         "tableName": "Meal_Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mealId` INTEGER NOT NULL, `foodId` INTEGER NOT NULL, PRIMARY KEY(`mealId`, `foodId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`, `name`))",
         "fields": [
           {
-            "fieldPath": "mealId",
-            "columnName": "mealId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "foodId",
-            "columnName": "foodId",
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id",
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Meal_Food_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Meal_Food_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_Meal_Food_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Meal_Food_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Day_Meal",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dayId` INTEGER NOT NULL, PRIMARY KEY(`dayId`, `id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dayId",
+            "columnName": "dayId",
             "affinity": "INTEGER",
             "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "mealId",
-            "foodId"
+            "dayId",
+            "id"
           ],
           "autoGenerate": false
         },
         "indices": [
           {
-            "name": "index_Meal_Food_mealId",
+            "name": "index_Day_Meal_dayId",
             "unique": true,
             "columnNames": [
-              "mealId"
+              "dayId"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Meal_Food_mealId` ON `${TABLE_NAME}` (`mealId`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Meal_dayId` ON `${TABLE_NAME}` (`dayId`)"
           },
           {
-            "name": "index_Meal_Food_foodId",
+            "name": "index_Day_Meal_id",
             "unique": true,
             "columnNames": [
-              "foodId"
+              "id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Meal_Food_foodId` ON `${TABLE_NAME}` (`foodId`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Meal_id` ON `${TABLE_NAME}` (`id`)"
           }
         ],
         "foreignKeys": []
@@ -256,7 +302,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '705d2dd2997b343e477dc5beb5b55ac6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '23bb9c0c3b8bb2258f79bf606c8a38a8')"
     ]
   }
 }

@@ -55,12 +55,12 @@ public class IntegrationTests {
 
         dayDao.insert(day);
 
-        List<Day_Food_Relation> dfr = dayDao.getWithTransaction(Day.class);
+        List<Day_Food_Relation> dfr = dayDao.getFoodsPerDay();
         Calendar cal = Calendar.getInstance();
 
         assertEquals(cal.get(Calendar.DATE), dfr.get(0).getDay().getDayId());
         assertEquals(cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()), dfr.get(0).getDay().getName());
-        assertEquals(day.getDayId() , dayDao.getWithTransaction(Day.class, cal.get(Calendar.DATE)).getDay().getDayId());
+        assertEquals(day.getDayId() , dayDao.getFoodByDate(cal.get(Calendar.DATE)).getDay().getDayId());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class IntegrationTests {
         Day day = new Day();
 
         // insertAll Returns array of generated IDs for inserted entities, so that I do not need to query them to create the relation
-        long foodId = foodDao.insert(food);
+        long id = foodDao.insert(food);
         long dayId;
 
         try {
@@ -123,13 +123,11 @@ public class IntegrationTests {
             Log.w("Day already exists", Arrays.toString(e.getStackTrace()));
         }
 
-        Day_Food dayFood = new Day_Food();
-        dayFood.setFoodId(foodId);
-        dayFood.setDayId((int) dayId);
+        Day_Food dayFood = new Day_Food(id, (int) dayId);
 
         day_foodDao.insert(dayFood);
 
-        Day_Food_Relation dayFoods = dayDao.getWithTransaction(Day.class).get(0);
+        Day_Food_Relation dayFoods = dayDao.getFoodsPerDay().get(0);
         List<Food> retrievedFoods = dayFoods.getFoods();
         Day retrievedDay = dayFoods.getDay();
 
@@ -137,7 +135,7 @@ public class IntegrationTests {
         assertNotNull(retrievedFoods);
         assertNotNull(retrievedDay);
 
-        assertEquals(foodId, retrievedFoods.get(0).getFoodId());
+        assertEquals(id, retrievedFoods.get(0).getId());
         assertEquals(dayId, retrievedDay.getDayId());
     }
 
@@ -147,19 +145,17 @@ public class IntegrationTests {
         Food.FoodDao foodDao = appdb.foodDao();
         Meal_Food.Meal_FoodDao meal_foodDao = appdb.meal_foodDao();
 
-        Food food = new Food();
-        Meal meal= new Meal("HappyMeal");
+        Food food = new Food("Name", 1, 1, 1, 1);
+        Meal meal = new Meal("HappyMeal");
 
         // insertAll Returns array of generated IDs for inserted entities, so that I do not need to query them to create the relation
-        long foodId = foodDao.insert(food);
+        long id = foodDao.insert(food);
         long mealId = mealDao.insert(meal);
 
-        Meal_Food mealFood = new Meal_Food();
-        mealFood.setFoodId(foodId);
-        mealFood.setMealId(mealId);
+        Meal_Food mealFood = new Meal_Food(mealId, food.getName());
 
         meal_foodDao.insert(mealFood);
-        Meal_Food_Relation mealFoods = mealDao.getWithTransaction(Meal.class).get(0);
+        Meal_Food_Relation mealFoods = mealDao.getFoodPerMeal().get(0);
         List<Food> retrievedFoods = mealFoods.getFoods();
         Meal retrievedMeal = mealFoods.getMeal();
 
@@ -167,8 +163,8 @@ public class IntegrationTests {
         assertNotNull(retrievedFoods);
         assertNotNull(retrievedMeal);
 
-        assertEquals(foodId, retrievedFoods.get(0).getFoodId());
-        assertEquals(mealId, retrievedMeal.getMealId());
+        assertEquals(mealId, retrievedFoods.get(0).getId());
+        assertEquals(mealId, retrievedMeal.getId());
     }
 
     public void testDBSize(){
@@ -193,13 +189,11 @@ public class IntegrationTests {
 
         Long[] dayIds;
         dayIds = dayDao.insert(Arrays.asList(day));
-        Long[] foodIds = foodDao.insert(Arrays.asList(food));
+        Long[] ids = foodDao.insert(Arrays.asList(food));
 
         for (int i = 0; i < dayAmount; i++) {
             for (int z = 0; z < foodAmount ; z++) {
-                day_foods[z] = new Day_Food();
-                day_foods[z].setDayId((int) dayIds[i].intValue());
-                day_foods[z].setFoodId((int) foodIds[z].intValue());
+                day_foods[z] = new Day_Food(ids[z].intValue(), dayIds[i].intValue());
                 day_foodDao.insert(day_foods[z]);
             }
         }

@@ -6,21 +6,23 @@ import androidx.room.Relation;
 
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
+import com.lowelostudents.caloriecounter.models.entities.Day_Meal;
 import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
 
 import java.util.List;
 
 import lombok.Data;
 
-// TODO id, name rename DayID to id use name instead of foodID
 @Data
-public class Day_Food_Relation {
+public class Day_Meal_Relation {
     @Embedded
     private Day day;
     @Relation(
             parentColumn = "dayId",
             entityColumn = "id",
-            associateBy = @Junction(Day_Food.class)
+            associateBy = @Junction(Day_Meal.class)
     )
-    private List<Food> foods;
+
+    private List<Meal> meals;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 import lombok.Getter;
 
-public class MealRepo extends CRUDRepository<Meal, Meal_Food_Relation> {
+public class MealRepo extends CRUDRepository<Meal> {
     @Getter
     private final LiveData<List<Meal>> meals;
     @Getter

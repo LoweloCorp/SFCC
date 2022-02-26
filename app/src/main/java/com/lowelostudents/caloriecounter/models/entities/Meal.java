@@ -22,8 +22,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Meal extends Nutrients {
-    @PrimaryKey(autoGenerate = true)
-    private long mealId;
     @Ignore
     private NutrientService nutrientService = NutrientService.getInstance();
 
@@ -36,7 +34,7 @@ public class Meal extends Nutrients {
     public Meal(String name, List<Food> foodList, long[] proofOfExistence) throws SQLDataException {
         for (int i = 0; i < proofOfExistence.length; i++) {
             if (proofOfExistence[i] == 0)
-                throw new SQLDataException("Food at index " + i + " doesn't exist in Database. Its foodId is 0");
+                throw new SQLDataException("Food at index " + i + " doesn't exist in Database. Its id is 0");
         }
         this.name = name;
         nutrientService.calcCalories(this, foodList);
@@ -47,19 +45,25 @@ public class Meal extends Nutrients {
     }
 
     @Dao
-    public abstract static class MealDao extends CRUDDao<Meal, Meal_Food_Relation> {
+    public abstract static class MealDao extends CRUDDao<Meal> {
+        @Query("SELECT * FROM Meal")
+        public abstract List<Meal_Food_Relation> getFoodPerMeal();
+
+        @Query("SELECT * FROM Meal WHERE id = :id")
+        public abstract List<Meal_Food_Relation> getFoodPerMeal(long id);
+
         @Query("SELECT * FROM Meal")
         public abstract LiveData<List<Meal>> getAllObservable();
 
-        @Query("SELECT * FROM Meal WHERE mealId = :mealId")
-        public abstract LiveData<Meal> getObservable(long mealId);
+        @Query("SELECT * FROM Meal WHERE id = :id")
+        public abstract LiveData<Meal> getObservable(long id);
 
         @Transaction
         @Query("SELECT * FROM Meal")
         public abstract LiveData<List<Meal_Food_Relation>> getAllObservableTransaction();
 
         @Transaction
-        @Query("SELECT * FROM Meal WHERE mealId = :mealId")
-        public abstract LiveData<Meal_Food_Relation> getObservableTransaction(long mealId);
+        @Query("SELECT * FROM Meal WHERE id = :id")
+        public abstract LiveData<Meal_Food_Relation> getObservableTransaction(long id);
     }
 }

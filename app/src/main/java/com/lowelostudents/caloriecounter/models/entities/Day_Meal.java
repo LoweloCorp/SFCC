@@ -8,24 +8,23 @@ import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import lombok.Data;
 
-
-// TODO day Meal relation and Pair MediatorLiveData
 @Entity(primaryKeys = {"dayId", "id"},
         indices = {
                 @Index(value = "dayId", unique = true),
                 @Index(value = "id", unique = true)
         })
 @Data
-public class Day_Food {
+
+public class Day_Meal {
     private long id;
     private int dayId;
 
-    public Day_Food(long id, int dayId) {
+    public Day_Meal(long id, int dayId) {
         this.id = id;
         this.dayId = dayId;
     }
 
     @Dao
-    public abstract static class Day_FoodDao extends CRUDDao<Day_Food> {
+    public abstract static class Day_MealDao extends CRUDDao<Day_Meal> {
     }
 }

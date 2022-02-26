@@ -44,12 +44,12 @@ public class CreateFood extends AppCompatActivity {
         this.model = new ViewModelProvider(this).get(FoodViewModel.class);
         setContentView(binding.getRoot());
 
-//        Food food = new Food("MeinFressen", 1, 1, 1, 1);
         setEventHandlers();
     }
 
     public void save() {
         // TODO use setters call nutrientService
+        // TODO Abstract nutrientService to efficiently produce live data to auto-fill input fields with calculated values
 
         Food food = new Food(
                 this.binding.foodName.getText().toString(),

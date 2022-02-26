@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 public class EventHandlingService {
     private static EventHandlingService instance;
@@ -59,7 +61,7 @@ public class EventHandlingService {
         });
     }
 
-    public <T> void onChangedInvokeMethod(LifecycleOwner lifecycleOwner, MediatorLiveData<?> dataSet, T controller, Method method) {
+    public <T> void onChangedInvokeMethod(LifecycleOwner lifecycleOwner, LiveData<?> dataSet, T controller, Method method) {
         dataSet.observe(lifecycleOwner, new Observer<Object>() {
             @Override
             public void onChanged(Object o) {
@@ -72,6 +74,7 @@ public class EventHandlingService {
             }
         });
     }
+
 
 
 }

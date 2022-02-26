@@ -6,9 +6,15 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.lowelostudents.caloriecounter.data.repositories.DayFoodRepo;
+import com.lowelostudents.caloriecounter.data.repositories.DayRepo;
 import com.lowelostudents.caloriecounter.data.repositories.FoodRepo;
+import com.lowelostudents.caloriecounter.models.entities.Day;
+import com.lowelostudents.caloriecounter.models.entities.Day_Food;
 import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
+import java.util.Calendar;
 import java.util.List;
 
 import lombok.Getter;
@@ -17,15 +23,23 @@ public class FoodViewModel extends AndroidViewModel {
     @Getter
     private final LiveData<List<Food>> foods;
     private final FoodRepo repo;
+    private final DayFoodRepo dayFoodRepo;
 
     public FoodViewModel(Application context) {
         super(context);
         repo = new FoodRepo(context.getApplicationContext());
+        dayFoodRepo = new DayFoodRepo(context.getApplicationContext());
         foods = repo.getFoods();
     }
 
     public Long insert(Food t) {
         return repo.insert(t);
+    }
+
+    public Long insert (Nutrients food) {
+        Calendar cal = Calendar.getInstance();
+        Day_Food day_food = new Day_Food(food.getId() , cal.get(Calendar.DATE));
+        return dayFoodRepo.insert(day_food);
     }
 
     public Long[] insertAll(List<Food> t) {

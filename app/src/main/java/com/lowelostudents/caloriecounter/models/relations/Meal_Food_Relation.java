@@ -16,10 +16,13 @@ import lombok.Data;
 @Data
 public class Meal_Food_Relation {
     @Relation(
-            parentColumn = "mealId",
-            entityColumn = "foodId",
-            associateBy = @Junction(Meal_Food.class))
+            parentColumn = "id",
+            entityColumn = "name",
+            associateBy = @Junction(Meal_Food.class)
+            )
+
     List<Food> foods;
+
     @Embedded
     private Meal meal;
 }
