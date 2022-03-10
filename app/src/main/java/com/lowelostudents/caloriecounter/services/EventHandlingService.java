@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO check overusage of service
 public class EventHandlingService {
     private static EventHandlingService instance;
 
@@ -52,7 +53,6 @@ public class EventHandlingService {
             @Override
             public void onClick(View view) {
                 try {
-                    Log.i("Parameters", Arrays.toString(parameters));
                     method.invoke(controller, parameters);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -65,7 +65,6 @@ public class EventHandlingService {
         dataSet.observe(lifecycleOwner, new Observer<Object>() {
             @Override
             public void onChanged(Object o) {
-                Log.i("MEINDATASET", dataSet.getValue().toString());
                 try {
                     method.invoke(controller, o);
                 } catch (IllegalAccessException | InvocationTargetException e) {

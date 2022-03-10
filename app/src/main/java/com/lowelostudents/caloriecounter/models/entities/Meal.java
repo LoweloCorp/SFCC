@@ -31,11 +31,7 @@ public class Meal extends Nutrients {
 
     //TODO Test whether necessary on update
 
-    public Meal(String name, List<Food> foodList, long[] proofOfExistence) throws SQLDataException {
-        for (int i = 0; i < proofOfExistence.length; i++) {
-            if (proofOfExistence[i] == 0)
-                throw new SQLDataException("Food at index " + i + " doesn't exist in Database. Its id is 0");
-        }
+    public Meal(String name, List<Food> foodList) {
         this.name = name;
         nutrientService.calcCalories(this, foodList);
     }

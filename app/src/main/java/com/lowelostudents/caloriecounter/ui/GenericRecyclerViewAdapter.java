@@ -33,10 +33,9 @@ import lombok.SneakyThrows;
 // TODO Generify definitely.
 
 public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecyclerViewAdapter.ViewHolder> {
-
-    private final List<Nutrients> dataSet = new ArrayList<>();
+    protected final List<Nutrients> dataSet = new ArrayList<>();
     private final LayoutInflater layoutInflater;
-    private final Context context;
+    protected final Context context;
 
     public GenericRecyclerViewAdapter(Context context) {
         this.context = context;
@@ -77,14 +76,15 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         return dataSet.size();
     }
 
-    private void setEventHandlers(View cardItem, String cardType, Nutrients data) throws Exception {
+    protected void setEventHandlers(View cardItem, String cardType, Nutrients data) throws Exception {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
         Class<?> nutrientDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.viewmodels." + cardType + "ViewModel");
         AndroidViewModel viewModel = (AndroidViewModel) nutrientDataClass
                 .getConstructor(Application.class)
                 .newInstance(cardItem.getContext().getApplicationContext());
-        Method method = nutrientDataClass.getMethod("insert", data.getClass());
+
+        Method method = nutrientDataClass.getMethod("insert", data.getClass().getSuperclass());
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
 
         eventHandlingService.onClickStartActivityFromContext(cardItem, context, cardDataClass);

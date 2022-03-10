@@ -54,16 +54,16 @@ public class Day {
         public abstract LiveData<Day> getObservableByDate(int date);
 
         @Transaction
-        @Query("SELECT * FROM Day WHERE dayId = :date")
-        public abstract LiveData<Day_Food_Relation> getObservableFoodByDate(int date);
+        @Query("SELECT * FROM Food INNER JOIN Day_Food ON Food.id = Day_Food.id WHERE Day_Food.dayId = :date")
+        public abstract LiveData<List<Food>> getObservableFoodByDate(int date);
 
         @Transaction
         @Query("SELECT * FROM Day")
         public abstract LiveData<List<Day_Food_Relation>> getObservableFoodsPerDate();
 
         @Transaction
-        @Query("SELECT * FROM Day WHERE dayId = :date")
-        public abstract LiveData<Day_Meal_Relation> getObservableMealByDate(int date);
+        @Query("SELECT * FROM Meal INNER JOIN Day_Meal ON Meal.id = Day_Meal.id WHERE Day_Meal.dayId = :date")
+        public abstract LiveData<List<Meal>> getObservableMealByDate(int date);
 
         @Transaction
         @Query("SELECT * FROM Day")

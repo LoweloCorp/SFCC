@@ -197,6 +197,7 @@ public class IntegrationTests {
                 day_foodDao.insert(day_foods[z]);
             }
         }
+
         File file = context.getDatabasePath(appdb.getOpenHelper().getDatabaseName());
 
         Log.i("dBSIZE", String.valueOf(file.length()));

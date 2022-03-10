@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter.ui.viewmodels;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
