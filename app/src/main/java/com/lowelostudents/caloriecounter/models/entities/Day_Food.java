@@ -16,6 +16,7 @@ import lombok.Data;
                 @Index(value = "id", unique = true)
         })
 @Data
+// TODO allow duplicates
 public class Day_Food {
     private long id;
     private int dayId;

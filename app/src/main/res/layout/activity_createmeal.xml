@@ -18,114 +18,38 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Meal name"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search food" />
+
+        <EditText
+            android:id="@+id/mealName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:backgroundTint="@drawable/fuckgoogle"
+            android:ems="10"
+            android:hint="Meal name"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@drawable/fuckgoogle"
+            tools:inputType="text" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/foodList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="15dp">
-
-            <EditText
-                android:id="@+id/foodName"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:hint="Enter Food Name"
-                android:inputType="textPersonName"
-                android:textColor="@drawable/fuckgoogle"
-                android:textColorHint="@drawable/fuckgoogle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.75" />
-
-            <ImageButton
-                android:id="@+id/delete_forever_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@color/DarkRed"
-                android:src="@drawable/ic_baseline_delete_forever_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/White" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Fat (g/Portion)"
-            android:inputType="numberDecimal"
-            android:textColorHint="@drawable/fuckgoogle" />
-
-        <EditText
-            android:id="@+id/carbs"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Carbs (g/Portion)"
-            android:inputType="numberDecimal"
-            android:textColorHint="@drawable/fuckgoogle" />
-
-        <EditText
-            android:id="@+id/protein"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Protein (g/Portion)"
-            android:inputType="numberDecimal"
-            android:textColorHint="@drawable/fuckgoogle" />
-
-        <EditText
-            android:id="@+id/portionSize"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Portion (g)"
-            android:inputType="numberDecimal"
-            android:textColorHint="@drawable/fuckgoogle" />
-
-        <EditText
-            android:id="@+id/calPerPortion"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Cal. (cal./Portion)"
-            android:inputType="numberDecimal"
-            android:textColorHint="@drawable/fuckgoogle" />
-
-        <EditText
-            android:id="@+id/totalSize"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Total weight (g)"
-            android:inputType="numberDecimal"
-            android:textColorHint="@drawable/fuckgoogle" />
-
-        <EditText
-            android:id="@+id/totalCalories"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Total calories"
-            android:inputType="numberDecimal"
-            android:textColorHint="@drawable/fuckgoogle" />
+            android:layout_marginTop="25dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
@@ -135,7 +59,6 @@
         android:layout_weight="1"
         android:minHeight="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
         app:layout_constraintStart_toStartOf="parent"
         tools:context=".HeaderFragment">
 
