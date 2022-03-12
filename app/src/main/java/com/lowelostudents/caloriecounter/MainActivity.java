@@ -3,6 +3,7 @@ package com.lowelostudents.caloriecounter;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -11,9 +12,14 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
+import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
+import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
+// TODO GENERAL DELETE BUTTON, TOGGLES, UPDATE WHEN EXISTS, SEARCHBAR
+// TODO USER RXJAVA
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -11,7 +12,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.lowelostudents.caloriecounter.data.AppDatabase;
+import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.models.entities.Day;
+import com.lowelostudents.caloriecounter.models.entities.User;
+import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +33,11 @@ public class DataPopulationTask extends Worker {
         AppDatabase appdb = AppDatabase.getInMemoryInstance(getApplicationContext());
         Day.DayDao dayDao = appdb.dayDao();
         Calendar cal = Calendar.getInstance();
+
+        // TODO REMOVE
+        User.UserDao userDao = appdb.userDao();
+        userDao.insert(new User("teqtoeqojtqoejtq", "USername", 3500));
+
 
         if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
             Calendar localCal = Calendar.getInstance();

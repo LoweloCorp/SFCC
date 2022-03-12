@@ -42,7 +42,6 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         this.binding = FragmentDashboardBinding.inflate(inflater, container, false);
-
         this.dataSet = new LiveDataTuple<>(dashboardViewModel.getDayMeals(), dashboardViewModel.getDayFoods());
 
         final RecyclerView foodList = binding.foodList;

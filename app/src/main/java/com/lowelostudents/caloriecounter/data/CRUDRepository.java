@@ -5,9 +5,11 @@ import android.util.Log;
 
 import com.lowelostudents.caloriecounter.models.CRUDDao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.Data;
@@ -50,6 +52,18 @@ public class CRUDRepository<T> {
 
     public List<T> get(Class<T> t) {
         return crudDao.get(t);
+    }
+
+    public List<T> getAsync(Class<T> t) {
+
+        List<T> responseList = new ArrayList<>();
+        executor.execute(() -> {
+            responseList.addAll(crudDao.get(t));
+
+        });
+
+
+        return responseList;
     }
 
     public T get(Class<T> t, long id) {

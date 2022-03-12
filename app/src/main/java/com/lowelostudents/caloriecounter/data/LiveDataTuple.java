@@ -28,7 +28,7 @@ public class LiveDataTuple<T, R> extends MediatorLiveData<List<?>> {
         });
     }
 
-    private List<Object> combinedList(List<T> listOne, List<R> listTwo) {
+    protected List<Object> combinedList(List<T> listOne, List<R> listTwo) {
         List<Object> combinedList = new ArrayList<>();
         combinedList.addAll(listOne);
         combinedList.addAll(listTwo);

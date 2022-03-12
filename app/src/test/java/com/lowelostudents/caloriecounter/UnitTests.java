@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
 /**
@@ -17,8 +18,8 @@ import com.lowelostudents.caloriecounter.services.NutrientService;
 public class UnitTests {
     @Test
     public void foodConstructor() {
-        Food food = new Food("Name", 1, 1, 1, 3);
-        Food food2 = new Food("Name", 1, 1, 1, 3);
+        Food food = new Food("Name", 1, 1, 1, 3, 3);
+        Food food2 = new Food("Name", 1, 1, 1, 3, 3);
         Food food3 = new Food("Name", 10, 5, 2);
         Food food4 = new Food("Name", 10, 5, 2);
 
@@ -48,8 +49,8 @@ public class UnitTests {
         food2.setPortionSize(2);
 
         NutrientService ms = new NutrientService();
-        ms.calcCalories(food);
-        ms.calcCalories(food2);
+        ms.calculateNutrients(food);
+        ms.calculateNutrients(food2);
 
 
         assertEquals(3, food.getPortionSize());

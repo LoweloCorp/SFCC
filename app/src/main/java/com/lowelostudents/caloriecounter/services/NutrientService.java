@@ -1,11 +1,17 @@
 package com.lowelostudents.caloriecounter.services;
 
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
+import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
 import java.util.List;
 
 //TODO calculation water or any other thing with mass but almost no calories
+// TODO generify and overload calcCalories with one that returns Hashmap
 public class NutrientService {
     private static NutrientService nutrientService;
 
@@ -15,23 +21,51 @@ public class NutrientService {
         return nutrientService;
     }
 
-    public void calcCalories(Food food) {
-        food.setCarbsCal(food.getCarbsGram() * 4);
-        food.setProteinCal(food.getProteinGram() * 4);
-        food.setFatCal(food.getFatGram() * 9);
-        if (food.getPortionSize() == 0)
-            // TODO CHECK wrong calculation if water
-            food.setPortionSize(food.getCarbsGram() + food.getProteinGram() + food.getFatGram());
-        if (food.getCalPerPortion() == 0)
-            food.setCalPerPortion(food.getFatCal() + food.getProteinCal() + food.getCarbsCal());
-        food.setCalPerGram((double) food.getCalPerPortion() / food.getPortionSize());
-        food.setCalTotal((int) Math.round(food.getCalPerGram() * food.getGramTotal()));
+    //TODO sum with previous value so that I can loop over this method i.e. reuse it
+
+    public <T extends Nutrients> void calculateNutrients(T nutrients) {
+        nutrients.setCarbsCal(nutrients.getCarbsGram() * 4);
+        nutrients.setProteinCal(nutrients.getProteinGram() * 4);
+        nutrients.setFatCal(nutrients.getFatGram() * 9);
+        if (nutrients.getCalPerPortion() == 0)
+            nutrients.setCalPerPortion(nutrients.getFatCal() + nutrients.getProteinCal() + nutrients.getCarbsCal());
+        nutrients.setCalPerGram((double) nutrients.getCalPerPortion() / nutrients.getPortionSize());
+        nutrients.setCalTotal((int) Math.round(nutrients.getCalPerGram() * nutrients.getGramTotal()));
     }
 
-    public void calcCalories(Meal meal, List<Food> foodList) {
-        foodList.forEach(food -> {
-            meal.setCalTotal(meal.getCalTotal() + food.getCalTotal());
-            meal.setGramTotal(meal.getGramTotal() + food.getGramTotal());
+    public <T extends Nutrients, R extends Nutrients> void combineNutrients(T nutrients, List<R> nutrientList) {
+        nutrientList.forEach(food -> {
+            nutrients.setFatGram(nutrients.getFatGram() + food.getFatGram());
+            nutrients.setProteinGram(nutrients.getProteinGram() + food.getProteinGram());
+            nutrients.setCarbsGram(nutrients.getCarbsGram() + food.getCarbsGram());
+            nutrients.setCarbsCal(nutrients.getCarbsGram() + food.getCarbsCal());
+            nutrients.setProteinCal(nutrients.getProteinGram() + food.getProteinGram());
+            nutrients.setFatCal(nutrients.getFatGram() + food.getFatGram());
+            nutrients.setPortionSize(nutrients.getPortionSize() + food.getPortionSize());
+            nutrients.setCalPerPortion(nutrients.getCalPerPortion() + food.getCalPerPortion());
+            nutrients.setCalPerGram(nutrients.getCalPerGram() + food.getCalPerGram());
+            nutrients.setCalTotal(nutrients.getCalTotal() + food.getCalTotal());
+            nutrients.setGramTotal(nutrients.getGramTotal() + food.getGramTotal());
         });
+    }
+
+    public <R extends Nutrients> Nutrients combineNutrients(List<R> nutrientList) {
+        Nutrients nutrients = new Nutrients();
+
+        nutrientList.forEach(food -> {
+            nutrients.setFatGram(nutrients.getFatGram() + food.getFatGram());
+            nutrients.setProteinGram(nutrients.getProteinGram() + food.getProteinGram());
+            nutrients.setCarbsGram(nutrients.getCarbsGram() + food.getCarbsGram());
+            nutrients.setCarbsCal(nutrients.getCarbsGram() + food.getCarbsCal());
+            nutrients.setProteinCal(nutrients.getProteinGram() + food.getProteinGram());
+            nutrients.setFatCal(nutrients.getFatGram() + food.getFatGram());
+            nutrients.setPortionSize(nutrients.getPortionSize() + food.getPortionSize());
+            nutrients.setCalPerPortion(nutrients.getCalPerPortion() + food.getCalPerPortion());
+            nutrients.setCalPerGram(nutrients.getCalPerGram() + food.getCalPerGram());
+            nutrients.setCalTotal(nutrients.getCalTotal() + food.getCalTotal());
+            nutrients.setGramTotal(nutrients.getGramTotal() + food.getGramTotal());
+        });
+
+        return nutrients;
     }
 }

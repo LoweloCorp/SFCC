@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey;
 import androidx.room.Query;
 
 import com.lowelostudents.caloriecounter.models.CRUDDao;
-import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
 import java.util.List;
@@ -22,22 +21,20 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Food extends Nutrients {
-    private int carbsGram, carbsCal;
-    private int proteinGram, proteinCal;
-    private int fatGram, fatCal;
-    private int portionSize;
-    private int calPerPortion;
-    private double calPerGram;
+    @PrimaryKey(autoGenerate = true)
+    @EqualsAndHashCode.Include
+    protected long id;
     @Ignore
     private NutrientService nutrientService = NutrientService.getInstance();
 
-    public Food(String name, int carbsGramPortion, int proteinGramPortion, int fatGramPortion, int gramTotal) {
+    public Food(String name, int carbsGramPortion, int proteinGramPortion, int fatGramPortion, int portionSize, int gramTotal) {
         this.name = name;
         this.carbsGram = carbsGramPortion;
         this.proteinGram = proteinGramPortion;
         this.fatGram = fatGramPortion;
+        this.portionSize = portionSize;
         this.gramTotal = gramTotal;
-        nutrientService.calcCalories(this);
+        nutrientService.calculateNutrients(this);
     }
 
     public Food(String name, int gramTotal, int calPerPortion, int portionSize) {
@@ -45,7 +42,7 @@ public class Food extends Nutrients {
         this.gramTotal = gramTotal;
         this.calPerPortion = calPerPortion;
         this.portionSize = portionSize;
-        nutrientService.calcCalories(this);
+        nutrientService.calculateNutrients(this);
     }
 
     @Ignore

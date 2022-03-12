@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -56,6 +57,7 @@ public class CreateFood extends AppCompatActivity {
                 Integer.parseInt(this.binding.carbs.getText().toString()),
                 Integer.parseInt(this.binding.protein.getText().toString()),
                 Integer.parseInt(this.binding.fat.getText().toString()),
+                Integer.parseInt(this.binding.portionSize.getText().toString()),
                 Integer.parseInt(this.binding.totalSize.getText().toString())
         );
 

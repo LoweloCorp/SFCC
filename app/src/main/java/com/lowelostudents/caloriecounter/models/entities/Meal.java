@@ -12,7 +12,6 @@ import com.lowelostudents.caloriecounter.models.CRUDDao;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
-import java.sql.SQLDataException;
 import java.util.List;
 
 import lombok.Data;
@@ -22,6 +21,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Meal extends Nutrients {
+    @PrimaryKey(autoGenerate = true)
+    @EqualsAndHashCode.Include
+    protected long id;
     @Ignore
     private NutrientService nutrientService = NutrientService.getInstance();
 
@@ -29,11 +31,9 @@ public class Meal extends Nutrients {
     public Meal() {
     }
 
-    //TODO Test whether necessary on update
-
     public Meal(String name, List<Food> foodList) {
         this.name = name;
-        nutrientService.calcCalories(this, foodList);
+        nutrientService.combineNutrients(this, foodList);
     }
 
     public Meal(String name) {

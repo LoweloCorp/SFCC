@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,10 @@ public class FoodhubFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        MealViewModel foodViewModel = new ViewModelProvider(this).get(MealViewModel.class);
-        FoodViewModel mealViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
+        MealViewModel mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+        FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
         this.binding = FragmentFoodhubBinding.inflate(inflater, container, false);
-        this.dataSet = new LiveDataTuple<>(foodViewModel.getMeals(), mealViewModel.getFoods());
+        this.dataSet = new LiveDataTuple<>(mealViewModel.getMeals(), foodViewModel.getFoods());
 
         final GenericRecyclerViewAdapter recyclerViewAdapter = new GenericRecyclerViewAdapter(this.getContext());
         final RecyclerView foodList = binding.foodList;

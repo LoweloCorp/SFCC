@@ -84,7 +84,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                 .getConstructor(Application.class)
                 .newInstance(cardItem.getContext().getApplicationContext());
 
-        Method method = nutrientDataClass.getMethod("insert", data.getClass().getSuperclass());
+        Method method = nutrientDataClass.getMethod("addToDay", data.getClass());
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
 
         eventHandlingService.onClickStartActivityFromContext(cardItem, context, cardDataClass);

@@ -13,6 +13,7 @@ import com.lowelostudents.caloriecounter.data.repositories.FoodRepo;
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
 import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
 import java.util.Calendar;
@@ -37,7 +38,7 @@ public class FoodViewModel extends AndroidViewModel {
         return repo.insert(t);
     }
 
-    public Long insert (Nutrients food) {
+    public Long addToDay(Food food) {
         Calendar cal = Calendar.getInstance();
         Day_Food day_food = new Day_Food(food.getId() , cal.get(Calendar.DATE));
         return dayFoodRepo.insert(day_food);
