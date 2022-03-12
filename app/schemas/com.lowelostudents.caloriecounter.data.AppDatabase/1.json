@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "23bb9c0c3b8bb2258f79bf606c8a38a8",
+    "identityHash": "64ae8a30dde857a47801aa126c856387",
     "entities": [
       {
         "tableName": "Day",
@@ -32,8 +32,32 @@
       },
       {
         "tableName": "Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "calTotal",
+            "columnName": "calTotal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gramTotal",
+            "columnName": "gramTotal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "carbsGram",
             "columnName": "carbsGram",
@@ -87,30 +111,6 @@
             "columnName": "calPerGram",
             "affinity": "REAL",
             "notNull": true
-          },
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "calTotal",
-            "columnName": "calTotal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gramTotal",
-            "columnName": "gramTotal",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -124,8 +124,14 @@
       },
       {
         "tableName": "Day_Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dayId` INTEGER NOT NULL, PRIMARY KEY(`dayId`, `id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`primaryKey` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` INTEGER NOT NULL, `dayId` INTEGER NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "primaryKey",
+            "columnName": "primaryKey",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
@@ -141,36 +147,35 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "dayId",
-            "id"
+            "primaryKey"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
             "name": "index_Day_Food_dayId",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "dayId"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Food_dayId` ON `${TABLE_NAME}` (`dayId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Day_Food_dayId` ON `${TABLE_NAME}` (`dayId`)"
           },
           {
             "name": "index_Day_Food_id",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Food_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Day_Food_id` ON `${TABLE_NAME}` (`id`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "Meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -194,6 +199,60 @@
             "fieldPath": "gramTotal",
             "columnName": "gramTotal",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsGram",
+            "columnName": "carbsGram",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsCal",
+            "columnName": "carbsCal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinGram",
+            "columnName": "proteinGram",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinCal",
+            "columnName": "proteinCal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatGram",
+            "columnName": "fatGram",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatCal",
+            "columnName": "fatCal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "portionSize",
+            "columnName": "portionSize",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calPerPortion",
+            "columnName": "calPerPortion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calPerGram",
+            "columnName": "calPerGram",
+            "affinity": "REAL",
             "notNull": true
           }
         ],
@@ -254,8 +313,14 @@
       },
       {
         "tableName": "Day_Meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `dayId` INTEGER NOT NULL, PRIMARY KEY(`dayId`, `id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`primaryKey` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` INTEGER NOT NULL, `dayId` INTEGER NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "primaryKey",
+            "columnName": "primaryKey",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
@@ -271,38 +336,135 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "dayId",
-            "id"
+            "primaryKey"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
             "name": "index_Day_Meal_dayId",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "dayId"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Meal_dayId` ON `${TABLE_NAME}` (`dayId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Day_Meal_dayId` ON `${TABLE_NAME}` (`dayId`)"
           },
           {
             "name": "index_Day_Meal_id",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Day_Meal_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Day_Meal_id` ON `${TABLE_NAME}` (`id`)"
           }
         ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "User",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `token` TEXT, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "token",
+            "columnName": "token",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "calTotal",
+            "columnName": "calTotal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gramTotal",
+            "columnName": "gramTotal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsGram",
+            "columnName": "carbsGram",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsCal",
+            "columnName": "carbsCal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinGram",
+            "columnName": "proteinGram",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinCal",
+            "columnName": "proteinCal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatGram",
+            "columnName": "fatGram",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatCal",
+            "columnName": "fatCal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "portionSize",
+            "columnName": "portionSize",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calPerPortion",
+            "columnName": "calPerPortion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calPerGram",
+            "columnName": "calPerGram",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '23bb9c0c3b8bb2258f79bf606c8a38a8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64ae8a30dde857a47801aa126c856387')"
     ]
   }
 }

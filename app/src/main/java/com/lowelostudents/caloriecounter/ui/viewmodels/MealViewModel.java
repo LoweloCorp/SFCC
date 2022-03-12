@@ -46,7 +46,7 @@ public class MealViewModel extends AndroidViewModel {
         return repo.insert(t);
     }
 
-    public Long insert (Nutrients meal) {
+    public Long addToDay(Meal meal) {
         Calendar cal = Calendar.getInstance();
         Day_Meal day_meal = new Day_Meal(meal.getId() ,cal.get(Calendar.DATE));
         return dayMealRepo.insert(day_meal);
