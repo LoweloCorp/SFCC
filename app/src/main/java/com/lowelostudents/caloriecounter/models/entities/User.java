@@ -11,6 +11,7 @@ import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Single;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,15 +33,5 @@ public class User extends Nutrients {
 
     @Ignore public User() {
 
-    }
-
-
-    @Dao
-    public abstract static class UserDao extends CRUDDao<User> {
-        @Query("SELECT * FROM User")
-        public abstract LiveData<List<User>> getAllObservable();
-
-        @Query("SELECT * FROM User WHERE id = :id")
-        public abstract LiveData<User> getObservable(long id);
     }
 }

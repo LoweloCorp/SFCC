@@ -15,6 +15,8 @@ import com.lowelostudents.caloriecounter.data.AppDatabase;
 import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.User;
+import com.lowelostudents.caloriecounter.models.interfaces.DayDao;
+import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
 import java.util.Calendar;
@@ -31,11 +33,11 @@ public class DataPopulationTask extends Worker {
     @Override
     public Result doWork() {
         AppDatabase appdb = AppDatabase.getInMemoryInstance(getApplicationContext());
-        Day.DayDao dayDao = appdb.dayDao();
+        DayDao dayDao = appdb.dayDao();
         Calendar cal = Calendar.getInstance();
 
         // TODO REMOVE
-        User.UserDao userDao = appdb.userDao();
+        UserDao userDao = appdb.userDao();
         userDao.insert(new User("teqtoeqojtqoejtq", "USername", 3500));
 
 

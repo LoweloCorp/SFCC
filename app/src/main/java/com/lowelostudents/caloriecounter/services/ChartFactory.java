@@ -16,26 +16,27 @@ public class ChartFactory {
         return instance;
     }
 
-    public <T extends Nutrients> List<PieEntry> generatePieEntries(List<T> nutrientList) {
+    // TODO handle overflow
+    public <T extends Nutrients> List<PieEntry> generatePieEntries(List<T> nutrientList, User user) {
         List<PieEntry> pieEntries = new ArrayList<>();
 
         nutrientList.forEach(nutrient -> {
             pieEntries.add(new PieEntry(nutrient.getCarbsCal(), "Carbs"));
             pieEntries.add(new PieEntry(nutrient.getProteinCal(), "Protein"));
             pieEntries.add(new PieEntry(nutrient.getFatCal(), "Fat"));
-//            pieEntries.add(new PieEntry(user.getCalTotal() - nutrient.getCalTotal(), "Calories left"));
+            pieEntries.add(new PieEntry(Math.max(0, user.getCalTotal() - nutrient.getCalTotal()), "Calories left"));
         });
 
         return pieEntries;
     }
 
-    public <T extends Nutrients> List<PieEntry> generatePieEntries(T nutrient) {
+    public <T extends Nutrients> List<PieEntry> generatePieEntries(T nutrient, User user) {
         List<PieEntry> pieEntries = new ArrayList<>();
 
         pieEntries.add(new PieEntry(nutrient.getCarbsCal(), "Carbs"));
         pieEntries.add(new PieEntry(nutrient.getProteinCal(), "Protein"));
         pieEntries.add(new PieEntry(nutrient.getFatCal(), "Fat"));
-//        pieEntries.add(new PieEntry(user.getCalTotal() - nutrient.getCalTotal(), "Calories left"));
+        pieEntries.add(new PieEntry(Math.max(0, user.getCalTotal() - nutrient.getCalTotal()), "Calories left"));
 
         return pieEntries;
     }

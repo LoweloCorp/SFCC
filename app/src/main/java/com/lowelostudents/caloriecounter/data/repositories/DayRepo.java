@@ -9,6 +9,7 @@ import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
+import com.lowelostudents.caloriecounter.models.interfaces.DayDao;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 import com.lowelostudents.caloriecounter.models.relations.Day_Meal_Relation;
 
@@ -18,7 +19,7 @@ import java.util.List;
 import lombok.Getter;
 
 public class DayRepo extends CRUDRepository<Day> {
-    private final Day.DayDao dayDao;
+    private final DayDao dayDao;
     @Getter
     private final LiveData<List<Food>> day_foods;
     @Getter

@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.github.mikephil.charting.data.PieEntry;
+import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
@@ -22,8 +23,9 @@ import java.util.List;
 public class LiveDataTuplePieEntries extends MediatorLiveData<List<PieEntry>> {
     private List<Meal> listOne = Collections.emptyList();
     private List<Food> listTwo = Collections.emptyList();
-
-    public LiveDataTuplePieEntries(LiveData<List<Meal>> liveListOne, LiveData<List<Food>> liveListTwo) {
+    private User user;
+    public LiveDataTuplePieEntries(LiveData<List<Meal>> liveListOne, LiveData<List<Food>> liveListTwo, User user) {
+        this.user = user;
 
         addSource(liveListOne, listOne -> {
             if (listOne != null) {
@@ -51,6 +53,6 @@ public class LiveDataTuplePieEntries extends MediatorLiveData<List<PieEntry>> {
 
         Nutrients nutrients = nutrientService.combineNutrients(combinedList);
 
-        return chartFactory.generatePieEntries(nutrients);
+        return chartFactory.generatePieEntries(nutrients, this.user);
     }
 }

@@ -12,20 +12,25 @@ import com.lowelostudents.caloriecounter.models.CRUDDao;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Meal extends Nutrients {
+public class Meal extends Nutrients implements Serializable {
+    @Ignore
+    private static final long serialVersionUID = 1L;
+
     @PrimaryKey(autoGenerate = true)
     @EqualsAndHashCode.Include
     protected long id;
     @Ignore
-    private NutrientService nutrientService = NutrientService.getInstance();
+    private transient NutrientService nutrientService = NutrientService.getInstance();
 
     @Ignore
     public Meal() {
@@ -38,28 +43,5 @@ public class Meal extends Nutrients {
 
     public Meal(String name) {
         this.name = name;
-    }
-
-    @Dao
-    public abstract static class MealDao extends CRUDDao<Meal> {
-        @Query("SELECT * FROM Meal")
-        public abstract List<Meal_Food_Relation> getFoodPerMeal();
-
-        @Query("SELECT * FROM Meal WHERE id = :id")
-        public abstract List<Meal_Food_Relation> getFoodPerMeal(long id);
-
-        @Query("SELECT * FROM Meal")
-        public abstract LiveData<List<Meal>> getAllObservable();
-
-        @Query("SELECT * FROM Meal WHERE id = :id")
-        public abstract LiveData<Meal> getObservable(long id);
-
-        @Transaction
-        @Query("SELECT * FROM Meal")
-        public abstract LiveData<List<Meal_Food_Relation>> getAllObservableTransaction();
-
-        @Transaction
-        @Query("SELECT * FROM Meal WHERE id = :id")
-        public abstract LiveData<Meal_Food_Relation> getObservableTransaction(long id);
     }
 }

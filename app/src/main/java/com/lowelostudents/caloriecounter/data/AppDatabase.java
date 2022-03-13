@@ -13,6 +13,13 @@ import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Meal_Food;
 import com.lowelostudents.caloriecounter.models.entities.User;
+import com.lowelostudents.caloriecounter.models.interfaces.DayDao;
+import com.lowelostudents.caloriecounter.models.interfaces.Day_FoodDao;
+import com.lowelostudents.caloriecounter.models.interfaces.Day_MealDao;
+import com.lowelostudents.caloriecounter.models.interfaces.FoodDao;
+import com.lowelostudents.caloriecounter.models.interfaces.MealDao;
+import com.lowelostudents.caloriecounter.models.interfaces.Meal_FoodDao;
+import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 
 @Database(entities = {Day.class, Food.class, Day_Food.class, Meal.class, Meal_Food.class, Day_Meal.class, User.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -21,7 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (dbInstance == null)
-            dbInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME)
+            dbInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME).allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build();
 
@@ -30,24 +37,18 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static synchronized AppDatabase getInMemoryInstance(Context context) {
         if (dbInstance == null)
-            dbInstance = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
+            dbInstance = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class).allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build();
 
         return dbInstance;
     }
 
-    public abstract Day.DayDao dayDao();
-
-    public abstract Food.FoodDao foodDao();
-
-    public abstract Meal.MealDao mealDao();
-
-    public abstract Day_Food.Day_FoodDao day_foodDao();
-
-    public abstract Meal_Food.Meal_FoodDao meal_foodDao();
-
-    public abstract Day_Meal.Day_MealDao day_mealDao();
-
-    public abstract User.UserDao userDao();
+    public abstract DayDao dayDao();
+    public abstract FoodDao foodDao();
+    public abstract MealDao mealDao();
+    public abstract Day_FoodDao day_foodDao();
+    public abstract Meal_FoodDao meal_foodDao();
+    public abstract Day_MealDao day_mealDao();
+    public abstract UserDao userDao();
 }
