@@ -2,18 +2,16 @@ package com.lowelostudents.caloriecounter.services;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
+
+import com.lowelostudents.caloriecounter.enums.ActivityMode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 // TODO check overusage of service
 public class EventHandlingService {
@@ -34,6 +32,18 @@ public class EventHandlingService {
             }
         });
     }
+
+    public final void onClickStartActivityInMode(View view, Context context, Class<?> activity, ActivityMode parameters) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, activity);
+                intent.putExtra("mode", parameters);
+                context.startActivity(intent);
+            }
+        });
+    }
+
 
     public <T> void onClickInvokeMethod(View view, T controller, Method method) {
         view.setOnClickListener(new View.OnClickListener() {

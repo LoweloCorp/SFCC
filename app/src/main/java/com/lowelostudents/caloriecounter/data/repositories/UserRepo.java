@@ -6,18 +6,20 @@ import androidx.lifecycle.LiveData;
 
 import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.User;
+import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 
+import io.reactivex.rxjava3.core.Single;
 import lombok.Getter;
 
 public class UserRepo extends CRUDRepository<User> {
     @Getter
-    private LiveData<User> user;
+    private Single<User> user;
 
     public UserRepo(Context context) {
         super(context);
-        final User.UserDao userDao = getAppdb().userDao();
+        final UserDao userDao = getAppdb().userDao();
         super.setCrudDao(userDao);
         // TODO get ID from backend / Data Population task
-        user = userDao.getObservable(1);
+        user = userDao.get(1);
     }
 }

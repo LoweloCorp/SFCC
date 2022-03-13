@@ -2,6 +2,8 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -9,9 +11,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lowelostudents.caloriecounter.R;
-import com.lowelostudents.caloriecounter.data.LiveDataTuple;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatemealBinding;
+import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
@@ -33,16 +34,26 @@ public class CreateMeal extends AppCompatActivity {
     private MealViewModel model;
     private LiveData<List<Food>> dataSet;
     private CreateMealRecyclerViewAdapter recyclerViewAdapter;
+    @Getter
+    private ActivityMode mode = ActivityMode.CREATE;
+    @Getter
+    private Meal meal;
 
     @SneakyThrows
-    protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter) {
+    protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, ActivityMode mode) {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
-        Method insert = this.getClass().getMethod("insert");
+        Method save = this.getClass().getMethod("save");
         Method finish = Activity.class.getMethod("finish");
         Method method = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
+        Method update = this.getClass().getMethod("update", Meal.class);
 
         eventHandlingService.onChangedInvokeMethod(this , this.dataSet, recyclerViewAdapter, method);
-        eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, insert);
+        if (mode == ActivityMode.CREATE) {
+            eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, save);
+        } else {
+            eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, update, this.meal);
+        }
+
         eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
     }
 
@@ -61,13 +72,30 @@ public class CreateMeal extends AppCompatActivity {
         this.recyclerViewAdapter = new CreateMealRecyclerViewAdapter(this);
         foodList.setLayoutManager(new LinearLayoutManager(this));
         foodList.setAdapter(recyclerViewAdapter);
+        Bundle bundle = getIntent().getExtras();
 
-        setEventHandlers(recyclerViewAdapter);
+        if(bundle != null) {
+            this.mode = (ActivityMode) bundle.get("mode");
+            this.meal = (Meal) bundle.get("item");
+            Log.i("Mode", this.mode.toString());
+            Log.i("Meal", this.meal.toString());
+        }
+
+        if(this.mode == ActivityMode.UPDATE) binding.deleteForeverButton.setVisibility(View.VISIBLE);
+        Log.i("mode", this.mode.toString());
+
+        setEventHandlers(recyclerViewAdapter, this.mode);
     }
 
-    public void insert() {
+    public void save() {
         MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
         mealViewModel.insert(binding.mealName.getText().toString());
+    }
+
+    public void update(Meal meal) {
+        MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
+
+        mealViewModel.update(meal);
     }
 }

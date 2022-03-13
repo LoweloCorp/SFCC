@@ -50,9 +50,11 @@
                 android:layout_height="50dp"
                 android:background="@color/DarkRed"
                 android:src="@drawable/ic_baseline_delete_forever_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 app:tint="@color/White" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

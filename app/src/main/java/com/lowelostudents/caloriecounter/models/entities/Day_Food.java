@@ -27,8 +27,4 @@ public class Day_Food {
         this.id = id;
         this.dayId = dayId;
     }
-
-    @Dao
-    public abstract static class Day_FoodDao extends CRUDDao<Day_Food> {
-    }
 }

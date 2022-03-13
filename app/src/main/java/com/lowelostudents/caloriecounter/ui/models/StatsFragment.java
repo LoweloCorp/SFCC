@@ -32,16 +32,14 @@ import lombok.SneakyThrows;
 public class StatsFragment extends Fragment {
     private FragmentStatsBinding binding;
     private LiveDataTuplePieEntries dataSet;
-    private LiveData<User> user;
+    private User user;
 
     @SneakyThrows
     private void setEventHandlers() {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Method method = this.getClass().getMethod("handleDatasetChanged", List.class);
-        Method handleUserChanged = this.getClass().getMethod("handleUserChanged", User.class);
 
         eventHandlingService.onChangedInvokeMethod(getViewLifecycleOwner(), this.dataSet, this, method);
-        eventHandlingService.onChangedInvokeMethod(getViewLifecycleOwner(), this.user, this, handleUserChanged);
     }
 
 
@@ -49,10 +47,10 @@ public class StatsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        user = userViewModel.getUser();
+        user = userViewModel.getUser().blockingGet();
 
         this.binding = FragmentStatsBinding.inflate(inflater, container, false);
-        this.dataSet = new LiveDataTuplePieEntries(dashboardViewModel.getDayMeals(), dashboardViewModel.getDayFoods());
+        this.dataSet = new LiveDataTuplePieEntries(dashboardViewModel.getDayMeals(), dashboardViewModel.getDayFoods(), this.user);
 
         setEventHandlers();
 

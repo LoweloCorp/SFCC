@@ -10,6 +10,7 @@ import androidx.room.Query;
 import com.lowelostudents.caloriecounter.models.CRUDDao;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -20,12 +21,14 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
-public class Food extends Nutrients {
+public class Food extends Nutrients implements Serializable {
+    @Ignore
+    private static final long serialVersionUID = 1L;
     @PrimaryKey(autoGenerate = true)
     @EqualsAndHashCode.Include
     protected long id;
     @Ignore
-    private NutrientService nutrientService = NutrientService.getInstance();
+    private transient NutrientService nutrientService = NutrientService.getInstance();
 
     public Food(String name, int carbsGramPortion, int proteinGramPortion, int fatGramPortion, int portionSize, int gramTotal) {
         this.name = name;
@@ -48,14 +51,5 @@ public class Food extends Nutrients {
     @Ignore
     public Food() {
 
-    }
-
-    @Dao
-    public abstract static class FoodDao extends CRUDDao<Food> {
-        @Query("SELECT * FROM Food")
-        public abstract LiveData<List<Food>> getAllObservable();
-
-        @Query("SELECT * FROM Food Where id = :id")
-        public abstract LiveData<Food> getObservable(long id);
     }
 }

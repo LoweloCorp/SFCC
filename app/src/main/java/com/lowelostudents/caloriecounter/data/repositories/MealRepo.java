@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
+import com.lowelostudents.caloriecounter.models.interfaces.MealDao;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class MealRepo extends CRUDRepository<Meal> {
     public MealRepo(Context context) {
         super(context);
         super.setCrudDao(getAppdb().mealDao());
-        final Meal.MealDao mealDao = (Meal.MealDao) super.getCrudDao();
+        final MealDao mealDao = (MealDao) super.getCrudDao();
         meals = mealDao.getAllObservable();
         meal_foods = mealDao.getAllObservableTransaction();
     }

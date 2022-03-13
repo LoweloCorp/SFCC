@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,20 +30,44 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:focusedByDefault="false"
             android:hint="Meal name"
-            android:iconifiedByDefault="false"
+            android:iconifiedByDefault="true"
+            android:layoutDirection="ltr"
             android:queryHint="Search food" />
 
-        <EditText
-            android:id="@+id/mealName"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@drawable/fuckgoogle"
-            android:ems="10"
-            android:hint="Meal name"
-            android:inputType="textEmailAddress"
-            android:textColorHint="@drawable/fuckgoogle"
-            tools:inputType="text" />
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/mealName"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:hint="Enter meal name"
+                android:inputType="textPersonName"
+                android:textColor="@drawable/fuckgoogle"
+                android:textColorHint="@drawable/fuckgoogle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.75" />
+
+            <ImageButton
+                android:id="@+id/delete_forever_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/DarkRed"
+                android:src="@drawable/ic_baseline_delete_forever_24"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:tint="@color/White" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/foodList"

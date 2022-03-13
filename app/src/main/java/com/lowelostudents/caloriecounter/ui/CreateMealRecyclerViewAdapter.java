@@ -2,23 +2,21 @@ package com.lowelostudents.caloriecounter.ui;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.lowelostudents.caloriecounter.R;
+import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -60,7 +58,16 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
 
         Method method = this.getClass().getMethod("updateList", int.class, View.class);
 
-        eventHandlingService.onClickStartActivityFromContext(cardItem, context, cardDataClass);
+        cardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, cardDataClass);
+                intent.putExtra("mode", ActivityMode.UPDATE);
+                intent.putExtra("item", (Serializable) dataSet.get(position));
+                context.startActivity(intent);
+            }
+        });
+
         eventHandlingService.onClickInvokeMethod(cardItem.findViewById(R.id.toggleForDay), this, method, position, cardItem);
     }
 

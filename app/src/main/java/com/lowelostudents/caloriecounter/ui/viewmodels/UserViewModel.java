@@ -8,13 +8,14 @@ import androidx.lifecycle.LiveData;
 import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.models.entities.User;
 
+import io.reactivex.rxjava3.core.Single;
 import lombok.Getter;
 
 public class UserViewModel extends AndroidViewModel {
     @Getter
     private final UserRepo repo;
     @Getter
-    private final LiveData<User> user;
+    private final Single<User> user;
 
     public UserViewModel(Application context) {
         super(context);

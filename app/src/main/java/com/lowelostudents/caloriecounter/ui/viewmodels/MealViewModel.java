@@ -68,8 +68,18 @@ public class MealViewModel extends AndroidViewModel {
         repo.insert(t);
     }
 
-    public void update(Meal t) {
-        repo.update(t);
+    public void update(Meal meal) {
+        Meal updatedMeal = new Meal(meal.getName(), checkedNutrients);
+        updatedMeal.setId(meal.getId());
+        List<Meal_Food> meal_foods = new ArrayList<>();
+
+        this.checkedNutrients.forEach( food -> {
+            meal_foods.add(new Meal_Food(food.getId(), updatedMeal.getName()));
+        });
+
+        this.mealRepo.update(updatedMeal);
+
+        this.mealFoodRepo.update(meal_foods);
     }
 
     public void updateAll(List<Meal> t) {
