@@ -9,6 +9,7 @@ import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import lombok.Data;
 
+// TODO other primary key, allow duplicate
 @Entity(primaryKeys = {"id", "name"}, indices = {
         @Index(value = "id", unique = true),
         @Index(value = "name", unique = true)

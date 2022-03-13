@@ -66,6 +66,14 @@ public abstract class CRUDDao<T> {
         return id;
     }
 
+    public String delete(Class<T> t, String name) {
+        GenericQueryService<T> genericQueryService = new GenericQueryService<>();
+
+        this.delete(genericQueryService.deleteById(t, name));
+
+        return name;
+    }
+
     // Transaction queries
 
 //    @RawQuery

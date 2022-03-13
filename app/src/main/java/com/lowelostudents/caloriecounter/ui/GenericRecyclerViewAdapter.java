@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.Setter;
 import lombok.SneakyThrows;
 
 
@@ -35,6 +37,8 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     protected final List<Nutrients> dataSet = new ArrayList<>();
     private final LayoutInflater layoutInflater;
     protected final Context context;
+    @Setter
+    private ActivityMode activityMode = ActivityMode.CREATE;
 
     public GenericRecyclerViewAdapter(Context context) {
         this.context = context;
@@ -64,6 +68,13 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             Log.e("ERROR: CLASS OR METHOD NOT FOUND", Arrays.toString(e.getStackTrace()));
         }
 
+        if(this.activityMode == ActivityMode.CREATE)
+            holder.cardToggleForDay.setColorFilter(ContextCompat.getColor(holder.cardToggleForDay.getContext(), R.color.Green));
+        if(this.activityMode == ActivityMode.UPDATE) {
+            holder.cardToggleForDay.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
+            holder.cardToggleForDay.setColorFilter(ContextCompat.getColor(holder.cardToggleForDay.getContext(), R.color.DarkRed));
+        }
+
         holder.cardType.setText(cardType);
         holder.cardTitle.setText(cardTitle);
         holder.cardNutrients.setText(cardNutrients);
@@ -83,7 +94,9 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                 .getConstructor(Application.class)
                 .newInstance(cardItem.getContext().getApplicationContext());
 
-        Method method = nutrientDataClass.getMethod("addToDay", data.getClass());
+        Method addToDay = nutrientDataClass.getMethod("addToDay", data.getClass());
+        Method removeFromDay = nutrientDataClass.getMethod("removeFromDay", data.getClass());
+
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
 
         cardItem.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +109,10 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                 }
             });
 
-        eventHandlingService.onClickInvokeMethod(button, viewModel, method, data);
+        if(this.activityMode == ActivityMode.CREATE)
+            eventHandlingService.onClickInvokeMethod(button, viewModel, addToDay, data);
+        if(this.activityMode == ActivityMode.UPDATE)
+            eventHandlingService.onClickInvokeMethod(button, viewModel, removeFromDay, data);
     }
 
     public void handleDatasetChanged(final List<Nutrients> dataSet) {

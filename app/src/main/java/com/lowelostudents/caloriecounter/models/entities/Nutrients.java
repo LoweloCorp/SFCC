@@ -1,6 +1,9 @@
 package com.lowelostudents.caloriecounter.models.entities;
 
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +11,9 @@ import lombok.EqualsAndHashCode;
 // TODO add Protein etc
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Nutrients {
+public class Nutrients implements Serializable {
+    @Ignore
+    private static final long serialVersionUID = 1L;
     @EqualsAndHashCode.Include
     protected String name;
     protected int calTotal = 0;

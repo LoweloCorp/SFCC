@@ -9,6 +9,8 @@ import androidx.lifecycle.LiveData;
 import com.lowelostudents.caloriecounter.data.repositories.DayMealRepo;
 import com.lowelostudents.caloriecounter.data.repositories.MealFoodRepo;
 import com.lowelostudents.caloriecounter.data.repositories.MealRepo;
+import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
+import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Day_Food;
 import com.lowelostudents.caloriecounter.models.entities.Day_Meal;
 import com.lowelostudents.caloriecounter.models.entities.Food;
@@ -19,6 +21,7 @@ import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import lombok.Getter;
@@ -31,7 +34,11 @@ public class MealViewModel extends AndroidViewModel {
     private final DayMealRepo dayMealRepo;
     private final MealFoodRepo mealFoodRepo;
     private final MealRepo mealRepo;
-    public final List<Food> checkedNutrients = new ArrayList<>();
+//    public final List<Food> checkedNutrients = new ArrayList<>();
+    public final HashMap<Integer, Food> checkedNutrients = new HashMap<>();
+//    @Getter @Setter
+//    private ActivityMode activityMode = ActivityMode.CREATE;
+
 
     public MealViewModel(Application context) {
         super(context);
@@ -46,17 +53,29 @@ public class MealViewModel extends AndroidViewModel {
         return repo.insert(t);
     }
 
-    public Long addToDay(Meal meal) {
+    public void addToDay(Meal meal) {
         Calendar cal = Calendar.getInstance();
         Day_Meal day_meal = new Day_Meal(meal.getId() ,cal.get(Calendar.DATE));
-        return dayMealRepo.insert(day_meal);
+        // TODO find best way for toggles
+//        if(this.activityMode == ActivityMode.CREATE){
+            dayMealRepo.insert(day_meal);
+//            this.activityMode = ActivityMode.UPDATE;
+//        } else {
+//            dayMealRepo.delete(day_meal);
+//            this.activityMode = ActivityMode.CREATE;
+//        }
+    }
+
+    public void removeFromDay(Meal meal) {
+        dayMealRepo.delete(Day_Meal.class, meal.getId());
     }
 
     public Long[] insert (String mealName) {
-        Meal meal = new Meal(mealName, checkedNutrients);
+        final List<Food> foods = new ArrayList<>(checkedNutrients.values());
+        Meal meal = new Meal(mealName, foods);
         List<Meal_Food> meal_foods = new ArrayList<>();
 
-        this.checkedNutrients.forEach( food -> {
+        foods.forEach( food -> {
             meal_foods.add(new Meal_Food(food.getId(), mealName));
         });
 
@@ -68,13 +87,15 @@ public class MealViewModel extends AndroidViewModel {
         repo.insert(t);
     }
 
-    public void update(Meal meal) {
-        Meal updatedMeal = new Meal(meal.getName(), checkedNutrients);
+    public void update(Meal meal, String mealName) {
+        final List<Food> foods = new ArrayList<>(checkedNutrients.values());
+        Meal updatedMeal = new Meal(mealName, foods);
         updatedMeal.setId(meal.getId());
         List<Meal_Food> meal_foods = new ArrayList<>();
 
-        this.checkedNutrients.forEach( food -> {
-            meal_foods.add(new Meal_Food(food.getId(), updatedMeal.getName()));
+        foods.forEach( food -> {
+            // TODO Check primary key make good composite key and set values accordingly otherwise this wont work
+            meal_foods.add(new Meal_Food(food.getId(), mealName));
         });
 
         this.mealRepo.update(updatedMeal);
@@ -88,6 +109,12 @@ public class MealViewModel extends AndroidViewModel {
 
     public void delete(Meal t) {
         repo.delete(t);
+        mealFoodRepo.delete(Meal_Food.class, t.getName());
+        dayMealRepo.delete(Day_Meal.class, t.getId());
+    }
+
+    public void deleteFood(Food t) {
+        mealFoodRepo.delete(Meal_Food.class, t.getId());
     }
 
     public void deleteAll(Meal t) {

@@ -17,21 +17,17 @@ public final class GenericQueryService<T> {
         return new SimpleSQLiteQuery("SELECT * FROM " + tableName + " WHERE id = " + id);
     }
 
-//    public SimpleSQLiteQuery getAllWithTransaction(Class<T> t) {
-//        return new SimpleSQLiteQuery("SELECT * FROM " + t.getSimpleName());
-//    }
-//
-//    public SimpleSQLiteQuery getByIdWithTransaction(Class<T> t, long id) {
-//        String tableName = t.getSimpleName();
-//        String where = tableName.toLowerCase(Locale.ROOT);
-//
-//        return new SimpleSQLiteQuery("SELECT * FROM " + tableName + " WHERE " + where + "Id" + " = " + id);
-//    }
-
     public SimpleSQLiteQuery deleteById(Class<T> t, long id) {
         String tableName = t.getSimpleName();
         String where = tableName.toLowerCase(Locale.ROOT);
 
         return new SimpleSQLiteQuery("DELETE FROM " + tableName + " WHERE id = " + id);
+    }
+
+    public SimpleSQLiteQuery deleteById(Class<T> t, String name) {
+        String tableName = t.getSimpleName();
+        String where = tableName.toLowerCase(Locale.ROOT);
+
+        return new SimpleSQLiteQuery("DELETE FROM " + tableName + " WHERE name = '" + name + "'");
     }
 }

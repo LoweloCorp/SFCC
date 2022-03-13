@@ -18,7 +18,8 @@ import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
-// TODO GENERAL DELETE BUTTON,  FIX MEAL CREATION (TOGGLE), TOGGLES, SEARCHBAR, FIX FOOD CREATION (AUTOFILL)
+ // TOGGLES (Food/Meal), SEARCHBAR, FIX FOOD CREATION (AUTOFILL)
+// TODO Initial Datasets
 // TODO check overuse eventhandling service, seperation of concerns
 // TODO find nonblockin way for calculation of pie entries with users calory pensum
 public class MainActivity extends AppCompatActivity {

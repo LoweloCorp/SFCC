@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.core.content.ContextCompat;
+
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
@@ -43,6 +45,7 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
             Log.e("ERROR: CLASS OR METHOD NOT FOUND", Arrays.toString(e.getStackTrace()));
         }
 
+        holder.cardToggleForDay.setColorFilter(ContextCompat.getColor(holder.cardToggleForDay.getContext(), R.color.Green));
         holder.cardType.setText(cardType);
         holder.cardTitle.setText(cardTitle);
         holder.cardNutrients.setText(cardNutrients);
@@ -73,9 +76,21 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
 
     public void updateList(int id, View cardItem) {
         Log.i("MeineID", String.valueOf(id));
-        Food food = (Food) this.dataSet.get(id);
-        this.mealViewModel.checkedNutrients.add(food);
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
-        button.setBackgroundResource(R.drawable.ic_baseline_indeterminate_check_box_24);
+
+        try {
+            if (this.mealViewModel.checkedNutrients.get(id) == null) {
+                Food food = (Food) this.dataSet.get(id);
+                this.mealViewModel.checkedNutrients.put(id, food);
+                button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
+                button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
+            } else {
+                this.mealViewModel.checkedNutrients.remove(id);
+                button.setImageResource(R.drawable.ic_baseline_add_box_24);
+                button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.Green));
+            }
+        } catch (IndexOutOfBoundsException e) {
+            Log.w("Index out of Bounds", e.getCause());
+        }
     }
 }

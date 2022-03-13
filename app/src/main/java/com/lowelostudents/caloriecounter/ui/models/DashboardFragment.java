@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lowelostudents.caloriecounter.data.LiveDataTuple;
 import com.lowelostudents.caloriecounter.databinding.FragmentDashboardBinding;
+import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
@@ -46,9 +47,9 @@ public class DashboardFragment extends Fragment {
 
         final RecyclerView foodList = binding.foodList;
         final GenericRecyclerViewAdapter recyclerViewAdapter = new GenericRecyclerViewAdapter(this.getContext());
+        recyclerViewAdapter.setActivityMode(ActivityMode.UPDATE);
         foodList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         foodList.setAdapter(recyclerViewAdapter);
-
         setEventHandlers(recyclerViewAdapter);
 
         View root = binding.getRoot();

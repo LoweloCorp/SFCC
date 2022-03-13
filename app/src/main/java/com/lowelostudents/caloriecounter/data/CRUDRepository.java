@@ -82,6 +82,18 @@ public class CRUDRepository<T> {
         executor.execute(() -> crudDao.delete(t));
     }
 
+    public void delete(Class<T> tClass, long id) {
+        executor.execute( () -> {
+            crudDao.delete(tClass, id);
+        });
+    }
+
+    public void delete(Class<T> tClass, String name) {
+        executor.execute( () -> {
+            crudDao.delete(tClass, name);
+        });
+    }
+
     public void delete(List<T> t) {
         executor.execute(() -> crudDao.delete(t));
     }
