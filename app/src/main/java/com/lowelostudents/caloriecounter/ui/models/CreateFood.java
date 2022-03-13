@@ -38,10 +38,12 @@ public class CreateFood extends AppCompatActivity {
         Method finish = Activity.class.getMethod("finish");
         Method save = this.getClass().getMethod("save");
         Method update = this.getClass().getMethod("update", Food.class);
+        Method delete = this.getClass().getMethod("delete", Food.class);
 
         if (mode == ActivityMode.CREATE) {
             eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, save);
         } else {
+            eventHandlingService.onClickInvokeMethod(binding.deleteForeverButton, this, delete, this.food);
             eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, update, this.food);
         }
 
@@ -59,7 +61,7 @@ public class CreateFood extends AppCompatActivity {
         if(bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");
             this.food = (Food) bundle.get("item");
-
+            this.autofill();
             Log.i("mode", this.mode.toString());
             Log.i("food", this.food.toString());
         }
@@ -85,15 +87,6 @@ public class CreateFood extends AppCompatActivity {
     }
 
     public void update(Food food) {
-        // TODO use setters call nutrientService
-        // TODO Abstract nutrientService to efficiently produce live data to auto-fill input fields with calculated values
-        // TODO set hint doesnt work
-        this.binding.carbs.setHint(food.getCarbsGram());
-        this.binding.protein.setHint(food.getProteinGram());
-        this.binding.fat.setHint(food.getFatGram());
-        this.binding.portionSize.setHint(food.getPortionSize());
-        this.binding.totalSize.setHint(food.getGramTotal());
-
         Food updatedFood = new Food(
                 this.binding.foodName.getText().toString(),
                 Integer.parseInt(this.binding.carbs.getText().toString()),
@@ -103,9 +96,23 @@ public class CreateFood extends AppCompatActivity {
                 Integer.parseInt(this.binding.totalSize.getText().toString())
         );
 
+        Log.i("foodName", String.valueOf(food.getCarbsGram()));
         updatedFood.setId(food.getId());
-        updatedFood.setName(food.getName());
+        Log.i("FoodID", String.valueOf(updatedFood.getId()));
 
         this.model.update(updatedFood);
+    }
+
+    public void delete(Food food) {
+        this.model.delete(food);
+    }
+
+    // TODO
+    private void autofill() {
+        this.binding.carbs.setHint(food.getCarbsGram() + " " + this.binding.carbs.getHint().toString());
+        this.binding.protein.setHint(food.getProteinGram() + " " + this.binding.protein.getHint().toString());
+        this.binding.fat.setHint(food.getFatGram() + " " + this.binding.fat.getHint().toString());
+        this.binding.portionSize.setHint(food.getPortionSize() + " " + this.binding.portionSize.getHint().toString());
+        this.binding.totalSize.setHint(food.getGramTotal() + " " + this.binding.totalSize.getHint().toString());
     }
 }

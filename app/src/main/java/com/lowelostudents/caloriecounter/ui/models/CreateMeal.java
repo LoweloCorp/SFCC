@@ -46,11 +46,13 @@ public class CreateMeal extends AppCompatActivity {
         Method finish = Activity.class.getMethod("finish");
         Method method = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
         Method update = this.getClass().getMethod("update", Meal.class);
+        Method delete = this.getClass().getMethod("delete", Meal.class);
 
         eventHandlingService.onChangedInvokeMethod(this , this.dataSet, recyclerViewAdapter, method);
         if (mode == ActivityMode.CREATE) {
             eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, save);
         } else {
+            eventHandlingService.onClickInvokeMethod(binding.deleteForeverButton, this, delete, this.meal);
             eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, update, this.meal);
         }
 
@@ -96,6 +98,13 @@ public class CreateMeal extends AppCompatActivity {
     public void update(Meal meal) {
         MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
-        mealViewModel.update(meal);
+        mealViewModel.update(meal, binding.mealName.getText().toString());
+    }
+
+
+    public void delete(Meal meal) {
+        MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
+
+        mealViewModel.delete(meal);
     }
 }
