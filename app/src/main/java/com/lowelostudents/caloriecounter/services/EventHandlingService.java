@@ -3,6 +3,7 @@ package com.lowelostudents.caloriecounter.services;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -50,6 +51,11 @@ public class EventHandlingService {
             @Override
             public void onClick(View view) {
                 try {
+                    Context context = view.getContext().getApplicationContext();
+                    CharSequence methodName = method.getName();
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, methodName, duration);
+                    toast.show();
                     method.invoke(controller);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -63,6 +69,11 @@ public class EventHandlingService {
             @Override
             public void onClick(View view) {
                 try {
+                    Context context = view.getContext().getApplicationContext();
+                    CharSequence methodName = method.getName();
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, methodName, duration);
+                    toast.show();
                     method.invoke(controller, parameters);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
