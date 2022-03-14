@@ -2,8 +2,13 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,10 +16,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatefoodBinding;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
+import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
+import com.lowelostudents.caloriecounter.services.NutrientService;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -29,7 +37,7 @@ public class CreateFood extends AppCompatActivity {
     @Getter
     private ActivityMode mode = ActivityMode.CREATE;
     @Getter
-    private Food food;
+    private Food food = new Food();
 
 
     @SneakyThrows
@@ -58,10 +66,31 @@ public class CreateFood extends AppCompatActivity {
         setContentView(binding.getRoot());
         Bundle bundle = getIntent().getExtras();
 
+        EditText[] inputs = {this.binding.foodName, this.binding.fat, this.binding.carbs, this.binding.protein, this.binding.portionSize, this.binding.totalSize};
+        this.autofill(this.food);
+        Arrays.stream(inputs).forEach( input -> {
+           input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+               @Override
+               public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                   Food food = new Food(
+                           binding.foodName.getText().toString(),
+                           Integer.parseInt(binding.carbs.getText().toString()),
+                           Integer.parseInt(binding.protein.getText().toString()),
+                           Integer.parseInt(binding.fat.getText().toString()),
+                           Integer.parseInt(binding.portionSize.getText().toString()),
+                           Integer.parseInt(binding.totalSize.getText().toString())
+                   );
+                   Log.i("calTotal", String.valueOf(food.getCalPerPortion()));
+                   autofill(food);
+
+                   return false;
+               }
+           });
+        });
+
         if(bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");
             this.food = (Food) bundle.get("item");
-            this.autofill();
             Log.i("mode", this.mode.toString());
             Log.i("food", this.food.toString());
         }
@@ -108,11 +137,11 @@ public class CreateFood extends AppCompatActivity {
     }
 
     // TODO
-    private void autofill() {
-        this.binding.carbs.setHint(food.getCarbsGram() + " " + this.binding.carbs.getHint().toString());
-        this.binding.protein.setHint(food.getProteinGram() + " " + this.binding.protein.getHint().toString());
-        this.binding.fat.setHint(food.getFatGram() + " " + this.binding.fat.getHint().toString());
-        this.binding.portionSize.setHint(food.getPortionSize() + " " + this.binding.portionSize.getHint().toString());
-        this.binding.totalSize.setHint(food.getGramTotal() + " " + this.binding.totalSize.getHint().toString());
+    private void autofill(Food food) {
+        this.binding.carbs.setText(String.valueOf(food.getCarbsGram()));
+        this.binding.protein.setText(String.valueOf(food.getProteinGram()));
+        this.binding.fat.setText(String.valueOf(food.getFatGram()));
+        this.binding.portionSize.setText(String.valueOf(food.getPortionSize()));
+        this.binding.totalSize.setText(String.valueOf(food.getGramTotal()));
     }
 }

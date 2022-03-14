@@ -21,7 +21,7 @@ public class NutrientService {
         return nutrientService;
     }
 
-    //TODO sum with previous value so that I can loop over this method i.e. reuse it
+    // TODO universal formulas
 
     public <T extends Nutrients> void calculateNutrients(T nutrients) {
         nutrients.setCarbsCal(nutrients.getCarbsGram() * 4);
