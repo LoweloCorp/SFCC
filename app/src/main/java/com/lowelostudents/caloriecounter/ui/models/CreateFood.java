@@ -151,7 +151,7 @@ public class CreateFood extends AppCompatActivity {
         this.model.delete(food);
     }
 
-    // TODO
+    // TODO set hint for critical values based on Nutrient mode & disable input
     private void autofill(Food food) {
         this.binding.carbs.setText(String.valueOf(food.getCarbsGram()));
         this.binding.protein.setText(String.valueOf(food.getProteinGram()));

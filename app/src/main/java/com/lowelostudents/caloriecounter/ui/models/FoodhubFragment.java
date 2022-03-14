@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lowelostudents.caloriecounter.MainActivity;
+import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.data.LiveDataTuple;
 import com.lowelostudents.caloriecounter.databinding.FragmentFoodhubBinding;
 import com.lowelostudents.caloriecounter.models.entities.Food;
@@ -119,6 +122,25 @@ public class FoodhubFragment extends Fragment {
         });
 
         View root = binding.getRoot();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        SearchView searchView = mainActivity.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            final List<Nutrients> allData = recyclerViewAdapter.getAllDataSet();
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                int i = s.length() /2;
+                String substring = s.substring(0, i);
+                String substringOne = s.substring(s.length()/2);
+
+                recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getName().matches(substring + "+" + substringOne + "*")).collect(Collectors.toList()));
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
         return root;
     }
 
