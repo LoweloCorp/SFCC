@@ -1,2 +1,6 @@
-package com.lowelostudents.caloriecounter.enums;public class NutrientMode {
+package com.lowelostudents.caloriecounter.enums;
+
+public enum NutrientMode {
+    DEFAULT,
+    ALTERNATE
 }

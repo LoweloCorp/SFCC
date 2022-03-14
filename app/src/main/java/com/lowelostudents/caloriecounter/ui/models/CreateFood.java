@@ -2,8 +2,7 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,10 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatefoodBinding;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
+import com.lowelostudents.caloriecounter.enums.NutrientMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
-import com.lowelostudents.caloriecounter.services.NutrientService;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 
 import java.lang.reflect.Method;
@@ -37,7 +35,7 @@ public class CreateFood extends AppCompatActivity {
     @Getter
     private ActivityMode mode = ActivityMode.CREATE;
     @Getter
-    private Food food = new Food();
+    private Food food;
 
 
     @SneakyThrows
@@ -66,36 +64,53 @@ public class CreateFood extends AppCompatActivity {
         setContentView(binding.getRoot());
         Bundle bundle = getIntent().getExtras();
 
-        EditText[] inputs = {this.binding.foodName, this.binding.fat, this.binding.carbs, this.binding.protein, this.binding.portionSize, this.binding.totalSize};
-        this.autofill(this.food);
-        Arrays.stream(inputs).forEach( input -> {
-           input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-               @Override
-               public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                   Food food = new Food(
-                           binding.foodName.getText().toString(),
-                           Integer.parseInt(binding.carbs.getText().toString()),
-                           Integer.parseInt(binding.protein.getText().toString()),
-                           Integer.parseInt(binding.fat.getText().toString()),
-                           Integer.parseInt(binding.portionSize.getText().toString()),
-                           Integer.parseInt(binding.totalSize.getText().toString())
-                   );
-                   Log.i("calTotal", String.valueOf(food.getCalPerPortion()));
-                   autofill(food);
+        EditText[] inputsDefault = {this.binding.foodName, this.binding.fat, this.binding.carbs, this.binding.protein, this.binding.portionSize, this.binding.totalSize, this.binding.calPerPortion, this.binding.totalCalories};
 
-                   return false;
-               }
-           });
+        Arrays.stream(inputsDefault).forEach(input -> {
+            input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+                    if (TextUtils.isEmpty(binding.calPerPortion.getText())) {
+                        if (validate(NutrientMode.DEFAULT)) {
+                            Food food = new Food(
+                                    binding.foodName.getText().toString(),
+                                    Integer.parseInt(binding.carbs.getText().toString()),
+                                    Integer.parseInt(binding.protein.getText().toString()),
+                                    Integer.parseInt(binding.fat.getText().toString()),
+                                    Integer.parseInt(binding.portionSize.getText().toString()),
+                                    Integer.parseInt(binding.totalSize.getText().toString())
+                            );
+                            autofill(food);
+                            return true;
+                        }
+                    } else {
+                        if (validate(NutrientMode.ALTERNATE)) {
+                            Food food = new Food(
+                                    binding.foodName.getText().toString(),
+                                    Integer.parseInt(binding.totalSize.getText().toString()),
+                                    Integer.parseInt(binding.calPerPortion.getText().toString()),
+                                    Integer.parseInt(binding.portionSize.getText().toString())
+                            );
+
+                            autofill(food);
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            });
         });
 
-        if(bundle != null) {
+        if (bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");
             this.food = (Food) bundle.get("item");
-            Log.i("mode", this.mode.toString());
-            Log.i("food", this.food.toString());
+            this.autofill(this.food);
         }
 
-        if(this.mode == ActivityMode.UPDATE) binding.deleteForeverButton.setVisibility(View.VISIBLE);
+        if (this.mode == ActivityMode.UPDATE)
+            binding.deleteForeverButton.setVisibility(View.VISIBLE);
         setEventHandlers(this.mode);
     }
 
@@ -143,5 +158,59 @@ public class CreateFood extends AppCompatActivity {
         this.binding.fat.setText(String.valueOf(food.getFatGram()));
         this.binding.portionSize.setText(String.valueOf(food.getPortionSize()));
         this.binding.totalSize.setText(String.valueOf(food.getGramTotal()));
+        this.binding.calPerPortion.setText(String.valueOf(food.getCalPerPortion()));
+        this.binding.totalCalories.setText(String.valueOf(food.getCalTotal()));
+    }
+
+    private boolean validate(NutrientMode mode) {
+        boolean validated = true;
+        if(TextUtils.isEmpty(this.binding.foodName.getText())) {
+            this.binding.foodName.setError("Please enter name");
+            validated = false;
+        }
+        if (mode == NutrientMode.DEFAULT) {
+            this.binding.totalSize.setError(null);
+            this.binding.calPerPortion.setError(null);
+            this.binding.portionSize.setError(null);
+            if (TextUtils.isEmpty(this.binding.carbs.getText())) {
+                this.binding.carbs.setError("Please enter carbs");
+                validated = false;
+            }
+            if (TextUtils.isEmpty(this.binding.protein.getText())) {
+                this.binding.protein.setError("Please enter protein");
+                validated = false;
+            }
+            if (TextUtils.isEmpty(this.binding.fat.getText())) {
+                this.binding.fat.setError("Please enter fat");
+                validated = false;
+            }
+            if (TextUtils.isEmpty(this.binding.portionSize.getText())) {
+                this.binding.portionSize.setError("Please enter portion size");
+                validated = false;
+            }
+            if (TextUtils.isEmpty(this.binding.totalSize.getText())) {
+                this.binding.totalSize.setError("Please enter total size");
+                validated = false;
+            }
+        } else {
+            this.binding.carbs.setError(null);
+            this.binding.protein.setError(null);
+            this.binding.fat.setError(null);
+            this.binding.portionSize.setError(null);
+            this.binding.totalSize.setError(null);
+            if (TextUtils.isEmpty(this.binding.totalSize.getText())) {
+                this.binding.totalSize.setError("Please enter total size");
+                validated = false;
+            }
+            if (TextUtils.isEmpty(this.binding.calPerPortion.getText())) {
+                this.binding.calPerPortion.setError("Please enter cal per portion");
+                validated = false;
+            }
+            if (TextUtils.isEmpty(this.binding.portionSize.getText())) {
+                this.binding.portionSize.setError("Please enter portion size");
+                validated = false;
+            }
+        }
+        return validated;
     }
 }

@@ -33,7 +33,7 @@
             android:layout_marginBottom="10dp"
             android:focusedByDefault="false"
             android:hint="Meal name"
-            android:iconifiedByDefault="true"
+            android:iconifiedByDefault="false"
             android:layoutDirection="ltr"
             android:queryHint="Search food" />
 

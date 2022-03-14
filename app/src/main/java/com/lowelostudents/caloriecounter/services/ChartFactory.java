@@ -16,7 +16,6 @@ public class ChartFactory {
         return instance;
     }
 
-    // TODO handle overflow
     public <T extends Nutrients> List<PieEntry> generatePieEntries(List<T> nutrientList, User user) {
         List<PieEntry> pieEntries = new ArrayList<>();
 

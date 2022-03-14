@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -48,7 +49,7 @@ public class CreateMeal extends AppCompatActivity {
         Method update = this.getClass().getMethod("update", Meal.class);
         Method delete = this.getClass().getMethod("delete", Meal.class);
 
-        eventHandlingService.onChangedInvokeMethod(this , this.dataSet, recyclerViewAdapter, method);
+        eventHandlingService.onChangedInvokeMethod(this, this.dataSet, recyclerViewAdapter, method);
         if (mode == ActivityMode.CREATE) {
             eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, save);
         } else {
@@ -76,29 +77,34 @@ public class CreateMeal extends AppCompatActivity {
         foodList.setAdapter(recyclerViewAdapter);
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle != null) {
+        if (bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");
             this.meal = (Meal) bundle.get("item");
             Log.i("Mode", this.mode.toString());
             Log.i("Meal", this.meal.toString());
         }
 
-        if(this.mode == ActivityMode.UPDATE) binding.deleteForeverButton.setVisibility(View.VISIBLE);
+        if (this.mode == ActivityMode.UPDATE)
+            binding.deleteForeverButton.setVisibility(View.VISIBLE);
         Log.i("mode", this.mode.toString());
 
         setEventHandlers(recyclerViewAdapter, this.mode);
     }
 
     public void save() {
-        MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
+        if (validate()) {
+            MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
-        mealViewModel.insert(binding.mealName.getText().toString());
+            mealViewModel.insert(binding.mealName.getText().toString());
+        }
     }
 
     public void update(Meal meal) {
-        MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
+        if (validate()) {
+            MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
-        mealViewModel.update(meal, binding.mealName.getText().toString());
+            mealViewModel.update(meal, binding.mealName.getText().toString());
+        }
     }
 
 
@@ -106,5 +112,16 @@ public class CreateMeal extends AppCompatActivity {
         MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
         mealViewModel.delete(meal);
+    }
+
+    private boolean validate() {
+        boolean validated = true;
+
+        if (TextUtils.isEmpty(this.binding.mealName.getText())) {
+            this.binding.mealName.setError("Please enter name");
+            validated = false;
+        }
+
+        return validated;
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.lowelostudents.caloriecounter.data.LiveDataTuple;
 import com.lowelostudents.caloriecounter.databinding.FragmentFoodhubBinding;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
+import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
@@ -25,12 +27,15 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.SneakyThrows;
 
 public class FoodhubFragment extends Fragment {
     private FragmentFoodhubBinding binding;
     private LiveDataTuple<Meal, Food> dataSet;
+    private boolean mealChecked = true;
+    private boolean foodChecked = true;
 
     // TODO generify, interface
     @SneakyThrows
@@ -64,6 +69,54 @@ public class FoodhubFragment extends Fragment {
         foodList.setAdapter(recyclerViewAdapter);
 
         setEventHandlers(recyclerViewAdapter);
+
+        this.binding.foodToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                foodChecked = b;
+                List<Nutrients> allData = recyclerViewAdapter.getAllDataSet();
+
+                if (!foodChecked) {
+                    if(mealChecked)  {
+                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Food.class).collect(Collectors.toList()));
+                    } else {
+                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Food.class && item.getClass() != Meal.class).collect(Collectors.toList()));
+                    }
+                } else {
+                    if (mealChecked) {
+                        recyclerViewAdapter.setDataSet(allData);
+                    } else {
+                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Meal.class).collect(Collectors.toList()));
+                    }
+                }
+
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
+
+        this.binding.mealToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mealChecked = b;
+                List<Nutrients> allData = recyclerViewAdapter.getAllDataSet();
+
+                if(!mealChecked){
+                    if(foodChecked) {
+                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Meal.class).collect(Collectors.toList()));
+                    } else {
+                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Meal.class && item.getClass() != Food.class).collect(Collectors.toList()));
+                    }
+                } else {
+                    if (foodChecked) {
+                        recyclerViewAdapter.setDataSet(allData);
+                    } else {
+                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Food.class).collect(Collectors.toList()));
+                    }
+                }
+
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
 
         View root = binding.getRoot();
         return root;
