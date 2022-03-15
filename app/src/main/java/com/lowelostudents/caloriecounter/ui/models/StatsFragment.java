@@ -48,7 +48,7 @@ public class StatsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-//        user = userViewModel.getUser().blockingGet();
+        user = userViewModel.getUser().blockingFirst();
 
         this.binding = FragmentStatsBinding.inflate(inflater, container, false);
         this.dataSet = new LiveDataTuplePieEntries(dashboardViewModel.getDayMeals(), dashboardViewModel.getDayFoods(), this.user);
