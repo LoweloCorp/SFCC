@@ -24,6 +24,7 @@ public class LiveDataTuplePieEntries extends MediatorLiveData<List<PieEntry>> {
     private List<Meal> listOne = Collections.emptyList();
     private List<Food> listTwo = Collections.emptyList();
     private User user;
+
     public LiveDataTuplePieEntries(LiveData<List<Meal>> liveListOne, LiveData<List<Food>> liveListTwo, User user) {
         this.user = user;
 

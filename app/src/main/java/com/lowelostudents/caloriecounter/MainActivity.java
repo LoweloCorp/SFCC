@@ -18,7 +18,7 @@ import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
-// TODO SEARCHBAR (either instantiate fragment or navigate), Refactoring
+// TODO Refactoring
 // TODO Initial Datasets
 // TODO check overuse eventhandling service, seperation of concerns
 // TODO find nonblockin way for calculation of pie entries with users calory pensum

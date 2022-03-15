@@ -2,12 +2,17 @@ package com.lowelostudents.caloriecounter;
 
 import static junit.framework.TestCase.assertEquals;
 
+import android.util.Log;
+
 import org.junit.Test;
 
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.NutrientService;
+
+import info.debatty.java.stringsimilarity.Levenshtein;
+import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -43,6 +48,7 @@ public class UnitTests {
         food.setProteinGram(1);
         food.setFatGram(1);
         food.setGramTotal(3);
+        food.setPortionSize(3);
         food2.setName("Name2");
         food2.setGramTotal(10);
         food2.setCalPerPortion(5);
@@ -61,6 +67,16 @@ public class UnitTests {
     }
 
     @Test
-    public void typeConverterServiceDate(){
+    public void stringSimiliarity(){
+        NormalizedLevenshtein levenshtein = new NormalizedLevenshtein();
+        Levenshtein levenshteinigung = new Levenshtein();
+        String stringOne = "Kohlbraten";
+        String stringTwo = "tqwtqtqwtq";
+
+        double distance = levenshtein.distance(stringOne, stringTwo);
+        double distancet = levenshteinigung.distance(stringOne, stringTwo);
+
+        System.out.println(String.valueOf(distance));
+        System.out.println(String.valueOf(distancet));
     }
 }
