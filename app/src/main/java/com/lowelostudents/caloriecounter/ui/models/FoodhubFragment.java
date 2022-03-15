@@ -41,7 +41,7 @@ public class FoodhubFragment extends Fragment {
     private LiveDataTuple<Meal, Food> dataSet;
     private boolean mealChecked = true;
     private boolean foodChecked = true;
-
+    private GenericRecyclerViewAdapter recyclerViewAdapter;
     // TODO generify, interface
     @SneakyThrows
     private void setEventHandlers(Object recyclerViewAdapter) {
@@ -68,7 +68,7 @@ public class FoodhubFragment extends Fragment {
         this.binding = FragmentFoodhubBinding.inflate(inflater, container, false);
         this.dataSet = new LiveDataTuple<>(mealViewModel.getMeals(), foodViewModel.getFoods());
 
-        final GenericRecyclerViewAdapter recyclerViewAdapter = new GenericRecyclerViewAdapter(this.getContext());
+        recyclerViewAdapter = new GenericRecyclerViewAdapter(this.getContext());
         final RecyclerView foodList = binding.foodList;
         foodList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         foodList.setAdapter(recyclerViewAdapter);
@@ -124,25 +124,29 @@ public class FoodhubFragment extends Fragment {
         });
 
         View root = binding.getRoot();
+
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         MainActivity mainActivity = (MainActivity) getActivity();
         SearchView searchView = mainActivity.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            private final Levenshtein levenSeinShtein = new Levenshtein();
-            final List<Nutrients> allData = recyclerViewAdapter.getAllDataSet();
             @Override
             public boolean onQueryTextSubmit(String s) {
-                FilterService filterService = FilterService.getInstance();
-                recyclerViewAdapter.setDataSet(filterService.filterListByLevenshtein(recyclerViewAdapter.getDataSet(), s));
-                recyclerViewAdapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                FilterService filterService = FilterService.getInstance();
+                recyclerViewAdapter.setDataSet(filterService.filterListByLevenshtein(recyclerViewAdapter.getDataSet(), s));
+                recyclerViewAdapter.notifyDataSetChanged();
                 return false;
             }
         });
-        return root;
     }
 
     @Override

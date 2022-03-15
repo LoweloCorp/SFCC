@@ -14,7 +14,7 @@ import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-// TODO check overusage of service
+// TODO check overusage of service, rework of this service build generic eventlistneers instead
 public class EventHandlingService {
     private static EventHandlingService instance;
 

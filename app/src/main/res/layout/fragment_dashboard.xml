@@ -8,6 +8,17 @@
     android:padding="15dp"
     tools:context=".ui.models.DashboardFragment">
 
+    <Button
+        android:id="@+id/settings"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginStart="1dp"
+        android:layout_weight="1"
+        android:background="@color/teal_700"
+        android:text="Settings"
+        android:textColor="@color/White" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodList"
         android:layout_width="match_parent"

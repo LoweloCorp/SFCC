@@ -10,6 +10,7 @@ import com.lowelostudents.caloriecounter.models.entities.User;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
 @Dao
@@ -21,5 +22,5 @@ public abstract class UserDao extends CRUDDao<User> {
     public abstract LiveData<User> getObservable(long id);
 
     @Query("SELECT * FROM User WHERE id = :id")
-    public abstract Single<User> get(long id);
+    public abstract Observable<User> get(long id);
 }
