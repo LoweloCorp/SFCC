@@ -18,6 +18,7 @@ import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
+import com.lowelostudents.caloriecounter.ui.SettingsActivity;
 import com.lowelostudents.caloriecounter.ui.viewmodels.DashboardViewModel;
 
 import java.lang.reflect.Method;
@@ -36,6 +37,7 @@ public class DashboardFragment extends Fragment {
         Method method = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
 
         eventHandlingService.onChangedInvokeMethod(getViewLifecycleOwner(), this.dataSet, recyclerViewAdapter, method);
+        eventHandlingService.onClickStartActivityFromContext(binding.settings, this.getContext(), SettingsActivity.class);
     }
 
 

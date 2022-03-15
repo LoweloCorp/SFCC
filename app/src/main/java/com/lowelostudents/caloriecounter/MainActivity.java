@@ -1,6 +1,9 @@
 package com.lowelostudents.caloriecounter;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,8 +21,7 @@ import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
-// TODO Refactoring
-// TODO Initial Datasets
+// TODO Refactoring, Delete only by ID, Remove from day animation / Feedback, Enter Calories, Impement Action bar
 // TODO check overuse eventhandling service, seperation of concerns
 // TODO find nonblockin way for calculation of pie entries with users calory pensum
 public class MainActivity extends AppCompatActivity {
@@ -50,4 +52,6 @@ public class MainActivity extends AppCompatActivity {
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
         workManager.enqueue(oneTimeWorkRequest);
     }
+
+
 }

@@ -45,7 +45,6 @@ public class CRUDRepository<T> {
 
         executor.execute(() -> {
             id.set(crudDao.insert(t));
-            Log.i("ID", String.valueOf(id.get()[0].intValue()));
         });
         return id.get();
     }

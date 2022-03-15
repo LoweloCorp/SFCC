@@ -1,14 +1,19 @@
 package com.lowelostudents.caloriecounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -23,6 +28,8 @@ import com.lowelostudents.caloriecounter.ui.models.CreateFood;
 import com.lowelostudents.caloriecounter.ui.models.CreateMeal;
 import com.lowelostudents.caloriecounter.ui.models.FoodhubFragment;
 
+import java.util.List;
+
 public class HeaderFragment extends Fragment {
 
     private FragmentHeaderBinding binding;
@@ -36,31 +43,30 @@ public class HeaderFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         this.binding = FragmentHeaderBinding.inflate(inflater, container, false);
-
-        MainActivity mainActivity = (MainActivity) getActivity();
-
-        binding.searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.navigation_foodhub);
-            }
-        });
-
-        binding.searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
-                navController.navigate(R.id.navigation_dashboard);
-                return false;
-            }
-        });
-
         setEventHandlers();
         View root = binding.getRoot();
         return root;
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        List<Fragment> fragmentList = mainActivity.getSupportFragmentManager().getFragments();
+
+        int id = binding.searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        EditText editText = (EditText) binding.searchView.findViewById(id);
+
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                NavController navController = Navigation.findNavController(mainActivity, R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.navigation_foodhub);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -68,5 +74,4 @@ public class HeaderFragment extends Fragment {
         super.onDestroyView();
         this.binding = null;
     }
-
 }

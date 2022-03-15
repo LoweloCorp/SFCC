@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -33,7 +34,7 @@ public class StatsFragment extends Fragment {
     private FragmentStatsBinding binding;
     private LiveDataTuplePieEntries dataSet;
     private User user;
-
+    private PieChart barChart;
     @SneakyThrows
     private void setEventHandlers() {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
@@ -47,11 +48,29 @@ public class StatsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        user = userViewModel.getUser().blockingGet();
+//        user = userViewModel.getUser().blockingGet();
 
         this.binding = FragmentStatsBinding.inflate(inflater, container, false);
         this.dataSet = new LiveDataTuplePieEntries(dashboardViewModel.getDayMeals(), dashboardViewModel.getDayFoods(), this.user);
-
+        barChart = binding.nutrientGauge;
+        barChart.getDescription().setEnabled(false);
+        barChart.setCenterText("Nutrient Gauge");
+        barChart.setEntryLabelColor(Color.BLACK);
+        barChart.setExtraBottomOffset(30f);
+        barChart.setExtraLeftOffset(38f);
+        barChart.setExtraRightOffset(38f);
+        //legend attributes
+        Legend legend = barChart.getLegend();
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setTextSize(12);
+        legend.setFormSize(20);
+        legend.setFormToTextSpace(4);
+        legend.setYOffset(30);
+        legend.setXOffset(-5);
+        //to wrap legend text
+//        legend.setWordWrapEnabled(true);
+        Log.d("legend " ,legend.getEntries().toString());
+        barChart.animate();
         setEventHandlers();
 
         View root = binding.getRoot();
@@ -60,9 +79,9 @@ public class StatsFragment extends Fragment {
     }
 
     public void handleDatasetChanged(final List<PieEntry> pieEntries) {
-        PieChart barChart = binding.nutrientGauge;
         barChart.invalidate();
-        PieDataSet barDataSet = new PieDataSet(pieEntries, "myDataset");
+        PieDataSet barDataSet = new PieDataSet(pieEntries, null);
+        barDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(16f);
@@ -70,9 +89,7 @@ public class StatsFragment extends Fragment {
         PieData barData = new PieData(barDataSet);
 
         barChart.setData(barData);
-        barChart.getDescription().setEnabled(false);
-        barChart.setCenterText("Nutrient Gauge");
-        barChart.animate();
+
     }
 
     public void handleUserChanged(final User user) {

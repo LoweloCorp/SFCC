@@ -8,12 +8,13 @@ import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import lombok.Getter;
 
 public class UserRepo extends CRUDRepository<User> {
     @Getter
-    private Single<User> user;
+    private Observable<User> user;
 
     public UserRepo(Context context) {
         super(context);
