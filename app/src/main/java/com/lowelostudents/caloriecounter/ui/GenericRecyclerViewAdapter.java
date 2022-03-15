@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
@@ -34,7 +35,10 @@ import lombok.SneakyThrows;
 // TODO Generify definitely.
 
 public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecyclerViewAdapter.ViewHolder> {
-    protected final List<Nutrients> dataSet = new ArrayList<>();
+    @Getter @Setter
+    protected List<Nutrients> dataSet = new ArrayList<>();
+    @Getter
+    protected final List<Nutrients> allDataSet = new ArrayList<>();
     private final LayoutInflater layoutInflater;
     protected final Context context;
     @Setter
@@ -118,6 +122,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     public void handleDatasetChanged(final List<Nutrients> dataSet) {
         this.dataSet.clear();
         this.dataSet.addAll(dataSet);
+        this.allDataSet.addAll(dataSet);
 
         notifyDataSetChanged();
     }
