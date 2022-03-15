@@ -24,6 +24,7 @@ import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
+import com.lowelostudents.caloriecounter.services.FilterService;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
@@ -32,6 +33,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import info.debatty.java.stringsimilarity.Levenshtein;
 import lombok.SneakyThrows;
 
 public class FoodhubFragment extends Fragment {
@@ -125,14 +127,13 @@ public class FoodhubFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         SearchView searchView = mainActivity.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            private final Levenshtein levenSeinShtein = new Levenshtein();
             final List<Nutrients> allData = recyclerViewAdapter.getAllDataSet();
             @Override
             public boolean onQueryTextSubmit(String s) {
-                int i = s.length() /2;
-                String substring = s.substring(0, i);
-                String substringOne = s.substring(s.length()/2);
-
-                recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getName().matches(substring + "+" + substringOne + "*")).collect(Collectors.toList()));
+                FilterService filterService = FilterService.getInstance();
+                recyclerViewAdapter.setDataSet(filterService.filterListByLevenshtein(recyclerViewAdapter.getDataSet(), s));
+                recyclerViewAdapter.notifyDataSetChanged();
                 return false;
             }
 
