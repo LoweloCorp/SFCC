@@ -54,6 +54,8 @@ public class LiveDataTuplePieEntries extends MediatorLiveData<List<PieEntry>> {
 
         Nutrients nutrients = nutrientService.combineNutrients(combinedList);
 
+        Log.i("nutrientPIE", nutrients.toString());
+
         return chartFactory.generatePieEntries(nutrients, this.user);
     }
 }

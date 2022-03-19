@@ -1,10 +1,12 @@
 package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
@@ -43,20 +45,40 @@ public class CreateMeal extends AppCompatActivity {
     @SneakyThrows
     protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, ActivityMode mode) {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
-        Method save = this.getClass().getMethod("save");
+        Context context = getApplicationContext();
+        int toastDuration = Toast.LENGTH_SHORT;
         Method finish = Activity.class.getMethod("finish");
-        Method method = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
-        Method update = this.getClass().getMethod("update", Meal.class);
-        Method delete = this.getClass().getMethod("delete", Meal.class);
+        Method handleDatasetChanged = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
 
-        eventHandlingService.onChangedInvokeMethod(this, this.dataSet, recyclerViewAdapter, method);
         if (mode == ActivityMode.CREATE) {
-            eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, save);
+            binding.confirmButton.setOnClickListener(view -> {
+                boolean validated = validate();
+                if (validated) {
+                    save();
+                    CharSequence info = "Meal saved";
+                    Toast toast = Toast.makeText(context, info, toastDuration);
+                    toast.show();
+                    finish();
+                }
+            });
         } else {
-            eventHandlingService.onClickInvokeMethod(binding.deleteForeverButton, this, delete, this.meal);
-            eventHandlingService.onClickInvokeMethod(binding.confirmButton, this, update, this.meal);
+            binding.deleteForeverButton.setOnClickListener( view -> {
+                delete(this.meal);
+                CharSequence info = "Meal deleted";
+                Toast toast = Toast.makeText(context, info, toastDuration);
+                toast.show();
+                finish();
+            });
+            binding.confirmButton.setOnClickListener(view -> {
+                update(this.meal);
+                CharSequence info = "Meal updated";
+                Toast toast = Toast.makeText(context, info, toastDuration);
+                toast.show();
+                finish();
+            });
         }
 
+        eventHandlingService.onChangedInvokeMethod(this, this.dataSet, recyclerViewAdapter, handleDatasetChanged);
         eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
     }
 
@@ -117,8 +139,8 @@ public class CreateMeal extends AppCompatActivity {
     private boolean validate() {
         boolean validated = true;
 
-        if (TextUtils.isEmpty(this.binding.mealName.getText())) {
-            this.binding.mealName.setError("Please enter name");
+        if (!this.binding.mealName.getText().toString().matches("[a-zA-Z]+")) {
+            this.binding.mealName.setError("Please enter with characters A-Z a-z");
             validated = false;
         }
 
