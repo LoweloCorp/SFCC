@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,6 +23,7 @@ import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,8 +117,28 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
 
         if(this.activityMode == ActivityMode.CREATE)
             eventHandlingService.onClickInvokeMethod(button, viewModel, addToDay, data);
-        if(this.activityMode == ActivityMode.UPDATE)
-            eventHandlingService.onClickInvokeMethod(button, viewModel, removeFromDay, data);
+        if(this.activityMode == ActivityMode.UPDATE) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Context context = view.getContext().getApplicationContext();
+                        CharSequence methodName = "Removed from Day";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, methodName, duration);
+                        toast.show();
+                        removeFromDay.invoke(viewModel, data);
+                        dataSet.remove(position);
+                        notifyDataSetChanged();
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+
+
     }
 
     public void handleDatasetChanged(final List<Nutrients> dataSet) {

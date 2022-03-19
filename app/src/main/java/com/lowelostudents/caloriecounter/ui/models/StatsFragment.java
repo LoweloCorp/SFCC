@@ -60,6 +60,7 @@ public class StatsFragment extends Fragment {
         barChart.setExtraLeftOffset(38f);
         barChart.setExtraRightOffset(38f);
         //legend attributes
+        // TODO legend not centered for whatever reason
         Legend legend = barChart.getLegend();
         legend.setForm(Legend.LegendForm.CIRCLE);
         legend.setTextSize(12);
