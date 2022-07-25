@@ -30,22 +30,32 @@ public class Food extends Nutrients implements Serializable {
     @Ignore
     private transient NutrientService nutrientService = NutrientService.getInstance();
 
-    public Food(String name, int carbsGramPortion, int proteinGramPortion, int fatGramPortion, int portionSize, int gramTotal) {
+    private boolean isAggregation = false;
+
+    // TODO NEXT gramTotal Nullable
+    public Food(String name, double carbsGramPortion, double proteinGramPortion, double fatGramPortion, double portionSize, double gramTotal) {
         this.name = name;
         this.carbsGram = carbsGramPortion;
         this.proteinGram = proteinGramPortion;
         this.fatGram = fatGramPortion;
+
         this.portionSize = portionSize;
         this.gramTotal = gramTotal;
-        nutrientService.calculateNutrients(this);
     }
 
-    public Food(String name, int gramTotal, int calPerPortion, int portionSize) {
+    // TODO Deprercate enforce macro nutrients
+    public Food(String name, double gramTotal, double calPerPortion, double portionSize) {
         this.name = name;
         this.gramTotal = gramTotal;
         this.calPerPortion = calPerPortion;
         this.portionSize = portionSize;
-        nutrientService.calculateNutrients(this);
+    }
+
+    public Food(String name, List<Food> foodList, double multiplier) {
+        this.isAggregation = true;
+        this.name = name;
+        nutrientService.combineNutrients(this, foodList);
+        nutrientService.applyMultiplier(this, multiplier);
     }
 
     @Ignore

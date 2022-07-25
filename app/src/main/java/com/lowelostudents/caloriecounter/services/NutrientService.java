@@ -24,28 +24,28 @@ public class NutrientService {
     // TODO universal formulas
 
     public <T extends Nutrients> void calculateNutrients(T nutrients) {
-        int carbsCalPortion, proteinCalPortion, fatCalPortion;
+        double carbsCalPortion, proteinCalPortion, fatCalPortion;
         double carbsCalGram, proteinCalGram, fatCalGram;
 
         carbsCalPortion = nutrients.getCarbsGram() * 4;
         proteinCalPortion = nutrients.getProteinGram() * 4;
         fatCalPortion = nutrients.getFatGram() * 9;
+
         if (nutrients.getCalPerPortion() == 0) {
-            // 8 + 4 + 18 = 30
             nutrients.setCalPerPortion(carbsCalPortion + proteinCalPortion + fatCalPortion);
-            // 2.666
-            carbsCalGram = (double) carbsCalPortion / nutrients.getPortionSize();
-            // 1.333
-            proteinCalGram = (double) proteinCalPortion / nutrients.getPortionSize();
-            // 6
-            fatCalGram = (double) fatCalPortion / nutrients.getPortionSize();
-            nutrients.setCarbsCal((int) Math.round(carbsCalGram * nutrients.getGramTotal()));
-            nutrients.setProteinCal((int) Math.round(proteinCalGram * nutrients.getGramTotal()));
-            // 36
-            nutrients.setFatCal((int) Math.round(fatCalGram * nutrients.getGramTotal()));
+
+            carbsCalGram = carbsCalPortion / nutrients.getPortionSize();
+            proteinCalGram = proteinCalPortion / nutrients.getPortionSize();
+            fatCalGram = fatCalPortion / nutrients.getPortionSize();
+
+            nutrients.setCarbsCal(carbsCalGram * nutrients.getGramTotal());
+            nutrients.setProteinCal(proteinCalGram * nutrients.getGramTotal());
+            nutrients.setFatCal(fatCalGram * nutrients.getGramTotal());
         }
-        nutrients.setCalPerGram((double) nutrients.getCalPerPortion() / nutrients.getPortionSize());
-        nutrients.setCalTotal((int) Math.round(nutrients.getCalPerGram() * nutrients.getGramTotal()));
+
+        nutrients.setCalPerGram(nutrients.getCalPerPortion() / nutrients.getPortionSize());
+
+        nutrients.setCalTotal(nutrients.getCalPerGram() * nutrients.getGramTotal());
     }
 
     public <T extends Nutrients, R extends Nutrients> void combineNutrients(T nutrients, List<R> nutrientList) {
@@ -68,6 +68,14 @@ public class NutrientService {
 
             nutrients.setGramTotal(nutrients.getGramTotal() + food.getGramTotal());
         });
+    }
+
+    public <T extends Nutrients> void applyMultiplier(T nutrients, double multiplier) {
+        nutrients.setFatCal(nutrients.getFatCal() * multiplier);
+        nutrients.setProteinCal(nutrients.getProteinCal() * multiplier);
+        nutrients.setCarbsCal(nutrients.getCarbsCal() * multiplier);
+        nutrients.setCalTotal(nutrients.getCalTotal() * multiplier);
+        nutrients.setGramTotal(nutrients.getGramTotal() * multiplier);
     }
 
     public <R extends Nutrients> Nutrients combineNutrients(List<R> nutrientList) {

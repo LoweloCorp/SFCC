@@ -1,6 +1,7 @@
 package com.lowelostudents.caloriecounter.tasks;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -44,12 +45,15 @@ public class DataPopulationTask extends Worker {
         if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
             Calendar localCal = Calendar.getInstance();
             localCal.roll(Calendar.DATE, -8);
-            dayDao.delete(Day.class, localCal.get(Calendar.DATE));
+            try {
+                dayDao.delete(Day.class, localCal.get(Calendar.DATE));
+            } catch (SQLiteException e) {
+                Log.e("Day not found", e.toString());
+            }
         }
 
         if (dayDao.getLatest() == null || cal.get(Calendar.DATE) != dayDao.getLatest().getDayId()) {
             Day day = new Day();
-
             dayDao.insertHotfix(day);
         } else {
             int delay = ((24 - cal.get(Calendar.HOUR_OF_DAY)) * 60) + cal.get(Calendar.MINUTE);

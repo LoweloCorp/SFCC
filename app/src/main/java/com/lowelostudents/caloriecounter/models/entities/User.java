@@ -25,7 +25,7 @@ public class User extends Nutrients {
     private String token;
     private String name;
 
-    public User(String token, String name, int calTotal) {
+    public User(String token, String name, double calTotal) {
         this.token = token;
         this.name = name;
         this.calTotal = calTotal;

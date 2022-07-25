@@ -20,6 +20,7 @@ import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 
+// TODO fix and complete tests
 public class UnitTests {
     @Test
     public void foodConstructor() {
@@ -59,11 +60,31 @@ public class UnitTests {
         ms.calculateNutrients(food2);
 
 
-        assertEquals(3, food.getPortionSize());
-        assertEquals(17, food.getCalPerPortion());
-        assertEquals(17, food.getCalTotal());
+        assertEquals(3d, food.getPortionSize());
+        assertEquals(17d, food.getCalPerPortion());
+        assertEquals(17d, food.getCalTotal());
 
-        assertEquals(25, food2.getCalTotal());
+        assertEquals(25d, food2.getCalTotal());
+    }
+
+    @Test
+    public void nutrientServiceCaloriesDecimal(){
+        Food food = new Food(), food2 = new Food();
+        food.setName("Name");
+        food.setCarbsGram(1.5);
+        food.setProteinGram(1.5);
+        food.setFatGram(1.5);
+        food.setGramTotal(100.5);
+        food.setPortionSize(100);
+
+
+        NutrientService ms = new NutrientService();
+        ms.calculateNutrients(food);
+
+        assertEquals(100d, food.getPortionSize());
+        assertEquals(25.5, food.getCalPerPortion());
+        assertEquals(0.255, food.getCalPerGram());
+        assertEquals(25.6275, food.getCalTotal());
     }
 
     @Test
@@ -76,7 +97,5 @@ public class UnitTests {
         double distance = levenshtein.distance(stringOne, stringTwo);
         double distancet = levenshteinigung.distance(stringOne, stringTwo);
 
-        System.out.println(String.valueOf(distance));
-        System.out.println(String.valueOf(distancet));
     }
 }

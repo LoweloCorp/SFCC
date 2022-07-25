@@ -34,10 +34,8 @@ public class MealViewModel extends AndroidViewModel {
     private final DayMealRepo dayMealRepo;
     private final MealFoodRepo mealFoodRepo;
     private final MealRepo mealRepo;
-//    public final List<Food> checkedNutrients = new ArrayList<>();
     public final HashMap<Integer, Food> checkedNutrients = new HashMap<>();
-//    @Getter @Setter
-//    private ActivityMode activityMode = ActivityMode.CREATE;
+
 
 
     public MealViewModel(Application context) {
@@ -49,21 +47,11 @@ public class MealViewModel extends AndroidViewModel {
         this.meals = repo.getMeals();
     }
 
-    public Long insert(Meal t) {
-        return repo.insert(t);
-    }
-
     public void addToDay(Meal meal) {
         Calendar cal = Calendar.getInstance();
         Day_Meal day_meal = new Day_Meal(meal.getId() ,cal.get(Calendar.DATE));
-        // TODO find best way for toggles
-//        if(this.activityMode == ActivityMode.CREATE){
-            dayMealRepo.insert(day_meal);
-//            this.activityMode = ActivityMode.UPDATE;
-//        } else {
-//            dayMealRepo.delete(day_meal);
-//            this.activityMode = ActivityMode.CREATE;
-//        }
+
+        dayMealRepo.insert(day_meal);
     }
 
     public void removeFromDay(Meal meal) {
@@ -78,6 +66,7 @@ public class MealViewModel extends AndroidViewModel {
         foods.forEach( food -> {
             meal_foods.add(new Meal_Food(food.getId(), mealName));
         });
+
 
         this.mealRepo.insert(meal);
         return this.mealFoodRepo.insert(meal_foods);

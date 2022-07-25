@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public abstract class FoodDao extends CRUDDao<Food> {
-    @Query("SELECT * FROM Food")
+    @Query("SELECT * FROM Food WHERE isAggregation = 0")
     public abstract LiveData<List<Food>> getAllObservable();
 
     @Query("SELECT * FROM Food Where id = :id")

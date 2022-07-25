@@ -20,15 +20,19 @@ public abstract class DayDao extends CRUDDao<Day> {
     public abstract Day getLatest();
 
     @Query("SELECT * FROM Day")
+    @Transaction
     public abstract List<Day_Food_Relation> getFoodsPerDay();
 
     @Query("SELECT * FROM Day WHERE dayId = :date")
+    @Transaction
     public abstract Day_Food_Relation getFoodByDate(int date);
 
     @Query("SELECT * FROM Day")
+    @Transaction
     public abstract List<Day_Meal_Relation> getMealsPerDay();
 
     @Query("SELECT * FROM Day WHERE dayId = :date")
+    @Transaction
     public abstract Day_Meal_Relation getMealByDate(int date);
 
     @Query("SELECT * FROM Day")

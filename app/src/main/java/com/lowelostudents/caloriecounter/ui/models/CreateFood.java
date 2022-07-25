@@ -21,9 +21,9 @@ import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.NutrientService;
+import com.lowelostudents.caloriecounter.services.OpenFoodFactsService;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -39,6 +39,7 @@ public class CreateFood extends AppCompatActivity {
     private ActivityMode mode = ActivityMode.CREATE;
     @Getter
     private Food food;
+    NutrientService nutrientService = NutrientService.getInstance();
 
 
     @SneakyThrows
@@ -172,8 +173,10 @@ public class CreateFood extends AppCompatActivity {
     }
 
     public void save() {
-        // TODO use setters call nutrientService
-        // TODO Abstract nutrientService to efficiently produce live data to auto-fill input fields with calculated values
+
+        OpenFoodFactsService openFoodFactsService = OpenFoodFactsService.getInstance();
+
+        openFoodFactsService.getProduct(this.model.getRepo(), 20917289);
 
         Food food = new Food(
                 this.binding.foodName.getText().toString(),
@@ -183,6 +186,8 @@ public class CreateFood extends AppCompatActivity {
                 Integer.parseInt(this.binding.portionSize.getText().toString()),
                 Integer.parseInt(this.binding.totalSize.getText().toString())
         );
+
+        nutrientService.calculateNutrients(food);
 
         this.model.insert(food);
     }
@@ -200,6 +205,8 @@ public class CreateFood extends AppCompatActivity {
         Log.i("foodName", String.valueOf(food.getCarbsGram()));
         updatedFood.setId(food.getId());
         Log.i("FoodID", String.valueOf(updatedFood.getId()));
+
+        nutrientService.calculateNutrients(updatedFood);
 
         this.model.update(updatedFood);
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
+import com.lowelostudents.caloriecounter.services.FilterService;
 import com.lowelostudents.caloriecounter.ui.CreateMealRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
@@ -50,6 +52,7 @@ public class CreateMeal extends AppCompatActivity {
         Method finish = Activity.class.getMethod("finish");
         Method handleDatasetChanged = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
 
+        // TODO use filter service for search
         if (mode == ActivityMode.CREATE) {
             binding.confirmButton.setOnClickListener(view -> {
                 boolean validated = validate();
@@ -98,6 +101,21 @@ public class CreateMeal extends AppCompatActivity {
         foodList.setLayoutManager(new LinearLayoutManager(this));
         foodList.setAdapter(recyclerViewAdapter);
         Bundle bundle = getIntent().getExtras();
+
+        this.binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                FilterService filterService = FilterService.getInstance();
+                recyclerViewAdapter.setDataSet(filterService.filterListByLevenshtein(recyclerViewAdapter.getDataSet(), s));
+                recyclerViewAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
 
         if (bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");

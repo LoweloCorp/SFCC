@@ -1,12 +1,15 @@
 package com.lowelostudents.caloriecounter.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
@@ -92,6 +96,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         return dataSet.size();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     protected void setEventHandlers(View cardItem, String cardType, Nutrients data, int position) throws Exception {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
@@ -104,6 +109,37 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         Method removeFromDay = nutrientDataClass.getMethod("removeFromDay", data.getClass());
 
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
+        TabLayout quantitySelect = cardItem.findViewById(R.id.quantitySelect);
+        EditText quantity = cardItem.findViewById(R.id.quantity);
+
+        quantity.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                quantitySelect.selectTab(quantitySelect.getTabAt(2));
+                return false;
+            }
+        });
+
+        quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                quantity.clearFocus();
+                switch(tab.getPosition()) {
+                    case 0: quantity.setText(String.valueOf(data.getPortionSize()));
+                    case 1: quantity.setText(String.valueOf(data.getGramTotal()));
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         cardItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,6 +152,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             });
 
         if(this.activityMode == ActivityMode.CREATE)
+            // TODO NEXT AddToDay option custom Gram / Serving Size
             eventHandlingService.onClickInvokeMethod(button, viewModel, addToDay, data);
         if(this.activityMode == ActivityMode.UPDATE) {
             button.setOnClickListener(new View.OnClickListener() {

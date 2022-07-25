@@ -16,18 +16,19 @@ public class ChartFactory {
         return instance;
     }
 
+    // TODO maybe reflection dynamic or switchcase
     public <T extends Nutrients> List<PieEntry> generatePieEntries(T nutrient, User user) {
         List<PieEntry> pieEntries = new ArrayList<>();
 
         if(nutrient.getCarbsCal() != 0)
-        pieEntries.add(new PieEntry(nutrient.getCarbsCal(), "Carbs"));
+        pieEntries.add(new PieEntry((float)nutrient.getCarbsCal(), "Carbs"));
         if(nutrient.getProteinCal() != 0)
-        pieEntries.add(new PieEntry(nutrient.getProteinCal(), "Protein"));
+        pieEntries.add(new PieEntry((float)nutrient.getProteinCal(), "Protein"));
         if(nutrient.getFatCal() != 0)
-        pieEntries.add(new PieEntry(nutrient.getFatCal(), "Fat"));
+        pieEntries.add(new PieEntry((float)nutrient.getFatCal(), "Fat"));
         if(nutrient.getCarbsCal() == 0 || nutrient.getProteinCal() == 0 || nutrient.getFatCal() == 0)
-            pieEntries.add(new PieEntry(nutrient.getCalTotal() - (nutrient.getCarbsCal() + nutrient.getProteinCal() + nutrient.getFatCal())));
-        pieEntries.add(new PieEntry(Math.max(0, user.getCalTotal() - nutrient.getCalTotal()), "Calories left"));
+            pieEntries.add(new PieEntry((float) (nutrient.getCalTotal() - (nutrient.getCarbsCal() + nutrient.getProteinCal() + nutrient.getFatCal()))));
+        pieEntries.add(new PieEntry((float)(Math.max(0, user.getCalTotal() - nutrient.getCalTotal())), "Calories left"));
 
         return pieEntries;
     }

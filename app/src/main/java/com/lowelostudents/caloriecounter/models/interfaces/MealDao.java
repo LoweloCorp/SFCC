@@ -14,9 +14,11 @@ import java.util.List;
 @Dao
 public abstract class MealDao extends CRUDDao<Meal> {
     @Query("SELECT * FROM Meal")
+    @Transaction
     public abstract List<Meal_Food_Relation> getFoodPerMeal();
 
     @Query("SELECT * FROM Meal WHERE id = :id")
+    @Transaction
     public abstract List<Meal_Food_Relation> getFoodPerMeal(long id);
 
     @Query("SELECT * FROM Meal")

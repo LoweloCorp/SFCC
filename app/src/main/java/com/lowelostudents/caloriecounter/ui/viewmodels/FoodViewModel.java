@@ -31,8 +31,6 @@ public class FoodViewModel extends AndroidViewModel {
     private final FoodRepo repo;
     private final DayFoodRepo dayFoodRepo;
     private final MealFoodRepo mealFoodRepo;
-//    @Getter @Setter
-//    private ActivityMode activityMode = ActivityMode.CREATE;
 
     public FoodViewModel(Application context) {
         super(context);
@@ -40,6 +38,10 @@ public class FoodViewModel extends AndroidViewModel {
         dayFoodRepo = new DayFoodRepo(context.getApplicationContext());
         mealFoodRepo = new MealFoodRepo(context.getApplicationContext());
         foods = repo.getFoods();
+    }
+
+    public FoodRepo getRepo() {
+        return this.repo;
     }
 
     public Long insert(Food t) {
@@ -50,13 +52,7 @@ public class FoodViewModel extends AndroidViewModel {
         Calendar cal = Calendar.getInstance();
         Day_Food day_food = new Day_Food(food.getId() , cal.get(Calendar.DATE));
 
-//        if (this.activityMode == ActivityMode.CREATE) {
-            dayFoodRepo.insert(day_food);
-//            this.activityMode = ActivityMode.UPDATE;
-//        } else {
-//            dayFoodRepo.delete(day_food);
-//            this.activityMode = ActivityMode.CREATE;
-//        }
+        dayFoodRepo.insert(day_food);
     }
 
     public void removeFromDay(Food food) {

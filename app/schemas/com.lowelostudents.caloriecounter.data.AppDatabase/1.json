@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "64ae8a30dde857a47801aa126c856387",
+    "identityHash": "b0f881dc21e1cc9442479944ff1f3445",
     "entities": [
       {
         "tableName": "Day",
@@ -32,11 +32,17 @@
       },
       {
         "tableName": "Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isAggregation` INTEGER NOT NULL, `name` TEXT, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAggregation",
+            "columnName": "isAggregation",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -49,61 +55,61 @@
           {
             "fieldPath": "calTotal",
             "columnName": "calTotal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "gramTotal",
             "columnName": "gramTotal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "carbsGram",
             "columnName": "carbsGram",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "carbsCal",
-            "columnName": "carbsCal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinGram",
-            "columnName": "proteinGram",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinCal",
-            "columnName": "proteinCal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "fatGram",
             "columnName": "fatGram",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinGram",
+            "columnName": "proteinGram",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsCal",
+            "columnName": "carbsCal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinCal",
+            "columnName": "proteinCal",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "fatCal",
             "columnName": "fatCal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "portionSize",
             "columnName": "portionSize",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "calPerPortion",
             "columnName": "calPerPortion",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -175,7 +181,7 @@
       },
       {
         "tableName": "Meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -192,61 +198,61 @@
           {
             "fieldPath": "calTotal",
             "columnName": "calTotal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "gramTotal",
             "columnName": "gramTotal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "carbsGram",
             "columnName": "carbsGram",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "carbsCal",
-            "columnName": "carbsCal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinGram",
-            "columnName": "proteinGram",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinCal",
-            "columnName": "proteinCal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "fatGram",
             "columnName": "fatGram",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinGram",
+            "columnName": "proteinGram",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsCal",
+            "columnName": "carbsCal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinCal",
+            "columnName": "proteinCal",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "fatCal",
             "columnName": "fatCal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "portionSize",
             "columnName": "portionSize",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "calPerPortion",
             "columnName": "calPerPortion",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -364,7 +370,7 @@
       },
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `token` TEXT, `name` TEXT, `calTotal` INTEGER NOT NULL, `gramTotal` INTEGER NOT NULL, `carbsGram` INTEGER NOT NULL, `carbsCal` INTEGER NOT NULL, `proteinGram` INTEGER NOT NULL, `proteinCal` INTEGER NOT NULL, `fatGram` INTEGER NOT NULL, `fatCal` INTEGER NOT NULL, `portionSize` INTEGER NOT NULL, `calPerPortion` INTEGER NOT NULL, `calPerGram` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `token` TEXT, `name` TEXT, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -387,61 +393,61 @@
           {
             "fieldPath": "calTotal",
             "columnName": "calTotal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "gramTotal",
             "columnName": "gramTotal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "carbsGram",
             "columnName": "carbsGram",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "carbsCal",
-            "columnName": "carbsCal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinGram",
-            "columnName": "proteinGram",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinCal",
-            "columnName": "proteinCal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "fatGram",
             "columnName": "fatGram",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinGram",
+            "columnName": "proteinGram",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsCal",
+            "columnName": "carbsCal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinCal",
+            "columnName": "proteinCal",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "fatCal",
             "columnName": "fatCal",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "portionSize",
             "columnName": "portionSize",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "calPerPortion",
             "columnName": "calPerPortion",
-            "affinity": "INTEGER",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -464,7 +470,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64ae8a30dde857a47801aa126c856387')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b0f881dc21e1cc9442479944ff1f3445')"
     ]
   }
 }
