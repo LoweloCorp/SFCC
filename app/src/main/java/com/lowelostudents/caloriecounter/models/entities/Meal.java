@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 
+// TODO later can deprecate because of foot aggregation/Nutrientaggregation
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)

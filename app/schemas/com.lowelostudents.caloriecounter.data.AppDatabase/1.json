@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b0f881dc21e1cc9442479944ff1f3445",
+    "identityHash": "5c6eb8e0b2cb7f37f4ee3ebd4d47b8b3",
     "entities": [
       {
         "tableName": "Day",
@@ -181,11 +181,17 @@
       },
       {
         "tableName": "Meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `isAggregation` INTEGER NOT NULL, `name` TEXT, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAggregation",
+            "columnName": "isAggregation",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -370,7 +376,7 @@
       },
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `token` TEXT, `name` TEXT, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `token` TEXT, `name` TEXT, `isAggregation` INTEGER NOT NULL, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -389,6 +395,12 @@
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "isAggregation",
+            "columnName": "isAggregation",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "calTotal",
@@ -470,7 +482,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b0f881dc21e1cc9442479944ff1f3445')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5c6eb8e0b2cb7f37f4ee3ebd4d47b8b3')"
     ]
   }
 }

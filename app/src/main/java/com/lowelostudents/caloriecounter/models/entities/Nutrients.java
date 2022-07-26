@@ -14,6 +14,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Nutrients implements Serializable {
+    protected boolean isAggregation = false;
+
     @Ignore
     private static final long serialVersionUID = 1L;
     @EqualsAndHashCode.Include

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -45,14 +46,14 @@ public class FoodViewModel extends AndroidViewModel {
     }
 
     public Long insert(Food t) {
-        return repo.insert(t);
+        return repo.insert(t, null);
     }
 
     public void addToDay(Food food) {
         Calendar cal = Calendar.getInstance();
         Day_Food day_food = new Day_Food(food.getId() , cal.get(Calendar.DATE));
 
-        dayFoodRepo.insert(day_food);
+        dayFoodRepo.insert(day_food, null);
     }
 
     public void removeFromDay(Food food) {
@@ -75,6 +76,10 @@ public class FoodViewModel extends AndroidViewModel {
         repo.delete(t);
         dayFoodRepo.delete(Day_Food.class, t.getId());
         mealFoodRepo.delete(Meal_Food.class, t.getId());
+    }
+
+    public void deleteById(long id) {
+        repo.delete(Food.class, id);
     }
 
     public void deleteAll(Food t) {

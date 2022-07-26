@@ -30,7 +30,6 @@ public class Food extends Nutrients implements Serializable {
     @Ignore
     private transient NutrientService nutrientService = NutrientService.getInstance();
 
-    private boolean isAggregation = false;
 
     // TODO NEXT gramTotal Nullable
     public Food(String name, double carbsGramPortion, double proteinGramPortion, double fatGramPortion, double portionSize, double gramTotal) {
@@ -51,7 +50,7 @@ public class Food extends Nutrients implements Serializable {
         this.portionSize = portionSize;
     }
 
-    public Food(String name, List<Food> foodList, double multiplier) {
+    public Food(String name, List<Nutrients> foodList, double multiplier) {
         this.isAggregation = true;
         this.name = name;
         nutrientService.combineNutrients(this, foodList);

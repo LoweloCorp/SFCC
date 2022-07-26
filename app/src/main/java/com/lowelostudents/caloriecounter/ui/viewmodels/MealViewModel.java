@@ -51,7 +51,7 @@ public class MealViewModel extends AndroidViewModel {
         Calendar cal = Calendar.getInstance();
         Day_Meal day_meal = new Day_Meal(meal.getId() ,cal.get(Calendar.DATE));
 
-        dayMealRepo.insert(day_meal);
+        dayMealRepo.insert(day_meal, null);
     }
 
     public void removeFromDay(Meal meal) {
@@ -68,7 +68,7 @@ public class MealViewModel extends AndroidViewModel {
         });
 
 
-        this.mealRepo.insert(meal);
+        this.mealRepo.insert(meal, null);
         return this.mealFoodRepo.insert(meal_foods);
     }
 
@@ -100,6 +100,10 @@ public class MealViewModel extends AndroidViewModel {
         repo.delete(t);
         mealFoodRepo.delete(Meal_Food.class, t.getName());
         dayMealRepo.delete(Day_Meal.class, t.getId());
+    }
+
+    public void deleteById(long id) {
+        repo.delete(Meal.class, id);
     }
 
     public void deleteFood(Food t) {

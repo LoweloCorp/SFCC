@@ -3,6 +3,9 @@ package com.lowelostudents.caloriecounter.data;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
+import com.lowelostudents.caloriecounter.data.repositories.InsertCallback;
 import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import java.util.ArrayList;
@@ -28,13 +31,16 @@ public class CRUDRepository<T> {
         this.appdb = AppDatabase.getInMemoryInstance(context);
     }
 
-    public Long insert(T t) {
+    public Long insert(T t, @Nullable InsertCallback insertCallback) {
         AtomicReference<Long> id = new AtomicReference<>();
 
         executor.execute(() -> {
             id.set(crudDao.insert(t));
 
             Log.i("ID", String.valueOf(id.get().intValue()));
+
+            if(insertCallback != null)
+            insertCallback.onInsert(id.get());
         });
 
         return id.get();
