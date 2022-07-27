@@ -6,10 +6,13 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.lowelostudents.caloriecounter.models.CRUDDao;
+import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
 
 @Dao
 public abstract class MealDao extends CRUDDao<Meal> {
@@ -34,4 +37,12 @@ public abstract class MealDao extends CRUDDao<Meal> {
     @Transaction
     @Query("SELECT * FROM Meal WHERE id = :id")
     public abstract LiveData<Meal_Food_Relation> getObservableTransaction(long id);
+
+    @Transaction
+    @Query("SELECT * FROM Food INNER JOIN Meal_Food ON Food.id = Meal_Food.id WHERE Meal_Food.name = :mealName")
+    public abstract LiveData<List<Food>> getObservableFoodByMeal(String mealName);
+
+    @Transaction
+    @Query("SELECT * FROM Food INNER JOIN Meal_Food ON Food.id = Meal_Food.id WHERE Meal_Food.name = :mealName")
+    public abstract Observable<List<Food>> getObservableFoodByMealRX(String mealName);
 }

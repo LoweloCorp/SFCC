@@ -3,22 +3,22 @@ package com.lowelostudents.caloriecounter.ui.models;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatemealBinding;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Meal;
+import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.FilterService;
 import com.lowelostudents.caloriecounter.ui.CreateMealRecyclerViewAdapter;
@@ -27,8 +27,12 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -37,12 +41,14 @@ public class CreateMeal extends AppCompatActivity {
     private ActivityCreatemealBinding binding;
     @Getter
     private MealViewModel model;
-    private LiveData<List<Food>> dataSet;
+    private Observable<List<Food>> dataSet;
     private CreateMealRecyclerViewAdapter recyclerViewAdapter;
     @Getter
     private ActivityMode mode = ActivityMode.CREATE;
     @Getter
     private Meal meal;
+
+    private ArrayList<Disposable> disposables = new ArrayList<>();
 
     @SneakyThrows
     protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, ActivityMode mode) {
@@ -65,7 +71,7 @@ public class CreateMeal extends AppCompatActivity {
                 }
             });
         } else {
-            binding.deleteForeverButton.setOnClickListener( view -> {
+            binding.deleteForeverButton.setOnClickListener(view -> {
                 delete(this.meal);
                 CharSequence info = "Meal deleted";
                 Toast toast = Toast.makeText(context, info, toastDuration);
@@ -81,10 +87,19 @@ public class CreateMeal extends AppCompatActivity {
             });
         }
 
-        eventHandlingService.onChangedInvokeMethod(this, this.dataSet, recyclerViewAdapter, handleDatasetChanged);
+        // TODO potentially deprecatable can call method on filter instead of observing
+//        eventHandlingService.onChangedInvokeMethod(this, this.dataSet, recyclerViewAdapter, handleDatasetChanged);
+
+        Disposable disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(
+                item -> {
+                    List<Nutrients> list = new ArrayList<>(item);
+                    recyclerViewAdapter.handleDatasetChanged(list);
+                }
+        );
+
+        this.disposables.add(disposable);
         eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,10 +109,14 @@ public class CreateMeal extends AppCompatActivity {
         FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
         setContentView(binding.getRoot());
 
-        this.dataSet = foodViewModel.getFoods();
+        if (this.mode == ActivityMode.CREATE) {
+            binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(1));
+            this.dataSet = foodViewModel.getFoodsRX();
+        }
 
         final RecyclerView foodList = binding.foodList;
         this.recyclerViewAdapter = new CreateMealRecyclerViewAdapter(this);
+        this.recyclerViewAdapter.setActivityMode(this.mode);
         foodList.setLayoutManager(new LinearLayoutManager(this));
         foodList.setAdapter(recyclerViewAdapter);
         Bundle bundle = getIntent().getExtras();
@@ -123,6 +142,55 @@ public class CreateMeal extends AppCompatActivity {
             Log.i("Mode", this.mode.toString());
             Log.i("Meal", this.meal.toString());
         }
+
+        if (this.mode == ActivityMode.UPDATE) {
+            binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(0));
+            this.dataSet = this.model.getMealFoods(this.meal.getName());
+            this.model.getMealFoods(this.meal.getName()).take(1).subscribe(value -> Log.w("NAMEvONGFOOD", value.get(0).getName()));
+        }
+
+        // TODO
+        binding.mealTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    if (mode == ActivityMode.CREATE) {
+                        Log.i("WHY AM I HERE IF CREATE I AM HERE HERE", "HERE I AM OR AM I HERE I AM?");
+
+                        recyclerViewAdapter.handleDatasetChanged(new ArrayList<>(recyclerViewAdapter.getMealViewModel().checkedFoods.values()));
+                    } else {
+                        Log.i("WHY AM I ELSE HERE", "HERE I AM OR AM I HERE I AM?");
+
+                        // TODO MAYBE USE CHECKED NUTRIENTS
+                        dataSet = model.getMealFoods(meal.getName());
+                        dataSet.observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(item -> {
+                            ArrayList<Nutrients> nutrients = new ArrayList<>(item);
+//                            nutrients.addAll(recyclerViewAdapter.getMealViewModel().checkedFoods.values());
+                            recyclerViewAdapter.handleDatasetChanged(nutrients);
+                            Log.i("item", item.toString());
+                        }, error -> Log.i("ERROR", error.toString()));
+                    }
+                } else {
+                    Log.i("WHY AM I HERE IF I AM HERE HERE", "HERE I AM OR AM I HERE I AM?");
+                        dataSet = foodViewModel.getFoodsRX();
+                        dataSet.observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(item -> {
+                            ArrayList<Nutrients> nutrients = new ArrayList<>(item);
+                            recyclerViewAdapter.handleDatasetChanged(nutrients);
+                            Log.i("item", item.toString());
+                        }, error -> Log.i("ERROR", error.toString()));
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         if (this.mode == ActivityMode.UPDATE)
             binding.deleteForeverButton.setVisibility(View.VISIBLE);
@@ -152,6 +220,12 @@ public class CreateMeal extends AppCompatActivity {
         MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
         mealViewModel.delete(meal);
+    }
+
+    @Override
+    public void onDestroy() {
+        this.disposables.forEach(Disposable::dispose);
+        super.onDestroy();
     }
 
     private boolean validate() {

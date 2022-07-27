@@ -49,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
                         calories.setText(String.valueOf(user.getCalTotal()));
                         this.user = user;
                     }
-            );
+            ).dispose();
 
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

@@ -12,12 +12,12 @@ import java.util.List;
 
 import lombok.Data;
 
-// TODO generify
+// TODO only use primary keys
 @Data
 public class Meal_Food_Relation {
     @Relation(
-            parentColumn = "id",
-            entityColumn = "name",
+            parentColumn = "name",
+            entityColumn = "id",
             associateBy = @Junction(Meal_Food.class)
             )
 

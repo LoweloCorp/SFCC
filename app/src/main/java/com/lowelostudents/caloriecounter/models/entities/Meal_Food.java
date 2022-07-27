@@ -4,20 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Entity;
 import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
 import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import lombok.Data;
 
-// TODO other primary key, allow duplicate
-@Entity(primaryKeys = {"id", "name"}, indices = {
-        @Index(value = "id", unique = true),
-        @Index(value = "name", unique = true)
+@Entity(indices = {
+        @Index(value = "id", unique = false),
+        @Index(value = "name", unique = false)
 })
 
 @Data
 public class Meal_Food {
+    @PrimaryKey(autoGenerate = true)
+    private long primaryKey;
     private long id;
+    //FIXME VERY IMPORTANT apparently gets confused by name USE PRIMARY KEYS
     @NonNull
     private String name;
 

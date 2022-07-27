@@ -28,6 +28,7 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
 import lombok.SneakyThrows;
 
 public class StatsFragment extends Fragment {
@@ -49,6 +50,8 @@ public class StatsFragment extends Fragment {
         DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         user = userViewModel.getUser().blockingFirst();
+
+        Observable<User> userer = userViewModel.getUser();
 
         this.binding = FragmentStatsBinding.inflate(inflater, container, false);
         this.dataSet = new LiveDataTuplePieEntries(dashboardViewModel.getDayMeals(), dashboardViewModel.getDayFoods(), this.user);

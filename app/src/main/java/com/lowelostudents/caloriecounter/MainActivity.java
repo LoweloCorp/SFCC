@@ -21,7 +21,7 @@ import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
-// TODO Edit Meal see added foods
+// TODO replace ALL LiveData etc with RxJava, FIX RELATIONS USE PRIMARY KEYS, USE RXJAVA, check database interactions e.g. removeFromDay with respect to duplicates and seperation of concerns (dayID AND foodID should be required?)
 // TODO Check Aggregation calculation
 // TODO round values for UI
 // TODO After create Food/Meal navigate to FoodHub

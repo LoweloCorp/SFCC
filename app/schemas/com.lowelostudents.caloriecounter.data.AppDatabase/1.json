@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5c6eb8e0b2cb7f37f4ee3ebd4d47b8b3",
+    "identityHash": "09290897bffca756d677e2831e742ea0",
     "entities": [
       {
         "tableName": "Day",
@@ -279,8 +279,14 @@
       },
       {
         "tableName": "Meal_Food",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`, `name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`primaryKey` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "primaryKey",
+            "columnName": "primaryKey",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
@@ -296,29 +302,28 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id",
-            "name"
+            "primaryKey"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
             "name": "index_Meal_Food_id",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Meal_Food_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Meal_Food_id` ON `${TABLE_NAME}` (`id`)"
           },
           {
             "name": "index_Meal_Food_name",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "name"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Meal_Food_name` ON `${TABLE_NAME}` (`name`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Meal_Food_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
         "foreignKeys": []
@@ -482,7 +487,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5c6eb8e0b2cb7f37f4ee3ebd4d47b8b3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '09290897bffca756d677e2831e742ea0')"
     ]
   }
 }

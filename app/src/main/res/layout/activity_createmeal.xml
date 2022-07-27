@@ -35,7 +35,9 @@
             android:hint="Meal name"
             android:iconifiedByDefault="false"
             android:layoutDirection="ltr"
-            android:queryHint="Search food" />
+            android:queryHint="Search food">
+
+        </SearchView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -68,6 +70,23 @@
                 app:layout_constraintVertical_bias="0.0"
                 app:tint="@color/White" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/mealTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Added items" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food" />
+
+        </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/foodList"

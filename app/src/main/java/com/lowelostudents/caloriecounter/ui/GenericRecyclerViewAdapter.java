@@ -47,12 +47,11 @@ import lombok.SneakyThrows;
 // TODO Generify definitely.
 
 public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecyclerViewAdapter.ViewHolder> {
-    @Getter()
-    protected MealViewModel mealViewModel;
-    @Getter()
-    protected FoodViewModel foodViewModel;
     @Getter
-    @Setter
+    protected MealViewModel mealViewModel;
+    @Getter
+    protected FoodViewModel foodViewModel;
+    @Getter @Setter
     protected List<Nutrients> dataSet = new ArrayList<>();
     @Getter
     protected final List<Nutrients> allDataSet = new ArrayList<>();
@@ -256,6 +255,8 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             foodList.add(data);
         }
 
+        // TODO problem for createMeal
+        Log.w("NAME", data.getName());
         return new Food(data.getName(), foodList, multiplier);
     }
 
@@ -263,6 +264,8 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         this.dataSet.clear();
         this.dataSet.addAll(dataSet);
         this.allDataSet.addAll(dataSet);
+
+        Log.i("DATASETCHANGED", dataSet.toString());
 
         notifyDataSetChanged();
     }

@@ -114,25 +114,17 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
         Log.i("MeineID", String.valueOf(position));
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
         EditText quantity = cardItem.findViewById(R.id.quantity);
-        Food foodAtPosition = this.mealViewModel.checkedNutrients.get(position);
+        Food foodAtPosition = this.mealViewModel.checkedFoods.get(position);
 
         try {
             if (foodAtPosition == null) {
                 Food food = (Food) this.dataSet.get(position);
                 Food foodAggregation = this.createFoodAggregation(food, quantity);
-                this.foodViewModel.getRepo().insert(foodAggregation, new InsertCallback() {
-                    @Override
-                    public void onInsert(long id) {
-                        foodAggregation.setId(id);
-                        mealViewModel.checkedNutrients.put(position, foodAggregation);
-                        button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
-                        button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
-                    }
-                });
-
+                mealViewModel.checkedFoods.put(position, foodAggregation);
+                button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
+                button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
             } else {
-                if(foodAtPosition.isAggregation()) this.foodViewModel.deleteById(foodAtPosition.getId());
-                this.mealViewModel.checkedNutrients.remove(position);
+                this.mealViewModel.checkedFoods.remove(position);
                 button.setImageResource(R.drawable.ic_baseline_add_box_24);
                 button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.Green));
             }

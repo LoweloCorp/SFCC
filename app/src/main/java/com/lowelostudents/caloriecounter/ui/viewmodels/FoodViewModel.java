@@ -23,12 +23,16 @@ import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import java.util.Calendar;
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
 import lombok.Getter;
 import lombok.Setter;
 
 public class FoodViewModel extends AndroidViewModel {
     @Getter
     private final LiveData<List<Food>> foods;
+    @Getter
+    private final Observable<List<Food>> foodsRX;
+
     private final FoodRepo repo;
     private final DayFoodRepo dayFoodRepo;
     private final MealFoodRepo mealFoodRepo;
@@ -39,6 +43,7 @@ public class FoodViewModel extends AndroidViewModel {
         dayFoodRepo = new DayFoodRepo(context.getApplicationContext());
         mealFoodRepo = new MealFoodRepo(context.getApplicationContext());
         foods = repo.getFoods();
+        foodsRX = repo.getFoodsRX();
     }
 
     public FoodRepo getRepo() {
