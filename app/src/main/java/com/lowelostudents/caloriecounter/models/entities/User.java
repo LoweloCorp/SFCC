@@ -1,17 +1,9 @@
 package com.lowelostudents.caloriecounter.models.entities;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.Query;
 
-import com.lowelostudents.caloriecounter.models.CRUDDao;
-
-import java.util.List;
-
-import io.reactivex.rxjava3.core.Single;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

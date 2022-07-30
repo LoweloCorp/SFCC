@@ -14,6 +14,10 @@ import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 // TODO check overusage of service, rework of this service build generic eventlistneers instead
 public class EventHandlingService {
     private static EventHandlingService instance;
@@ -92,6 +96,12 @@ public class EventHandlingService {
                     e.printStackTrace();
                 }
             }
+        });
+    }
+
+    public <T> Disposable onChangedInvokeMethod(Observable<?> dataSet, T controller, Method method) {
+        return dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe( value -> {
+            method.invoke(controller, dataSet);
         });
     }
 

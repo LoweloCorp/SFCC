@@ -17,8 +17,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatemealBinding;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Meal;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.FilterService;
 import com.lowelostudents.caloriecounter.ui.CreateMealRecyclerViewAdapter;
@@ -31,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.Subject;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -41,12 +39,12 @@ public class CreateMeal extends AppCompatActivity {
     private ActivityCreatemealBinding binding;
     @Getter
     private MealViewModel model;
-    private Observable<List<Food>> dataSet;
+    private Subject<List<Food>> dataSet;
     private CreateMealRecyclerViewAdapter recyclerViewAdapter;
     @Getter
     private ActivityMode mode = ActivityMode.CREATE;
     @Getter
-    private Meal meal;
+    private Food meal;
 
     private ArrayList<Disposable> disposables = new ArrayList<>();
 
@@ -92,7 +90,7 @@ public class CreateMeal extends AppCompatActivity {
 
         Disposable disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(
                 item -> {
-                    List<Nutrients> list = new ArrayList<>(item);
+                    List<Food> list = new ArrayList<>(item);
                     recyclerViewAdapter.handleDatasetChanged(list);
                 }
         );
@@ -111,7 +109,7 @@ public class CreateMeal extends AppCompatActivity {
 
         if (this.mode == ActivityMode.CREATE) {
             binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(1));
-            this.dataSet = foodViewModel.getFoodsRX();
+            foodViewModel.getFoods().take(1).subscribe(foods -> this.dataSet.onNext(foods));
         }
 
         final RecyclerView foodList = binding.foodList;
@@ -138,15 +136,15 @@ public class CreateMeal extends AppCompatActivity {
 
         if (bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");
-            this.meal = (Meal) bundle.get("item");
+            this.meal = (Food) bundle.get("item");
             Log.i("Mode", this.mode.toString());
             Log.i("Meal", this.meal.toString());
         }
 
         if (this.mode == ActivityMode.UPDATE) {
             binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(0));
-            this.dataSet = this.model.getMealFoods(this.meal.getName());
-            this.model.getMealFoods(this.meal.getName()).take(1).subscribe(value -> Log.w("NAMEvONGFOOD", value.get(0).getName()));
+            this.model.getMealFoods(this.meal.getId()).take(1).subscribe( foods -> this.dataSet.onNext(foods.getFoods()));
+            this.model.getMealFoods(this.meal.getId()).take(1).subscribe(value -> Log.w("NAMEvONGFOOD", value.getFoods().get(0).getName()));
         }
 
         // TODO
@@ -155,29 +153,21 @@ public class CreateMeal extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
                     if (mode == ActivityMode.CREATE) {
-                        Log.i("WHY AM I HERE IF CREATE I AM HERE HERE", "HERE I AM OR AM I HERE I AM?");
+                        Log.i("CREATE", "CREATE MEAL");
 
                         recyclerViewAdapter.handleDatasetChanged(new ArrayList<>(recyclerViewAdapter.getMealViewModel().checkedFoods.values()));
                     } else {
-                        Log.i("WHY AM I ELSE HERE", "HERE I AM OR AM I HERE I AM?");
+                        Log.i("UPDATE MEAL", "UPDATE MEAL");
+                        model.getMealFoods(meal.getId()).take(1).subscribe( mealWithFood -> {
+                            ArrayList<Food> nutrients = new ArrayList<>(mealWithFood.getFoods());
+                            nutrients.addAll(recyclerViewAdapter.getMealViewModel().checkedFoods.values());
 
-                        // TODO MAYBE USE CHECKED NUTRIENTS
-                        dataSet = model.getMealFoods(meal.getName());
-                        dataSet.observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(item -> {
-                            ArrayList<Nutrients> nutrients = new ArrayList<>(item);
-//                            nutrients.addAll(recyclerViewAdapter.getMealViewModel().checkedFoods.values());
-                            recyclerViewAdapter.handleDatasetChanged(nutrients);
-                            Log.i("item", item.toString());
-                        }, error -> Log.i("ERROR", error.toString()));
+                            dataSet.onNext(nutrients);
+                        });
                     }
                 } else {
-                    Log.i("WHY AM I HERE IF I AM HERE HERE", "HERE I AM OR AM I HERE I AM?");
-                        dataSet = foodViewModel.getFoodsRX();
-                        dataSet.observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(item -> {
-                            ArrayList<Nutrients> nutrients = new ArrayList<>(item);
-                            recyclerViewAdapter.handleDatasetChanged(nutrients);
-                            Log.i("item", item.toString());
-                        }, error -> Log.i("ERROR", error.toString()));
+                    Log.i("Foods Tab", "Foods Tab");
+                        foodViewModel.getFoods().take(1).subscribe(foods -> dataSet.onNext(foods));
                 }
             }
 
@@ -207,16 +197,16 @@ public class CreateMeal extends AppCompatActivity {
         }
     }
 
-    public void update(Meal meal) {
+    public void update(Food meal) {
         if (validate()) {
             MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
-            mealViewModel.update(meal, binding.mealName.getText().toString());
+            mealViewModel.update(meal);
         }
     }
 
 
-    public void delete(Meal meal) {
+    public void delete(Food meal) {
         MealViewModel mealViewModel = recyclerViewAdapter.getMealViewModel();
 
         mealViewModel.delete(meal);

@@ -2,14 +2,11 @@ package com.lowelostudents.caloriecounter;
 
 import static junit.framework.TestCase.assertEquals;
 
-import android.util.Log;
-
-import org.junit.Test;
-
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.NutrientService;
+
+import org.junit.Test;
 
 import info.debatty.java.stringsimilarity.Levenshtein;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;

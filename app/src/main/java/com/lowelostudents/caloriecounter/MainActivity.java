@@ -1,12 +1,8 @@
 package com.lowelostudents.caloriecounter;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -15,13 +11,10 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
-import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
-import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
-// TODO replace ALL LiveData etc with RxJava, FIX RELATIONS USE PRIMARY KEYS, USE RXJAVA, check database interactions e.g. removeFromDay with respect to duplicates and seperation of concerns (dayID AND foodID should be required?)
+// TODO replace ALL LiveData etc with RxJava, DayFood, DayMeal, MealFood OneToMany delete cascade aggregations
 // TODO Check Aggregation calculation
 // TODO round values for UI
 // TODO After create Food/Meal navigate to FoodHub

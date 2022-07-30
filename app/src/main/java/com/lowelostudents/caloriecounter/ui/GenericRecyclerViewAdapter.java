@@ -18,23 +18,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.R;
-import com.lowelostudents.caloriecounter.data.repositories.FoodRepo;
-import com.lowelostudents.caloriecounter.data.repositories.InsertCallback;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
+import com.lowelostudents.caloriecounter.services.NutrientService;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,14 +46,16 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     protected MealViewModel mealViewModel;
     @Getter
     protected FoodViewModel foodViewModel;
-    @Getter @Setter
-    protected List<Nutrients> dataSet = new ArrayList<>();
     @Getter
-    protected final List<Nutrients> allDataSet = new ArrayList<>();
+    @Setter
+    protected List<Food> dataSet = new ArrayList<>();
+    @Getter
+    protected final List<Food> allDataSet = new ArrayList<>();
     private final LayoutInflater layoutInflater;
     protected final Context context;
     @Setter
     protected ActivityMode activityMode = ActivityMode.CREATE;
+    NutrientService nutrientService = NutrientService.getInstance();
 
     @SneakyThrows
     public GenericRecyclerViewAdapter(Context context) {
@@ -84,9 +81,11 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Nutrients data = dataSet.get(position);
+        Food data = dataSet.get(position);
         String cardNutrients = data.getGramTotal() + "g" + " / " + (data.getCalTotal() + "cal");
-        String cardType = data.getClass().getSimpleName();
+        String cardType = data.getAggregationType().name().toLowerCase();
+        cardType = cardType.substring(0, 1).toUpperCase() + cardType.substring(1);
+        Log.i("CARD TYPE", cardType);
         String cardTitle = data.getName();
 
         try {
@@ -119,17 +118,9 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    protected void setEventHandlers(View cardItem, String cardType, Nutrients data, int position) throws Exception {
+    protected void setEventHandlers(View cardItem, String cardType, Food data, int position) throws Exception {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
-        Class<?> nutrientDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.viewmodels." + cardType + "ViewModel");
-        AndroidViewModel viewModel = (AndroidViewModel) nutrientDataClass
-                .getConstructor(Application.class)
-                .newInstance(cardItem.getContext().getApplicationContext());
-
-        Method addToDay = nutrientDataClass.getMethod("addToDay", data.getClass());
-        Method removeFromDay = nutrientDataClass.getMethod("removeFromDay", data.getClass());
-        Method delete = nutrientDataClass.getMethod("deleteById", long.class);
 
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
         TabLayout quantitySelect = cardItem.findViewById(R.id.quantitySelect);
@@ -177,7 +168,6 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, cardDataClass);
-                Log.i("cardDataClass", cardDataClass.toString());
                 intent.putExtra("mode", ActivityMode.UPDATE);
                 intent.putExtra("item", (Serializable) dataSet.get(position));
                 context.startActivity(intent);
@@ -185,26 +175,16 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         });
 
         if (this.activityMode == ActivityMode.CREATE) {
-            if (nutrientDataClass == FoodViewModel.class) {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Log.i("CLICKED FOOD CLASS", "CLICKED FOOD CLASS");
-                        Food foodAggregation = createFoodAggregation(data, quantity);
-                        FoodRepo repo = foodViewModel.getRepo();
+                        double quantityValue = Double.parseDouble(quantity.getText().toString());
+                        Food foodAggregation = nutrientService.createFoodAggregation(data, quantityValue, data.getAggregationType());
 
-                        repo.insert(foodAggregation, new InsertCallback() {
-                            @Override
-                            public void onInsert(long id) {
-                                foodAggregation.setId(id);
-                                try {
-                                    addToDay.invoke(viewModel, foodAggregation);
-                                } catch (Exception e) {
-                                    Log.e("Can't insert", e.toString());
-                                }
-                            }
-                        });
+                        foodViewModel.addToDay(foodAggregation);
 
+                        // TODO make toast service
                         Context context = view.getContext().getApplicationContext();
                         CharSequence methodName = "Added To Day";
                         int duration = Toast.LENGTH_SHORT;
@@ -212,55 +192,30 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                         toast.show();
                     }
                 });
-            } else {
-                Log.i("CLICKED NOT FOOD CLASS", nutrientDataClass.toString());
-                eventHandlingService.onClickInvokeMethod(button, viewModel, addToDay, data);
-            }
         }
 
         if (this.activityMode == ActivityMode.UPDATE) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
+
+                        foodViewModel.removeFromDay(data);
+                        dataSet.remove(position);
+
                         Context context = view.getContext().getApplicationContext();
                         CharSequence methodName = "Removed from Day";
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, methodName, duration);
                         toast.show();
-                        removeFromDay.invoke(viewModel, data);
 
-                        if (data.isAggregation()) {
-                            Food food = (Food) data;
-                            delete.invoke(viewModel, food.getId());
-                        }
-
-                        dataSet.remove(position);
                         notifyDataSetChanged();
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
+
                 }
             });
         }
     }
 
-    protected Food createFoodAggregation(Nutrients data, EditText quantity) {
-        double inputQuantity = Double.parseDouble(quantity.getText().toString());
-        double multiplier = inputQuantity / data.getCarbsCal();
-        double necessaryFoodInstances = Math.ceil(multiplier);
-        List<Nutrients> foodList = new ArrayList<>();
-
-        for (int i = 0; i < necessaryFoodInstances; i++) {
-            foodList.add(data);
-        }
-
-        // TODO problem for createMeal
-        Log.w("NAME", data.getName());
-        return new Food(data.getName(), foodList, multiplier);
-    }
-
-    public void handleDatasetChanged(final List<Nutrients> dataSet) {
+    public void handleDatasetChanged(final List<Food> dataSet) {
         this.dataSet.clear();
         this.dataSet.addAll(dataSet);
         this.allDataSet.addAll(dataSet);
@@ -286,7 +241,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         }
     }
 
-    Nutrients getItem(int id) {
+    Food getItem(int id) {
         return dataSet.get(id);
     }
 

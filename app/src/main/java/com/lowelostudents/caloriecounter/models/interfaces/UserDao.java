@@ -11,7 +11,6 @@ import com.lowelostudents.caloriecounter.models.entities.User;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public abstract class UserDao extends CRUDDao<User> {

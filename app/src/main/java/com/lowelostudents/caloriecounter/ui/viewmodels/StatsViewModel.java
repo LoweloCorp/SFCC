@@ -7,7 +7,4 @@ public class StatsViewModel extends ViewModel {
     public StatsViewModel() {
 
     }
-
-    public void mockData() {
-    }
 }

@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.R;
-import com.lowelostudents.caloriecounter.data.repositories.InsertCallback;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
@@ -118,8 +118,9 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
 
         try {
             if (foodAtPosition == null) {
-                Food food = (Food) this.dataSet.get(position);
-                Food foodAggregation = this.createFoodAggregation(food, quantity);
+                Food nutrients = this.dataSet.get(position);
+                double quantityValue = Double.parseDouble(quantity.getText().toString());
+                Food foodAggregation = nutrientService.createFoodAggregation(nutrients, quantityValue, AggregationType.FOOD);
                 mealViewModel.checkedFoods.put(position, foodAggregation);
                 button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
                 button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));

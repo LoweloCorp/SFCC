@@ -2,12 +2,11 @@ package com.lowelostudents.caloriecounter.services;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Meal;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO calculation water or any other thing with mass but almost no calories
@@ -84,5 +83,19 @@ public class NutrientService {
         this.combineNutrients(nutrients, nutrientList);
 
         return nutrients;
+    }
+
+    public Food createFoodAggregation(Food data, double quantity, AggregationType aggregationType) {
+        double multiplier = quantity / data.getCarbsCal();
+        double necessaryFoodInstances = Math.ceil(multiplier);
+        List<Food> foodList = new ArrayList<>();
+
+        for (int i = 0; i < necessaryFoodInstances; i++) {
+            foodList.add(data);
+        }
+
+        // TODO problem for createMeal
+        Log.w("NAME", data.getName());
+        return new Food(data.getName(), foodList, multiplier, aggregationType);
     }
 }

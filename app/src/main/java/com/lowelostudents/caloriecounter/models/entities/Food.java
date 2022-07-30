@@ -1,38 +1,54 @@
 package com.lowelostudents.caloriecounter.models.entities;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-import androidx.room.Query;
+import static androidx.room.ForeignKey.CASCADE;
 
-import com.lowelostudents.caloriecounter.models.CRUDDao;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
 //TODO add constructor with total calories parameter
-@Entity
+@Entity(foreignKeys = {
+        @ForeignKey(
+                entity = Day.class,
+                parentColumns = "id",
+                childColumns = "dayId",
+                onDelete = CASCADE
+        ),
+        @ForeignKey(
+                entity = Food.class,
+                parentColumns = "id",
+                childColumns = "mealId",
+                onDelete = CASCADE
+        )
+})
+
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 public class Food extends Nutrients implements Serializable {
     @Ignore
     private static final long serialVersionUID = 1L;
-    @PrimaryKey(autoGenerate = true)
-    @EqualsAndHashCode.Include
-    protected long id;
     @Ignore
     private transient NutrientService nutrientService = NutrientService.getInstance();
+    private long dayId;
+    private UUID mealId;
+    private AggregationType aggregationType;
 
 
     // TODO NEXT gramTotal Nullable
     public Food(String name, double carbsGramPortion, double proteinGramPortion, double fatGramPortion, double portionSize, double gramTotal) {
+        this.aggregationType = AggregationType.FOOD;
+        this.id = UUID.randomUUID();
         this.name = name;
         this.carbsGram = carbsGramPortion;
         this.proteinGram = proteinGramPortion;
@@ -42,16 +58,10 @@ public class Food extends Nutrients implements Serializable {
         this.gramTotal = gramTotal;
     }
 
-    // TODO Deprercate enforce macro nutrients
-    public Food(String name, double gramTotal, double calPerPortion, double portionSize) {
-        this.name = name;
-        this.gramTotal = gramTotal;
-        this.calPerPortion = calPerPortion;
-        this.portionSize = portionSize;
-    }
-
-    public Food(String name, List<Nutrients> foodList, double multiplier) {
+    public Food(String name, List<Food> foodList, double multiplier, AggregationType aggregationType) {
+        this.id = UUID.randomUUID();
         this.isAggregation = true;
+        this.aggregationType = aggregationType;
         this.name = name;
         nutrientService.combineNutrients(this, foodList);
         nutrientService.applyMultiplier(this, multiplier);

@@ -1,22 +1,14 @@
 package com.lowelostudents.caloriecounter.models.entities;
 
-import androidx.room.Dao;
 import androidx.room.Entity;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
-
-import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import lombok.Data;
 
-@Entity(indices = {
-                @Index(value = "dayId", unique = false),
-                @Index(value = "id", unique = false)
-        })
+// ONE TO MANY THANKS TO AGGREGATIONS DELETE CASCADE, RELATION CLASSES OBSOLETE
+// TODO because of the fact that I create Food Aggregation always, foodID and DayID composition is always unique
+@Entity(primaryKeys = {"dayId", "id"})
 @Data
 public class Day_Food {
-    @PrimaryKey(autoGenerate = true)
-    private long primaryKey;
     private long id;
     private int dayId;
 

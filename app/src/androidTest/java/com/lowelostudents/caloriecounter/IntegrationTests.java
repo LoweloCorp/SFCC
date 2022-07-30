@@ -1,32 +1,8 @@
 package com.lowelostudents.caloriecounter;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteConstraintException;
-import android.util.Log;
-
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-
-import com.lowelostudents.caloriecounter.data.AppDatabase;
-import com.lowelostudents.caloriecounter.models.entities.Day;
-import com.lowelostudents.caloriecounter.models.entities.Day_Food;
-import com.lowelostudents.caloriecounter.models.entities.Meal;
-import com.lowelostudents.caloriecounter.models.entities.Meal_Food;
-import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
-import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.relations.Meal_Food_Relation;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 // TODO Fix and complete tests
 /**

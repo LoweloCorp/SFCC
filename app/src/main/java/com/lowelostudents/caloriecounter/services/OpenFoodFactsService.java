@@ -11,7 +11,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.lowelostudents.caloriecounter.data.repositories.FoodRepo;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
 import org.json.JSONException;
 import org.json.JSONObject;
