@@ -51,8 +51,8 @@ public class MealViewModel extends AndroidViewModel {
     public void insert (String mealName) {
         final List<Food> foods = new ArrayList<>(checkedFoods.values());
         Food meal = new Food(mealName, foods, 1, AggregationType.MEAL);
-
         meal.setAggregation(false);
+
         this.foodRepo.insertForMeal(meal, foods);
     }
 

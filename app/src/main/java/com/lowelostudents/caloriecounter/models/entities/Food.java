@@ -40,13 +40,15 @@ public class Food extends Nutrients implements Serializable {
     private static final long serialVersionUID = 1L;
     @Ignore
     private transient NutrientService nutrientService = NutrientService.getInstance();
-    private long dayId;
+    private Long dayId;
     private UUID mealId;
     private AggregationType aggregationType;
 
 
     // TODO NEXT gramTotal Nullable
     public Food(String name, double carbsGramPortion, double proteinGramPortion, double fatGramPortion, double portionSize, double gramTotal) {
+        this.dayId = null;
+        this.mealId = null;
         this.aggregationType = AggregationType.FOOD;
         this.id = UUID.randomUUID();
         this.name = name;
@@ -59,6 +61,8 @@ public class Food extends Nutrients implements Serializable {
     }
 
     public Food(String name, List<Food> foodList, double multiplier, AggregationType aggregationType) {
+        this.dayId = null;
+        this.mealId = null;
         this.id = UUID.randomUUID();
         this.isAggregation = true;
         this.aggregationType = aggregationType;
@@ -67,8 +71,9 @@ public class Food extends Nutrients implements Serializable {
         nutrientService.applyMultiplier(this, multiplier);
     }
 
-    @Ignore
     public Food() {
-
+        this.dayId = null;
+        this.mealId = null;
+        this.id = UUID.randomUUID();
     }
 }

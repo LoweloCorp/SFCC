@@ -19,6 +19,8 @@ public class FoodRepo extends CRUDRepository<Food> {
     private final Observable<List<Food>> foods;
     @Getter
     private final Observable<List<Food>> meals;
+    @Getter
+    private final Observable<List<Food>> mealsAndFoods;
 
     private final FoodDao foodDao;
 
@@ -28,6 +30,7 @@ public class FoodRepo extends CRUDRepository<Food> {
         this.foodDao = (FoodDao) super.getCrudDao();
         foods = foodDao.getAllObservable(AggregationType.FOOD);
         meals = foodDao.getAllObservable(AggregationType.MEAL);
+        mealsAndFoods = foodDao.getAllObservable();
     }
 
     public void insertForDay(List<Food> foods, long id) {
@@ -45,7 +48,10 @@ public class FoodRepo extends CRUDRepository<Food> {
     public void insertForMeal(Food meal, List<Food> foods) {
         foods.forEach( food -> food.setMealId(meal.getId()));
 
-        executor.execute(() -> this.getCrudDao().insert(foods));
+        executor.execute(() -> {
+            this.getCrudDao().insert(meal);
+            this.getCrudDao().insert(foods);
+        });
     }
 
     public void insertForMeal(Food meal, Food food) {

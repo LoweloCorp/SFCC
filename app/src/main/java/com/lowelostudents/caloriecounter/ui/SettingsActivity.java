@@ -15,6 +15,7 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
+// TODO BRÖKEN
 public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

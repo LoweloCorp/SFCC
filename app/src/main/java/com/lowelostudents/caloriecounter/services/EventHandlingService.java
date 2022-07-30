@@ -101,7 +101,7 @@ public class EventHandlingService {
 
     public <T> Disposable onChangedInvokeMethod(Observable<?> dataSet, T controller, Method method) {
         return dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe( value -> {
-            method.invoke(controller, dataSet);
+            method.invoke(controller, value);
         });
     }
 

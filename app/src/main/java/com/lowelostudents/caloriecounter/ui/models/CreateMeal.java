@@ -30,6 +30,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -39,7 +40,7 @@ public class CreateMeal extends AppCompatActivity {
     private ActivityCreatemealBinding binding;
     @Getter
     private MealViewModel model;
-    private Subject<List<Food>> dataSet;
+    private final Subject<List<Food>> dataSet = BehaviorSubject.create();
     private CreateMealRecyclerViewAdapter recyclerViewAdapter;
     @Getter
     private ActivityMode mode = ActivityMode.CREATE;
@@ -143,7 +144,7 @@ public class CreateMeal extends AppCompatActivity {
 
         if (this.mode == ActivityMode.UPDATE) {
             binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(0));
-            this.model.getMealFoods(this.meal.getId()).take(1).subscribe( foods -> this.dataSet.onNext(foods.getFoods()));
+            this.model.getMealFoods(this.meal.getId()).take(1).subscribe( mealFoods -> this.dataSet.onNext(mealFoods.getFoods()));
             this.model.getMealFoods(this.meal.getId()).take(1).subscribe(value -> Log.w("NAMEvONGFOOD", value.getFoods().get(0).getName()));
         }
 

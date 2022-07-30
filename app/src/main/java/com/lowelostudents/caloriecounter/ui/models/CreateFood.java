@@ -148,7 +148,7 @@ public class CreateFood extends AppCompatActivity {
 
         nutrientService.calculateNutrients(food);
 
-        this.model.insert(food, null);
+        this.model.insert(food);
     }
 
     public void update(Food food) {

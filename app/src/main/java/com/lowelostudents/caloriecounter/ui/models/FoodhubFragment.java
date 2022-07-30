@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,13 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import lombok.SneakyThrows;
 
 public class FoodhubFragment extends Fragment {
     private FragmentFoodhubBinding binding;
-    private Observable<List<Food>> dataSet;
+    private Observable<List<Food>> dataSet = BehaviorSubject.create();
     private boolean mealChecked = true;
     private boolean foodChecked = true;
     private GenericRecyclerViewAdapter recyclerViewAdapter;
@@ -64,7 +67,7 @@ public class FoodhubFragment extends Fragment {
         FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
         this.binding = FragmentFoodhubBinding.inflate(inflater, container, false);
 
-        this.dataSet = Observable.merge(mealViewModel.getMeals(), foodViewModel.getFoods());
+        this.dataSet = foodViewModel.getMealsAndFoods();
 
         recyclerViewAdapter = new GenericRecyclerViewAdapter(this.getContext());
         final RecyclerView foodList = binding.foodList;

@@ -12,16 +12,17 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.lowelostudents.caloriecounter.data.AppDatabase;
+import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.models.entities.Day;
 import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.models.interfaces.DayDao;
 import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class DataPopulationTask extends Worker {
-
     public DataPopulationTask(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
@@ -36,7 +37,14 @@ public class DataPopulationTask extends Worker {
 
         // TODO REMOVE
         UserDao userDao = appdb.userDao();
-        userDao.insert(new User("teqtoeqojtqoejtq", "Pls enter username", 1));
+        List<User> userList = userDao.get();
+        if(userList.isEmpty()){
+            User user = new User("teqtoeqojtqoejtq", "Pls enter username", 3000);
+            userDao.insert(user);
+            UserRepo.setUser(userDao, user.getId());
+        } else {
+            UserRepo.setUser(userDao, userList.get(0).getId());
+        }
 
         // FIXME also delete relations but also fix because this doesn't ensure day even exists in first place
         if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
@@ -49,7 +57,7 @@ public class DataPopulationTask extends Worker {
             }
         }
 
-        if (dayDao.getLatest() == null || cal.get(Calendar.DATE) != dayDao.getLatest().getDayId()) {
+        if (dayDao.getLatest() == null || cal.get(Calendar.DATE) != dayDao.getLatest().getId()) {
             Day day = new Day();
             dayDao.insertHotfix(day);
         } else {

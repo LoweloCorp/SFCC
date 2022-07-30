@@ -21,6 +21,8 @@ import lombok.Getter;
 public class FoodViewModel extends AndroidViewModel {
     @Getter
     private final Observable<List<Food>> foods;
+    @Getter
+    private final Observable<List<Food>> mealsAndFoods;
 
     private final FoodRepo repo;
 
@@ -28,6 +30,7 @@ public class FoodViewModel extends AndroidViewModel {
         super(context);
         repo = new FoodRepo(context.getApplicationContext());
         foods = repo.getFoods();
+        mealsAndFoods = repo.getMealsAndFoods();
     }
 
     public FoodRepo getRepo() {

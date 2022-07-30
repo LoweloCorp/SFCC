@@ -22,8 +22,8 @@ public class UserViewModel extends AndroidViewModel {
         user = repo.getUser();
     }
 
-    public Long insert(User t) {
-        return repo.insert(t, null);
+    public void insert(User t) {
+        repo.insert(t);
     }
 
     public void update(User t) {

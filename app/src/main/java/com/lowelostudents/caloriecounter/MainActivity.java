@@ -14,13 +14,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
-// TODO replace ALL LiveData etc with RxJava, DayFood, DayMeal, MealFood OneToMany delete cascade aggregations
 // TODO Check Aggregation calculation
 // TODO round values for UI
 // TODO After create Food/Meal navigate to FoodHub
 // TODO Navigation when search input check if FoodHub activity if not navigate to it and unfocus (maybe actionbar)
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
-// TODO Flatten DB structure (deprecate Meal)
 
 public class MainActivity extends AppCompatActivity {
 

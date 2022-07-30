@@ -1,5 +1,6 @@
 package com.lowelostudents.caloriecounter.models.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
@@ -10,15 +11,18 @@ import java.util.UUID;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 // TODO Maybe Deprecate
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Nutrients implements Serializable {
     protected boolean isAggregation = false;
     @PrimaryKey()
     @EqualsAndHashCode.Include
+    @NonNull
     protected UUID id;
     @Ignore
     private static final long serialVersionUID = 1L;

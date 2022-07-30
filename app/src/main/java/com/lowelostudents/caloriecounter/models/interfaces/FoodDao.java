@@ -20,6 +20,9 @@ public abstract class FoodDao extends CRUDDao<Food> {
     @Query("SELECT * FROM Food WHERE isAggregation = 0 AND aggregationType = :aggregationType")
     public abstract Observable<List<Food>> getAllObservable(AggregationType aggregationType);
 
+    @Query("SELECT * FROM Food WHERE isAggregation = 0")
+    public abstract Observable<List<Food>> getAllObservable();
+
     @Query("SELECT * FROM Food Where id = :id")
     public abstract LiveData<Food> getObservable(long id);
 

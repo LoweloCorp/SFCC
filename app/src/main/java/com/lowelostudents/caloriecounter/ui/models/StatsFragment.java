@@ -32,6 +32,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Observable;
 import lombok.SneakyThrows;
 
+// TODO BRÖKEN
 public class StatsFragment extends Fragment {
     private FragmentStatsBinding binding;
     private Observable<List<PieEntry>> dataSet;
