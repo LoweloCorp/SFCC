@@ -10,10 +10,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.lowelostudents.caloriecounter.MainActivity;
+import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatemealBinding;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
@@ -199,6 +203,14 @@ public class CreateMeal extends AppCompatActivity {
 
         mealViewModel.delete(meal);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NavController navController = Navigation.findNavController(MainActivity.getmInstanceActivity(), R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.navigation_foodhub);
+    }
+
 
     @Override
     public void onDestroy() {

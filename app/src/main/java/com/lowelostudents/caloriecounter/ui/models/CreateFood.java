@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -10,9 +11,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.lowelostudents.caloriecounter.MainActivity;
+import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatefoodBinding;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
@@ -37,6 +44,7 @@ public class CreateFood extends AppCompatActivity {
     @Getter
     private Food food;
     NutrientService nutrientService = NutrientService.getInstance();
+    private boolean navigate;
 
     @SneakyThrows
     protected void setEventHandlers(ActivityMode mode) {
@@ -149,6 +157,7 @@ public class CreateFood extends AppCompatActivity {
         nutrientService.calculateNutrients(food);
 
         this.model.insert(food);
+
     }
 
     public void update(Food food) {
@@ -185,6 +194,14 @@ public class CreateFood extends AppCompatActivity {
             this.binding.totalSize.setText(String.valueOf(food.getGramTotal()));
 
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NavController navController = Navigation.findNavController(MainActivity.getmInstanceActivity(), R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.navigation_foodhub);
     }
 
     private boolean validate() {

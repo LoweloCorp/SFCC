@@ -38,7 +38,7 @@
                 android:layout_height="75dp"
                 android:background="@color/teal_700"
                 android:gravity="center"
-                android:text="Seving"
+                android:text="Serving"
                 android:textColor="@color/White"
                 android:textSize="20sp" />
 

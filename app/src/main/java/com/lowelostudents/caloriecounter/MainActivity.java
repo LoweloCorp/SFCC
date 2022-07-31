@@ -14,16 +14,25 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
-// TODO After create Food/Meal navigate to FoodHub
-// TODO Navigation when search input check if FoodHub activity if not navigate to it and unfocus (maybe actionbar)
+import java.lang.ref.WeakReference;
+
+// TODO delete nutrients class, map API call on Food.class
+// TODO activity scanner
 // TODO fix Toast
 // TODO Themeing
 // TODO ONBOARDING AND DONATE BUTTON
-// TODO PERSISTENT DATABASE, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
+// TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
+// TODO Action bar and navigate to Foodhub when typing in search if not already
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
 // TODO NONBLOCKING way for user
 
 public class MainActivity extends AppCompatActivity {
+
+    public static WeakReference<MainActivity> weakActivity;
+    // etc..
+    public static MainActivity getmInstanceActivity() {
+        return weakActivity.get();
+    }
 
     private ActivityMainBinding binding;
 
@@ -31,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkUpdates();
+        weakActivity = new WeakReference<>(MainActivity.this);
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
