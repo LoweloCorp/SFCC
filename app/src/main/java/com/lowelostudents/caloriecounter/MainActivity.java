@@ -14,7 +14,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
-// Put unused fields somewhere else in UI
 // TODO After create Food/Meal navigate to FoodHub
 // TODO Navigation when search input check if FoodHub activity if not navigate to it and unfocus (maybe actionbar)
 // TODO fix Toast

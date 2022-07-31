@@ -85,7 +85,7 @@ public class CreateFood extends AppCompatActivity {
         setContentView(binding.getRoot());
         Bundle bundle = getIntent().getExtras();
 
-        EditText[] inputsDefault = {this.binding.foodName, this.binding.fat, this.binding.carbs, this.binding.protein, this.binding.portionSize, this.binding.totalSize, this.binding.calPerPortion, this.binding.totalCalories};
+        EditText[] inputsDefault = {this.binding.foodName, this.binding.fat, this.binding.carbs, this.binding.protein, this.binding.portionSize, this.binding.totalSize};
 
         Arrays.stream(inputsDefault).forEach(input -> {
             input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -113,7 +113,7 @@ public class CreateFood extends AppCompatActivity {
                             nutrients.setGramTotal(Double.parseDouble(binding.totalSize.getText().toString()));
                         }
                         nutrientService.calculateNutrients(nutrients);
-                        autofill(nutrients);
+                        autofill(nutrients, true);
                             return true;
                 }
             });
@@ -122,7 +122,7 @@ public class CreateFood extends AppCompatActivity {
         if (bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");
             this.food = (Food) bundle.get("item");
-            this.autofill(this.food);
+            this.autofill(this.food, false);
         }
 
         if (this.mode == ActivityMode.UPDATE)
@@ -172,15 +172,19 @@ public class CreateFood extends AppCompatActivity {
         this.model.delete(food);
     }
 
-    private void autofill(Food food) {
+    private void autofill(Food food, boolean editing) {
+        if(editing) {
+            this.binding.totalCalories.setText(String.valueOf(food.getCalTotal()));
+            this.binding.calPerPortion.setText(String.valueOf(food.getCalPerPortion()));
+        } else {
             this.binding.foodName.setText(food.getName());
+            this.binding.fat.setText(String.valueOf(food.getFatCal()));
+            this.binding.carbs.setText(String.valueOf(food.getProteinCal()));
+            this.binding.protein.setText(String.valueOf(food.getProteinCal()));
+            this.binding.portionSize.setText(String.valueOf(food.getPortionSize()));
+            this.binding.totalSize.setText(String.valueOf(food.getGramTotal()));
 
-            this.binding.calPerPortion.setFocusable(false);
-            this.binding.calPerPortion.setEnabled(false);
-            this.binding.totalCalories.setFocusable(false);
-            this.binding.totalCalories.setEnabled(false);
-            this.binding.calPerPortion.setHint(String.valueOf(food.getCalPerPortion()));
-            this.binding.totalCalories.setHint(String.valueOf(food.getCalTotal()));
+        }
     }
 
     private boolean validate() {
