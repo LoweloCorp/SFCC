@@ -14,11 +14,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
-// TODO Check Aggregation calculation
-// TODO round values for UI
+// Put unused fields somewhere else in UI
 // TODO After create Food/Meal navigate to FoodHub
 // TODO Navigation when search input check if FoodHub activity if not navigate to it and unfocus (maybe actionbar)
+// TODO fix Toast
+// TODO Themeing
+// TODO ONBOARDING AND DONATE BUTTON
+// TODO PERSISTENT DATABASE, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
+// TODO NONBLOCKING way for user
 
 public class MainActivity extends AppCompatActivity {
 

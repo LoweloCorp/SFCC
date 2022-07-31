@@ -15,6 +15,9 @@ import io.reactivex.rxjava3.core.Observable;
 
 @Dao
 public abstract class UserDao extends CRUDDao<User> {
+    @Query("SELECT * FROM User ORDER BY ROWID ASC LIMIT 1")
+    public abstract Observable<User> getFirstUser();
+
     @Query("SELECT * FROM User")
     public abstract LiveData<List<User>> getAllObservable();
 

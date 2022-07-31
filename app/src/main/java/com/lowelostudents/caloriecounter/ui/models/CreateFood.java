@@ -98,19 +98,19 @@ public class CreateFood extends AppCompatActivity {
                         // TODO rework maybe additional constructor similar to Object.assign
                         nutrients.setName(binding.foodName.getText().toString());
                         if(binding.carbs.getText().toString().matches("[0-9]+")) {
-                            nutrients.setCarbsGram(Integer.parseInt(binding.carbs.getText().toString()));
+                            nutrients.setCarbsGram(Double.parseDouble(binding.carbs.getText().toString()));
                         }
                         if(binding.protein.getText().toString().matches("[0-9]+")) {
-                            nutrients.setProteinGram(Integer.parseInt(binding.protein.getText().toString()));
+                            nutrients.setProteinGram(Double.parseDouble(binding.protein.getText().toString()));
                         }
                         if(binding.fat.getText().toString().matches("[0-9]+")) {
-                            nutrients.setFatGram(Integer.parseInt(binding.fat.getText().toString()));
+                            nutrients.setFatGram(Double.parseDouble(binding.fat.getText().toString()));
                         }
                         if(binding.portionSize.getText().toString().matches("[0-9]+")) {
-                            nutrients.setPortionSize(Integer.parseInt(binding.portionSize.getText().toString()));
+                            nutrients.setPortionSize(Double.parseDouble(binding.portionSize.getText().toString()));
                         }
                         if(binding.totalSize.getText().toString().matches("[0-9]+")){
-                            nutrients.setGramTotal(Integer.parseInt(binding.totalSize.getText().toString()));
+                            nutrients.setGramTotal(Double.parseDouble(binding.totalSize.getText().toString()));
                         }
                         nutrientService.calculateNutrients(nutrients);
                         autofill(nutrients);
@@ -139,11 +139,11 @@ public class CreateFood extends AppCompatActivity {
 
         Food food = new Food(
                 this.binding.foodName.getText().toString(),
-                Integer.parseInt(this.binding.carbs.getText().toString()),
-                Integer.parseInt(this.binding.protein.getText().toString()),
-                Integer.parseInt(this.binding.fat.getText().toString()),
-                Integer.parseInt(this.binding.portionSize.getText().toString()),
-                Integer.parseInt(this.binding.totalSize.getText().toString())
+                Double.parseDouble(this.binding.carbs.getText().toString()),
+                Double.parseDouble(this.binding.protein.getText().toString()),
+                Double.parseDouble(this.binding.fat.getText().toString()),
+                Double.parseDouble(this.binding.portionSize.getText().toString()),
+                Double.parseDouble(this.binding.totalSize.getText().toString())
         );
 
         nutrientService.calculateNutrients(food);
@@ -154,16 +154,14 @@ public class CreateFood extends AppCompatActivity {
     public void update(Food food) {
         Food updatedFood = new Food(
                 this.binding.foodName.getText().toString(),
-                Integer.parseInt(this.binding.carbs.getText().toString()),
-                Integer.parseInt(this.binding.protein.getText().toString()),
-                Integer.parseInt(this.binding.fat.getText().toString()),
-                Integer.parseInt(this.binding.portionSize.getText().toString()),
-                Integer.parseInt(this.binding.totalSize.getText().toString())
+                Double.parseDouble(this.binding.carbs.getText().toString()),
+                Double.parseDouble(this.binding.protein.getText().toString()),
+                Double.parseDouble(this.binding.fat.getText().toString()),
+                Double.parseDouble(this.binding.portionSize.getText().toString()),
+                Double.parseDouble(this.binding.totalSize.getText().toString())
         );
 
-        Log.i("foodName", String.valueOf(food.getCarbsGram()));
         updatedFood.setId(food.getId());
-        Log.i("FoodID", String.valueOf(updatedFood.getId()));
 
         nutrientService.calculateNutrients(updatedFood);
 

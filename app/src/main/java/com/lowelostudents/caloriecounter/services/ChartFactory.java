@@ -4,6 +4,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.models.entities.User;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,5 +33,14 @@ public class ChartFactory {
         pieEntries.add(new PieEntry((float)(Math.max(0, user.getCalTotal() - nutrient.getCalTotal())), "Calories left"));
 
         return pieEntries;
+    }
+
+    // TODO math helpers class
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

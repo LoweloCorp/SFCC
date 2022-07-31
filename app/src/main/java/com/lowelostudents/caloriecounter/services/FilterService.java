@@ -1,5 +1,7 @@
 package com.lowelostudents.caloriecounter.services;
 
+import android.util.Log;
+
 import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.Nutrients;
@@ -46,20 +48,21 @@ public class FilterService {
         return list;
     }
 
-    public List<Food> filterListByToggle(List<Food> list, boolean initial, boolean subsequent) {
+    public List<Food> filterListByToggle(List<Food> list, boolean initial, boolean subsequent, AggregationType initialType) {
+        AggregationType subsequentType = initialType == AggregationType.FOOD ? AggregationType.MEAL : AggregationType.FOOD;
         List<Food> result;
 
         if (!initial) {
             if(subsequent)  {
-                result = list.stream().filter( item -> item.getAggregationType() != AggregationType.FOOD).collect(Collectors.toList());
+                result = list.stream().filter( item -> item.getAggregationType() != initialType).collect(Collectors.toList());
             } else {
-                result = list.stream().filter(item -> item.getAggregationType() != AggregationType.FOOD && item.getAggregationType() != AggregationType.MEAL).collect(Collectors.toList());
+                result = list.stream().filter(item -> item.getAggregationType() != initialType && item.getAggregationType() != subsequentType).collect(Collectors.toList());
             }
         } else {
             if (subsequent) {
                 result = list;
             } else {
-                result = list.stream().filter( item -> item.getAggregationType() != AggregationType.MEAL).collect(Collectors.toList());
+                result = list.stream().filter( item -> item.getAggregationType() != subsequentType).collect(Collectors.toList());
             }
         }
 

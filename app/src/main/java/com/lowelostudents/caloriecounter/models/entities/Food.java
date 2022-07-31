@@ -2,9 +2,11 @@ package com.lowelostudents.caloriecounter.models.entities;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 
 import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.services.NutrientService;
@@ -31,7 +33,7 @@ import lombok.EqualsAndHashCode;
                 childColumns = "mealId",
                 onDelete = CASCADE
         )
-})
+}, indices = {@Index("dayId"), @Index("mealId")})
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
@@ -75,5 +77,11 @@ public class Food extends Nutrients implements Serializable {
         this.dayId = null;
         this.mealId = null;
         this.id = UUID.randomUUID();
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.valueOf("Carbs: " + this.getCarbsCal())+ " Protein: " + this.getProteinCal() + " Fat: " + this.getFatCal() + " CalTotal: " + this.getCalTotal() + " Weight: " + this.getGramTotal();
     }
 }

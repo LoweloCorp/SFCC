@@ -43,13 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
             EditTextPreference name = findPreference("name");
             EditTextPreference calories = findPreference("calories");
 
-            userViewModel.getUser().observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    user -> {
-                        name.setText(user.getName());
-                        calories.setText(String.valueOf(user.getCalTotal()));
-                        this.user = user;
-                    }
-            ).dispose();
+            this.user = userViewModel.getUser().blockingFirst();
 
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

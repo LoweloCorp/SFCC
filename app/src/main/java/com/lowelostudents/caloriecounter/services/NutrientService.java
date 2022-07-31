@@ -86,7 +86,7 @@ public class NutrientService {
     }
 
     public Food createFoodAggregation(Food data, double quantity, AggregationType aggregationType) {
-        double multiplier = quantity / data.getCarbsCal();
+        double multiplier = quantity / data.getGramTotal();
         double necessaryFoodInstances = Math.ceil(multiplier);
         List<Food> foodList = new ArrayList<>();
 
@@ -94,8 +94,6 @@ public class NutrientService {
             foodList.add(data);
         }
 
-        // TODO problem for createMeal
-        Log.w("NAME", data.getName());
         return new Food(data.getName(), foodList, multiplier, aggregationType);
     }
 }

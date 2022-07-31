@@ -49,4 +49,6 @@ public class Nutrients implements Serializable {
     protected double portionSize = 0;
     protected double calPerPortion = 0;
     protected double calPerGram = 0;
+
+
 }

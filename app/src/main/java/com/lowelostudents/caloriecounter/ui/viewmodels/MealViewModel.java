@@ -44,8 +44,8 @@ public class MealViewModel extends AndroidViewModel {
     // TODO rework & put in DayViewModel
     public void removeFromDay(Food meal) {
         this.foodRepo.delete(meal);
-        meal.setMealId(null);
-        this.foodRepo.insert(meal);
+//        meal.setMealId(null);
+//        this.foodRepo.insert(meal);
     }
 
     public void insert (String mealName) {

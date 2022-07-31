@@ -23,6 +23,8 @@ public class FoodViewModel extends AndroidViewModel {
     private final Observable<List<Food>> foods;
     @Getter
     private final Observable<List<Food>> mealsAndFoods;
+    @Getter
+    private final Observable<List<Food>> meals;
 
     private final FoodRepo repo;
 
@@ -31,6 +33,7 @@ public class FoodViewModel extends AndroidViewModel {
         repo = new FoodRepo(context.getApplicationContext());
         foods = repo.getFoods();
         mealsAndFoods = repo.getMealsAndFoods();
+        meals = repo.getMeals();
     }
 
     public FoodRepo getRepo() {
@@ -50,9 +53,9 @@ public class FoodViewModel extends AndroidViewModel {
     // TODO rework additinoal constructor maybe similar to OBject.assign()
     public void removeFromDay(Food food) {
         this.repo.delete(food);
-        ArrayList<Food> foodList = new ArrayList<>();
-        foodList.add(food);
-        this.repo.insert(new Food(food.getName(), foodList, 1, AggregationType.FOOD));
+//        ArrayList<Food> foodList = new ArrayList<>();
+//        foodList.add(food);
+//        this.repo.insert(new Food(food.getName(), foodList, 1, AggregationType.FOOD));
     }
 
     public void update(Food t) {

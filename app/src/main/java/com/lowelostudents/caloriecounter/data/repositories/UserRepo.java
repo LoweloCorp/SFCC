@@ -22,9 +22,6 @@ public class UserRepo extends CRUDRepository<User> {
         super(context);
         userDao = getAppdb().userDao();
         super.setCrudDao(userDao);
-    }
-
-    public static void setUser(UserDao userDao, UUID uuid) {
-        user = userDao.get(uuid);
+        user = userDao.getFirstUser();
     }
 }

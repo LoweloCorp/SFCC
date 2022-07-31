@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.NutrientService;
@@ -33,6 +34,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +53,11 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     @Setter
     protected List<Food> dataSet = new ArrayList<>();
     @Getter
-    protected final List<Food> allDataSet = new ArrayList<>();
+    protected List<Food> allDataSet = new ArrayList<>();
+    @Getter
+    protected final List<Food> foods = new ArrayList<>();
+    @Getter
+    protected final List<Food> meals = new ArrayList<>();
     private final LayoutInflater layoutInflater;
     protected final Context context;
     @Setter
@@ -82,14 +89,12 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Food data = dataSet.get(position);
-        String cardNutrients = data.getGramTotal() + "g" + " / " + (data.getCalTotal() + "cal");
+        String cardNutrients = String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()) + "g" + " / " + (String.format(Locale.ENGLISH, "%.2f", data.getCalTotal()) + "cal");
         String cardType = data.getAggregationType().name().toLowerCase();
         cardType = cardType.substring(0, 1).toUpperCase() + cardType.substring(1);
-        Log.i("CARD TYPE", cardType);
         String cardTitle = data.getName();
 
         try {
-            Log.i("CARD TYPE", cardType);
             setEventHandlers(holder.cardItem, cardType, data, position);
         } catch (Exception e) {
             Log.e("ERROR: CLASS OR METHOD NOT FOUND", Arrays.toString(e.getStackTrace()));
@@ -126,43 +131,6 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         TabLayout quantitySelect = cardItem.findViewById(R.id.quantitySelect);
         EditText quantity = cardItem.findViewById(R.id.quantity);
 
-        quantity.setText(String.valueOf(data.getPortionSize()));
-
-        quantity.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                quantitySelect.selectTab(quantitySelect.getTabAt(2));
-                return false;
-            }
-        });
-
-        quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                quantity.clearFocus();
-                switch (tab.getPosition()) {
-                    case 0:
-                        quantity.setText(String.valueOf(data.getPortionSize()));
-                        break;
-                    case 1:
-                        quantity.setText(String.valueOf(data.getGramTotal()));
-                        break;
-                    case 2:
-                        quantity.requestFocus();
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         cardItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,11 +142,49 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             }
         });
 
-        if (this.activityMode == ActivityMode.CREATE) {
+        if(quantity != null) {
+            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
+
+            quantity.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    quantitySelect.selectTab(quantitySelect.getTabAt(2));
+                    return false;
+                }
+            });
+
+            quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    quantity.clearFocus();
+                    switch (tab.getPosition()) {
+                        case 0:
+                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
+                            break;
+                        case 1:
+                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()));
+                            break;
+                        case 2:
+                            quantity.requestFocus();
+                            break;
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+            if (this.activityMode == ActivityMode.CREATE) {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("CLICKED FOOD CLASS", "CLICKED FOOD CLASS");
                         double quantityValue = Double.parseDouble(quantity.getText().toString());
                         Food foodAggregation = nutrientService.createFoodAggregation(data, quantityValue, data.getAggregationType());
 
@@ -192,6 +198,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                         toast.show();
                     }
                 });
+            }
         }
 
         if (this.activityMode == ActivityMode.UPDATE) {
@@ -218,9 +225,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     public void handleDatasetChanged(final List<Food> dataSet) {
         this.dataSet.clear();
         this.dataSet.addAll(dataSet);
-        this.allDataSet.addAll(dataSet);
-
-        Log.i("DATASETCHANGED", dataSet.toString());
+        this.allDataSet = new ArrayList<>(dataSet);
 
         notifyDataSetChanged();
     }

@@ -41,9 +41,6 @@ public class DataPopulationTask extends Worker {
         if(userList.isEmpty()){
             User user = new User("teqtoeqojtqoejtq", "Pls enter username", 3000);
             userDao.insert(user);
-            UserRepo.setUser(userDao, user.getId());
-        } else {
-            UserRepo.setUser(userDao, userList.get(0).getId());
         }
 
         // FIXME also delete relations but also fix because this doesn't ensure day even exists in first place

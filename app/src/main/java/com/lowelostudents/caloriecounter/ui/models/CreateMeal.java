@@ -47,7 +47,7 @@ public class CreateMeal extends AppCompatActivity {
     @Getter
     private Food meal;
 
-    private ArrayList<Disposable> disposables = new ArrayList<>();
+    private final ArrayList<Disposable> disposables = new ArrayList<>();
 
     @SneakyThrows
     protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, ActivityMode mode) {
@@ -89,12 +89,7 @@ public class CreateMeal extends AppCompatActivity {
         // TODO potentially deprecatable can call method on filter instead of observing
 //        eventHandlingService.onChangedInvokeMethod(this, this.dataSet, recyclerViewAdapter, handleDatasetChanged);
 
-        Disposable disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(
-                item -> {
-                    List<Food> list = new ArrayList<>(item);
-                    recyclerViewAdapter.handleDatasetChanged(list);
-                }
-        );
+        Disposable disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(recyclerViewAdapter::handleDatasetChanged);
 
         this.disposables.add(disposable);
         eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
@@ -138,14 +133,11 @@ public class CreateMeal extends AppCompatActivity {
         if (bundle != null) {
             this.mode = (ActivityMode) bundle.get("mode");
             this.meal = (Food) bundle.get("item");
-            Log.i("Mode", this.mode.toString());
-            Log.i("Meal", this.meal.toString());
         }
 
         if (this.mode == ActivityMode.UPDATE) {
             binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(0));
             this.model.getMealFoods(this.meal.getId()).take(1).subscribe( mealFoods -> this.dataSet.onNext(mealFoods.getFoods()));
-            this.model.getMealFoods(this.meal.getId()).take(1).subscribe(value -> Log.w("NAMEvONGFOOD", value.getFoods().get(0).getName()));
         }
 
         // TODO
@@ -154,11 +146,8 @@ public class CreateMeal extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
                     if (mode == ActivityMode.CREATE) {
-                        Log.i("CREATE", "CREATE MEAL");
-
                         recyclerViewAdapter.handleDatasetChanged(new ArrayList<>(recyclerViewAdapter.getMealViewModel().checkedFoods.values()));
                     } else {
-                        Log.i("UPDATE MEAL", "UPDATE MEAL");
                         model.getMealFoods(meal.getId()).take(1).subscribe( mealWithFood -> {
                             ArrayList<Food> nutrients = new ArrayList<>(mealWithFood.getFoods());
                             nutrients.addAll(recyclerViewAdapter.getMealViewModel().checkedFoods.values());
@@ -167,7 +156,6 @@ public class CreateMeal extends AppCompatActivity {
                         });
                     }
                 } else {
-                    Log.i("Foods Tab", "Foods Tab");
                         foodViewModel.getFoods().take(1).subscribe(foods -> dataSet.onNext(foods));
                 }
             }
@@ -185,7 +173,6 @@ public class CreateMeal extends AppCompatActivity {
 
         if (this.mode == ActivityMode.UPDATE)
             binding.deleteForeverButton.setVisibility(View.VISIBLE);
-        Log.i("mode", this.mode.toString());
 
         setEventHandlers(recyclerViewAdapter, this.mode);
     }

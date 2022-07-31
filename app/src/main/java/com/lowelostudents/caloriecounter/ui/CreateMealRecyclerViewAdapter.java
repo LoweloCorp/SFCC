@@ -22,6 +22,7 @@ import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
 
@@ -33,7 +34,7 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Nutrients data = dataSet.get(position);
-        String cardNutrients = data.getGramTotal() + "g" + " / " + (data.getCalTotal() + "cal");
+        String cardNutrients = String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()) + "g" + " / " + (String.format(Locale.ENGLISH, "%.2f", data.getCalTotal()) + "cal");
         String cardType = data.getClass().getSimpleName();
         String cardTitle = data.getName();
 
@@ -59,7 +60,8 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
         TabLayout quantitySelect = cardItem.findViewById(R.id.quantitySelect);
         EditText quantity = cardItem.findViewById(R.id.quantity);
 
-        quantity.setText(String.valueOf(data.getPortionSize()));
+        quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
+
 
         quantity.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -75,10 +77,10 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
                 quantity.clearFocus();
                 switch (tab.getPosition()) {
                     case 0:
-                        quantity.setText(String.valueOf(data.getPortionSize()));
+                        quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
                         break;
                     case 1:
-                        quantity.setText(String.valueOf(data.getGramTotal()));
+                        quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()));
                         break;
                     case 2:
                         quantity.requestFocus();
@@ -111,7 +113,6 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
     }
 
     public void updateList(int position, View cardItem) {
-        Log.i("MeineID", String.valueOf(position));
         ImageButton button = cardItem.findViewById(R.id.toggleForDay);
         EditText quantity = cardItem.findViewById(R.id.quantity);
         Food foodAtPosition = this.mealViewModel.checkedFoods.get(position);

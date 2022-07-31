@@ -66,8 +66,6 @@ public class OpenFoodFactsService {
             Food foods = gson.fromJson(String.valueOf(food.getJSONObject("product").getJSONObject("nutriments")), Food.class);
 
             nutrientService.calculateNutrients(foods);
-
-            Log.d("DEINEMUDDER", foods.toString());
         } catch (JSONException e) {
             Log.e("Error getting JSON Object 'nutriments' Open Food Facts response", e.toString());
         }

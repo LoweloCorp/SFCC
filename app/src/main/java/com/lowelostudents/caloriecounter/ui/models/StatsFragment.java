@@ -27,8 +27,10 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.DashboardViewModel;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import lombok.SneakyThrows;
 
@@ -55,14 +57,22 @@ public class StatsFragment extends Fragment {
 
         this.binding = FragmentStatsBinding.inflate(inflater, container, false);
 
-        dashboardViewModel.getDayFoods().take(1).subscribe( dayFoods -> {
+        this.dataSet = dashboardViewModel.getDayFoods().take(1).map( dayFoods -> {
             ChartFactory chartFactory = ChartFactory.getInstance();
             NutrientService nutrientService = NutrientService.getInstance();
             Nutrients nutrients = nutrientService.combineNutrients(dayFoods.getFoods());
-            List<PieEntry> pieEntries = chartFactory.generatePieEntries(nutrients, this.user);
-            // TODO if this works maybe can use elsewhere instead of subject
-            this.dataSet = Observable.fromIterable(pieEntries).toList().toObservable();
+
+            return chartFactory.generatePieEntries(nutrients, this.user);
         });
+
+//        dashboardViewModel.getDayFoods().take(1).subscribe( dayFoods -> {
+//            ChartFactory chartFactory = ChartFactory.getInstance();
+//            NutrientService nutrientService = NutrientService.getInstance();
+//            Nutrients nutrients = nutrientService.combineNutrients(dayFoods.getFoods());
+//            List<PieEntry> pieEntries = chartFactory.generatePieEntries(nutrients, this.user);
+//            // TODO if this works maybe can use elsewhere instead of subject
+//            this.dataSet = Observable.fromIterable(pieEntries).toList().toObservable();
+//        });
 
         barChart = binding.nutrientGauge;
         barChart.getDescription().setEnabled(false);
@@ -103,10 +113,6 @@ public class StatsFragment extends Fragment {
 
         barChart.setData(barData);
 
-    }
-
-    public void handleUserChanged(final User user) {
-        Log.i("USRES", user.toString());
     }
 
     @Override
