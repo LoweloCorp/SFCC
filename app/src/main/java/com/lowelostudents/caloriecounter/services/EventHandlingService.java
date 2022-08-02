@@ -1,10 +1,15 @@
 package com.lowelostudents.caloriecounter.services;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -34,6 +39,16 @@ public class EventHandlingService {
             public void onClick(View view) {
                 Intent intent = new Intent(context, activity);
                 context.startActivity(intent);
+            }
+        });
+    }
+
+    public void onClickLaunchActivityFromContext(View view, Context context, Class<?> activity, ActivityResultLauncher<Intent> activityResultLauncher) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, activity);
+                activityResultLauncher.launch(intent);
             }
         });
     }

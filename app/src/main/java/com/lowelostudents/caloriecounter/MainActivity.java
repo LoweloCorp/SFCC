@@ -16,14 +16,14 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-
-// TODO Activity scanner
+// TODO Scanner optimiziation
 // TODO Toast service
 // TODO settings button tab
-// TODO remove from added items meal meal added items color button, Meal SERVING PACK CUSTOM Hide
+// TODO Meal SERVING PACK CUSTOM Hide
 // TODO Themeing
 // TODO ONBOARDING AND DONATE BUTTON
 // TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
+
 // TODO Action bar and navigate to Foodhub when typing in search if not already
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
 // TODO Errorhandling

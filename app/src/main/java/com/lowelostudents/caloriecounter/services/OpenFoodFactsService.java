@@ -1,8 +1,9 @@
 package com.lowelostudents.caloriecounter.services;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -10,42 +11,60 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.lowelostudents.caloriecounter.data.repositories.FoodRepo;
+import com.google.mlkit.vision.barcode.common.Barcode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO rework ERRORHANDLING ETC PP trycatch helper class default value
 public class OpenFoodFactsService {
     private static OpenFoodFactsService openFoodFactsService;
     private final NutrientService nutrientService = NutrientService.getInstance();
+    public RequestQueue requestQueue;
+    private String url = "https://world.openfoodfacts.org/api/v2";
 
-    public static synchronized OpenFoodFactsService getInstance() {
-        if (openFoodFactsService == null) openFoodFactsService = new OpenFoodFactsService();
+    private OpenFoodFactsService(Context context) {
+        this.requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+    }
+
+    public static synchronized OpenFoodFactsService getInstance(Context context) {
+        if (openFoodFactsService == null) openFoodFactsService = new OpenFoodFactsService(context);
 
         return openFoodFactsService;
     }
 
-    public void getProduct(FoodRepo repository, int barcode) {
-        RequestQueue queue = Volley.newRequestQueue(repository.getContext());
-        String url = "https://world.openfoodfacts.org/api/v2/product/" + barcode;
+    public void getProduct(Barcode barcode, ResponseCallback responseCallback) {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        Log.w("APISERVICEBARCODE", barcode.getRawValue());
+
+        String endpoint = this.url + "/product/" + barcode.getRawValue();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, endpoint, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        serialize(response);
+                        Food food;
+                        try {
+                            food = mapToFood(response);
+                            Log.w("ONRESPONSE", "ONRESPONSE");
+                            responseCallback.onResult(food);
+                        } catch (JSONException e) {
+                            Log.w("ONERROR", "ONERROR");
+                            e.printStackTrace();
+                            responseCallback.onError(e);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.d("Error", error.toString());
+                        Log.w("ERRORAPICALL", error.toString());
+                        responseCallback.onError(error);
                     }
                 }
         ) {
@@ -58,50 +77,57 @@ public class OpenFoodFactsService {
             }
         };
 
-        queue.add(jsonObjectRequest);
+//        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                5000, 3,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        this.requestQueue.add(jsonObjectRequest);
     }
 
-    public void serialize(JSONObject openFoodFacts) {
-        try {
-            JSONObject product = openFoodFacts.getJSONObject("product");
-            Food food = this.mapToFood(product);
-
-            nutrientService.calculateNutrients(food);
-
-            Log.w("FOOD VON API", food.toString());
-        } catch (Exception e) {
-            Log.e("Error getting JSON Object 'nutriments' Open Food Facts response", e.toString());
-        }
-    }
-
-    private Food mapToFood(JSONObject product) throws Exception {
+    private Food mapToFood(JSONObject openFoodFacts) throws JSONException {
+        JSONObject product = openFoodFacts.getJSONObject("product");
         Gson gson = new Gson();
-
         Food food = gson.fromJson(String.valueOf(product.getJSONObject("nutriments")), Food.class);
-        food.setName(this.getName(product));
-        food.setPortionSize(product.getDouble("serving_quantity"));
-        food.setGramTotal(product.getDouble("product_quantity"));
+
+        try {
+            food.setPortionSize(product.getDouble("serving_quantity"));
+        } catch (JSONException e) {
+            Log.e("SERVING QUANTITY NOT FOUND", Arrays.toString(e.getStackTrace()));
+            mapToFoodDefaultSize(food, product);
+        }
+
+        try {
+            food.setGramTotal(product.getDouble("product_quantity"));
+        } catch (JSONException e) {
+            food.setGramTotal(food.getPortionSize());
+        }
+
+        try {
+            food.setName(product.getString("product_name"));
+        } catch (JSONException e) {
+            food.setName("");
+        }
+
+        nutrientService.calculateNutrients(food);
 
         return food;
     }
 
-    private String getName(JSONObject openFoodFacts) throws Exception {
-        final String[] names = {
-                openFoodFacts.getString("product_name"),
-                openFoodFacts.getString("product_name_en"),
-                openFoodFacts.getString("product_name_de"),
-                openFoodFacts.getString("product_name_fr")
-        };
+    private void mapToFoodDefaultSize(Food food, JSONObject product) {
+        food.setPortionSize(100);
 
-        String result = null;
+        try {
+            food.setCarbsGram(product.getJSONObject("nutriments").getDouble("carbohydrates_100g"));
 
-        for (String name : names) {
-            if (!name.isEmpty()) {
-                result = name;
-                break;
-            }
-        }
+        } catch (JSONException ignored) { }
 
-        return result;
+        try {
+            food.setFatGram(product.getJSONObject("nutriments").getDouble("fat_100g"));
+        } catch (JSONException ignored) { }
+
+        try {
+            food.setProteinGram(product.getJSONObject("nutriments").getDouble("protein_100g"));
+        } catch (JSONException ignored) { }
+
     }
 }

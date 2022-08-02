@@ -45,8 +45,13 @@ android {
 
 dependencies {
     implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.camera:camera-view:1.0.0-alpha23'
     def work_version = "2.7.1"
     def room_version = "2.4.0"
+    def camerax_version = "1.2.0-alpha04"
+    // The following line is optional, as the core library is included indirectly by camera-camera2
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    implementation "androidx.camera:camera-camera2:$camerax_version"
     implementation "androidx.work:work-runtime:$work_version"
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
@@ -71,4 +76,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.mlkit:barcode-scanning:17.0.2'
 }

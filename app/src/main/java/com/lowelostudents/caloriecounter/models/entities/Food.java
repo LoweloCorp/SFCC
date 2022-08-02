@@ -56,7 +56,6 @@ public class Food implements Serializable {
     protected String name;
     protected double calTotal = 0;
     // TODO actual quantity
-    @SerializedName("product_quantity")
     protected double gramTotal = 0;
     @SerializedName("carbohydrates_serving")
     // TODO rename grams to gramPortion
@@ -70,7 +69,6 @@ public class Food implements Serializable {
     protected double proteinCal = 0;
     protected double fatCal = 0;
 
-    @SerializedName("serving_quantity")
     protected double portionSize = 0;
     protected double calPerPortion = 0;
     protected double calPerGram = 0;

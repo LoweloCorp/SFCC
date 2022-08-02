@@ -2,18 +2,25 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.mlkit.vision.barcode.common.Barcode;
 import com.lowelostudents.caloriecounter.MainActivity;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatefoodBinding;
@@ -78,6 +85,29 @@ public class CreateFood extends AppCompatActivity {
             });
         }
 
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            Bundle bundle = null;
+
+                            if (data != null) {
+                                bundle = data.getExtras();
+                            }
+
+                            if (bundle != null) {
+                                Food food = (Food) bundle.get("food");
+                                Log.w("FOODIN CREATEFOOD AKTIVITÄT", food.toString());
+                            }
+                        }
+                    }
+                });
+
+        eventHandlingService.onClickLaunchActivityFromContext(binding.scanButton, this, ScannerActivity.class, someActivityResultLauncher);
         eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
     }
 
@@ -136,10 +166,6 @@ public class CreateFood extends AppCompatActivity {
     }
 
     public void save() {
-
-        OpenFoodFactsService openFoodFactsService = OpenFoodFactsService.getInstance();
-
-        openFoodFactsService.getProduct(this.model.getRepo(), 20917289);
 
         Food food = new Food(
                 this.binding.foodName.getText().toString(),

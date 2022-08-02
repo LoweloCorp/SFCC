@@ -36,4 +36,5 @@
     <string name="title_activity_create_food">CreateFood</string>
     <string name="title_activity_create_meal">CreateMeal</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_scanner">ScannerActivity</string>
 </resources>
