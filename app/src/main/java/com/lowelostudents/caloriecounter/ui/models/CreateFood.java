@@ -2,17 +2,13 @@ package com.lowelostudents.caloriecounter.ui.models;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -193,6 +189,8 @@ public class CreateFood extends AppCompatActivity {
             this.binding.portionSize.setText(String.valueOf(food.getPortionSize()));
             this.binding.totalSize.setText(String.valueOf(food.getGramTotal()));
 
+            this.binding.totalCalories.setText(String.valueOf(food.getCalTotal()));
+            this.binding.calPerPortion.setText(String.valueOf(food.getCalPerPortion()));
         }
     }
 
@@ -200,7 +198,7 @@ public class CreateFood extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        NavController navController = Navigation.findNavController(MainActivity.getmInstanceActivity(), R.id.nav_host_fragment_activity_main);
+        NavController navController = Navigation.findNavController(MainActivity.getInstance(), R.id.nav_host_fragment_activity_main);
         navController.navigate(R.id.navigation_foodhub);
     }
 

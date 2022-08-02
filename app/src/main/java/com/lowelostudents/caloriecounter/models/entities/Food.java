@@ -7,7 +7,9 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
 import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.services.NutrientService;
 
@@ -36,8 +38,8 @@ import lombok.EqualsAndHashCode;
 }, indices = {@Index("dayId"), @Index("mealId")})
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
-public class Food extends Nutrients implements Serializable {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Food implements Serializable {
     @Ignore
     private static final long serialVersionUID = 1L;
     @Ignore
@@ -45,6 +47,35 @@ public class Food extends Nutrients implements Serializable {
     private Long dayId;
     private UUID mealId;
     private AggregationType aggregationType;
+    protected boolean isAggregation = false;
+    @PrimaryKey()
+    @EqualsAndHashCode.Include
+    @NonNull
+    protected UUID id;
+    @EqualsAndHashCode.Include
+    protected String name;
+    protected double calTotal = 0;
+    // TODO actual quantity
+    @SerializedName("product_quantity")
+    protected double gramTotal = 0;
+    @SerializedName("carbohydrates_serving")
+    // TODO rename grams to gramPortion
+    protected double carbsGram = 0;
+    @SerializedName("fat_serving")
+    protected double fatGram = 0;
+    @SerializedName("proteins_serving")
+    protected double proteinGram = 0;
+
+    protected double carbsCal = 0;
+    protected double proteinCal = 0;
+    protected double fatCal = 0;
+
+    @SerializedName("serving_quantity")
+    protected double portionSize = 0;
+    protected double calPerPortion = 0;
+    protected double calPerGram = 0;
+
+
 
 
     // TODO NEXT gramTotal Nullable
@@ -77,11 +108,5 @@ public class Food extends Nutrients implements Serializable {
         this.dayId = null;
         this.mealId = null;
         this.id = UUID.randomUUID();
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return String.valueOf("Carbs: " + this.getCarbsCal())+ " Protein: " + this.getProteinCal() + " Fat: " + this.getFatCal() + " CalTotal: " + this.getCalTotal() + " Weight: " + this.getGramTotal();
     }
 }

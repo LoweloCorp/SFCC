@@ -3,7 +3,6 @@ package com.lowelostudents.caloriecounter.ui.models;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -207,7 +206,7 @@ public class CreateMeal extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        NavController navController = Navigation.findNavController(MainActivity.getmInstanceActivity(), R.id.nav_host_fragment_activity_main);
+        NavController navController = Navigation.findNavController(MainActivity.getInstance(), R.id.nav_host_fragment_activity_main);
         navController.navigate(R.id.navigation_foodhub);
     }
 

@@ -1,5 +1,6 @@
 package com.lowelostudents.caloriecounter.services;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -15,12 +16,13 @@ import com.lowelostudents.caloriecounter.models.entities.Food;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OpenFoodFactsService {
     private static OpenFoodFactsService openFoodFactsService;
-    private NutrientService nutrientService = NutrientService.getInstance();
+    private final NutrientService nutrientService = NutrientService.getInstance();
 
     public static synchronized OpenFoodFactsService getInstance() {
         if (openFoodFactsService == null) openFoodFactsService = new OpenFoodFactsService();
@@ -37,7 +39,6 @@ public class OpenFoodFactsService {
                     @Override
                     public void onResponse(JSONObject response) {
                         serialize(response);
-                        Log.d("Response: ", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -60,14 +61,47 @@ public class OpenFoodFactsService {
         queue.add(jsonObjectRequest);
     }
 
-    public void serialize(JSONObject food) {
+    public void serialize(JSONObject openFoodFacts) {
         try {
-            Gson gson = new Gson();
-            Food foods = gson.fromJson(String.valueOf(food.getJSONObject("product").getJSONObject("nutriments")), Food.class);
+            JSONObject product = openFoodFacts.getJSONObject("product");
+            Food food = this.mapToFood(product);
 
-            nutrientService.calculateNutrients(foods);
-        } catch (JSONException e) {
+            nutrientService.calculateNutrients(food);
+
+            Log.w("FOOD VON API", food.toString());
+        } catch (Exception e) {
             Log.e("Error getting JSON Object 'nutriments' Open Food Facts response", e.toString());
         }
+    }
+
+    private Food mapToFood(JSONObject product) throws Exception {
+        Gson gson = new Gson();
+
+        Food food = gson.fromJson(String.valueOf(product.getJSONObject("nutriments")), Food.class);
+        food.setName(this.getName(product));
+        food.setPortionSize(product.getDouble("serving_quantity"));
+        food.setGramTotal(product.getDouble("product_quantity"));
+
+        return food;
+    }
+
+    private String getName(JSONObject openFoodFacts) throws Exception {
+        final String[] names = {
+                openFoodFacts.getString("product_name"),
+                openFoodFacts.getString("product_name_en"),
+                openFoodFacts.getString("product_name_de"),
+                openFoodFacts.getString("product_name_fr")
+        };
+
+        String result = null;
+
+        for (String name : names) {
+            if (!name.isEmpty()) {
+                result = name;
+                break;
+            }
+        }
+
+        return result;
     }
 }

@@ -1,16 +1,11 @@
 package com.lowelostudents.caloriecounter.services;
 
-import android.util.Log;
-
 import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO calculation water or any other thing with mass but almost no calories
-// TODO generify and overload calcCalories with one that returns Hashmap
 public class NutrientService {
     private static NutrientService nutrientService;
 
@@ -20,9 +15,7 @@ public class NutrientService {
         return nutrientService;
     }
 
-    // TODO universal formulas
-
-    public <T extends Nutrients> void calculateNutrients(T nutrients) {
+    public void calculateNutrients(Food nutrients) {
         double carbsCalPortion, proteinCalPortion, fatCalPortion;
         double carbsCalGram, proteinCalGram, fatCalGram;
 
@@ -47,7 +40,7 @@ public class NutrientService {
         nutrients.setCalTotal(nutrients.getCalPerGram() * nutrients.getGramTotal());
     }
 
-    public <T extends Nutrients, R extends Nutrients> void combineNutrients(T nutrients, List<R> nutrientList) {
+    public void combineNutrients(Food nutrients, List<Food> nutrientList) {
         nutrientList.forEach(food -> {
             nutrients.setFatGram(nutrients.getFatGram() + food.getFatGram());
             nutrients.setProteinGram(nutrients.getProteinGram() + food.getProteinGram());
@@ -69,7 +62,8 @@ public class NutrientService {
         });
     }
 
-    public <T extends Nutrients> void applyMultiplier(T nutrients, double multiplier) {
+    // TODO apply multiplier to all affected fields not only the UI affecting ones
+    public void applyMultiplier(Food nutrients, double multiplier) {
         nutrients.setFatCal(nutrients.getFatCal() * multiplier);
         nutrients.setProteinCal(nutrients.getProteinCal() * multiplier);
         nutrients.setCarbsCal(nutrients.getCarbsCal() * multiplier);
@@ -77,8 +71,9 @@ public class NutrientService {
         nutrients.setGramTotal(nutrients.getGramTotal() * multiplier);
     }
 
-    public <R extends Nutrients> Nutrients combineNutrients(List<R> nutrientList) {
-        Nutrients nutrients = new Nutrients();
+    // TODO See usage because of instantiation maybe relevant
+    public Food combineNutrients(List<Food> nutrientList) {
+        Food nutrients = new Food();
 
         this.combineNutrients(nutrients, nutrientList);
 

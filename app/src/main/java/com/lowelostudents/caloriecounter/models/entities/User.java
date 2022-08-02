@@ -13,14 +13,15 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class User extends Nutrients {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class User {
     @PrimaryKey
     @EqualsAndHashCode.Include
     @NonNull
     protected UUID id;
     private String token;
     private String name;
+    protected double calTotal = 0;
 
     public User(String token, String name, double calTotal) {
         this.id = UUID.randomUUID();

@@ -16,21 +16,24 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO delete nutrients class, map API call on Food.class
-// TODO activity scanner
-// TODO fix Toast
+
+// TODO Activity scanner
+// TODO Toast service
+// TODO settings button tab
+// TODO remove from added items meal meal added items color button, Meal SERVING PACK CUSTOM Hide
 // TODO Themeing
 // TODO ONBOARDING AND DONATE BUTTON
 // TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
 // TODO Action bar and navigate to Foodhub when typing in search if not already
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
+// TODO Errorhandling
 // TODO NONBLOCKING way for user
 
 public class MainActivity extends AppCompatActivity {
 
     public static WeakReference<MainActivity> weakActivity;
     // etc..
-    public static MainActivity getmInstanceActivity() {
+    public static MainActivity getInstance() {
         return weakActivity.get();
     }
 
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         checkUpdates();
         weakActivity = new WeakReference<>(MainActivity.this);
-
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

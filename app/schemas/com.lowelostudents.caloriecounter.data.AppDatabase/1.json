@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a222727a35c1efdcc30589a09935c4be",
+    "identityHash": "b687f738619c0a47fa63faf971c7467f",
     "entities": [
       {
         "tableName": "Day",
@@ -190,7 +190,7 @@
       },
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `token` TEXT, `name` TEXT, `isAggregation` INTEGER NOT NULL, `calTotal` REAL NOT NULL, `gramTotal` REAL NOT NULL, `carbsGram` REAL NOT NULL, `fatGram` REAL NOT NULL, `proteinGram` REAL NOT NULL, `carbsCal` REAL NOT NULL, `proteinCal` REAL NOT NULL, `fatCal` REAL NOT NULL, `portionSize` REAL NOT NULL, `calPerPortion` REAL NOT NULL, `calPerGram` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `token` TEXT, `name` TEXT, `calTotal` REAL NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -211,74 +211,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "isAggregation",
-            "columnName": "isAggregation",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "calTotal",
             "columnName": "calTotal",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "gramTotal",
-            "columnName": "gramTotal",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "carbsGram",
-            "columnName": "carbsGram",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "fatGram",
-            "columnName": "fatGram",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinGram",
-            "columnName": "proteinGram",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "carbsCal",
-            "columnName": "carbsCal",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "proteinCal",
-            "columnName": "proteinCal",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "fatCal",
-            "columnName": "fatCal",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "portionSize",
-            "columnName": "portionSize",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "calPerPortion",
-            "columnName": "calPerPortion",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "calPerGram",
-            "columnName": "calPerGram",
             "affinity": "REAL",
             "notNull": true
           }
@@ -296,7 +230,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a222727a35c1efdcc30589a09935c4be')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b687f738619c0a47fa63faf971c7467f')"
     ]
   }
 }

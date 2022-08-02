@@ -1,7 +1,7 @@
 package com.lowelostudents.caloriecounter.services;
 
 import com.github.mikephil.charting.data.PieEntry;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
+import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.entities.User;
 
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public class ChartFactory {
     }
 
     // TODO maybe reflection dynamic or switchcase
-    public <T extends Nutrients> List<PieEntry> generatePieEntries(T nutrient, User user) {
+    public List<PieEntry> generatePieEntries(Food nutrient, User user) {
         List<PieEntry> pieEntries = new ArrayList<>();
 
         if(nutrient.getCarbsCal() != 0)

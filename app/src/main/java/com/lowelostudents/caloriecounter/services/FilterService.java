@@ -1,10 +1,7 @@
 package com.lowelostudents.caloriecounter.services;
 
-import android.util.Log;
-
 import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,12 +18,12 @@ public class FilterService {
         return instance;
     }
 
-    public <T extends Nutrients> List<T> filterListByLevenshtein (List<T> list, String string) {
+    public List<Food> filterListByLevenshtein (List<Food> list, String string) {
         Levenshtein levenshtein = new Levenshtein();
 
         double[] scores = new double[list.size()];
         double tempScore;
-        T tempItem;
+        Food tempItem;
 
         for (int i = 0; i < list.size(); i++) {
             scores[i] = levenshtein.distance(list.get(i).getName(), string);

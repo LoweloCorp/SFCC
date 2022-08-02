@@ -16,7 +16,6 @@ import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 
 import java.io.Serializable;
@@ -33,7 +32,7 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Nutrients data = dataSet.get(position);
+        Food data = dataSet.get(position);
         String cardNutrients = String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()) + "g" + " / " + (String.format(Locale.ENGLISH, "%.2f", data.getCalTotal()) + "cal");
         String cardType = data.getClass().getSimpleName();
         String cardTitle = data.getName();
@@ -51,7 +50,7 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    protected void setEventHandlers(View cardItem, String cardType, Nutrients data, int position) throws Exception {
+    protected void setEventHandlers(View cardItem, String cardType, Food data, int position) throws Exception {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
 
