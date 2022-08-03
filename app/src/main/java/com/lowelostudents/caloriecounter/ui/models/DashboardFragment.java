@@ -37,7 +37,6 @@ public class DashboardFragment extends Fragment {
         Method method = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
 
         eventHandlingService.onChangedInvokeMethod(this.dataSet, recyclerViewAdapter, method);
-        eventHandlingService.onClickStartActivityFromContext(binding.settings, this.getContext(), SettingsActivity.class);
     }
 
 

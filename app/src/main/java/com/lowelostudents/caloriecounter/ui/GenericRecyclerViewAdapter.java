@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,10 +106,23 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         if (this.activityMode == ActivityMode.UPDATE) {
             holder.cardToggleForDay.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
             holder.cardToggleForDay.setColorFilter(ContextCompat.getColor(holder.cardToggleForDay.getContext(), R.color.DarkRed));
+            LinearLayout layout = holder.cardItem.findViewById(R.id.cardLayout);
             LinearLayout quantityLayout = holder.cardItem.findViewById(R.id.quantityLayout);
             TabLayout quantitySelect = holder.cardItem.findViewById(R.id.quantitySelect);
-            quantityLayout.removeAllViews();
-            quantitySelect.removeAllViews();
+            ConstraintLayout cardInfoLayout = holder.cardItem.findViewById(R.id.cardInfo);
+            layout.removeView(quantityLayout);
+            layout.removeView(quantitySelect);
+
+            cardInfoLayout.setPadding(cardInfoLayout.getPaddingLeft(),cardInfoLayout.getPaddingTop(),cardInfoLayout.getPaddingRight() ,60);
+        }
+
+        LinearLayout quantityLayout = holder.cardItem.findViewById(R.id.quantityLayout);
+        TabLayout quantitySelect = holder.cardItem.findViewById(R.id.quantitySelect);
+        LinearLayout layout = holder.cardItem.findViewById(R.id.cardLayout);
+
+        if(cardType.equals("Meal")) {
+            layout.removeView(quantitySelect);
+            quantityLayout.setPadding(quantityLayout.getPaddingLeft(), quantityLayout.getPaddingTop(), quantityLayout.getPaddingRight(), 20);
         }
 
         holder.cardType.setText(cardType);

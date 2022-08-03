@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/foodhub" />
 
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/settings" />
+
 </menu>

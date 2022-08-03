@@ -22,4 +22,10 @@
         android:name="com.lowelostudents.caloriecounter.ui.models.FoodhubFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_foodhub" />
+
+    <activity
+        android:id="@+id/navigation_settings"
+        android:name="com.lowelostudents.caloriecounter.ui.SettingsActivity"
+        tools:layout="@layout/settings_activity">
+    </activity>
 </navigation>

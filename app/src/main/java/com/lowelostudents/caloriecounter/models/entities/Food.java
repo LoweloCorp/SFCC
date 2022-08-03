@@ -55,10 +55,8 @@ public class Food implements Serializable {
     @EqualsAndHashCode.Include
     protected String name;
     protected double calTotal = 0;
-    // TODO actual quantity
     protected double gramTotal = 0;
     @SerializedName("carbohydrates_serving")
-    // TODO rename grams to gramPortion
     protected double carbsGram = 0;
     @SerializedName("fat_serving")
     protected double fatGram = 0;

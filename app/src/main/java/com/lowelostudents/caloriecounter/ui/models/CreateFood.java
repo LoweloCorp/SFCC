@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.mlkit.vision.barcode.common.Barcode;
 import com.lowelostudents.caloriecounter.MainActivity;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatefoodBinding;
@@ -28,7 +27,6 @@ import com.lowelostudents.caloriecounter.enums.ActivityMode;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.NutrientService;
-import com.lowelostudents.caloriecounter.services.OpenFoodFactsService;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 
 import java.lang.reflect.Method;
@@ -58,7 +56,7 @@ public class CreateFood extends AppCompatActivity {
 
         if (mode == ActivityMode.CREATE) {
             binding.confirmButton.setOnClickListener(view -> {
-                if(validate()) {
+                if (validate()) {
                     save();
                     CharSequence info = "Food saved";
                     Toast toast = Toast.makeText(context, info, toastDuration);
@@ -67,7 +65,7 @@ public class CreateFood extends AppCompatActivity {
                 }
             });
         } else {
-            binding.deleteForeverButton.setOnClickListener( view -> {
+            binding.deleteForeverButton.setOnClickListener(view -> {
                 delete(this.food);
                 CharSequence info = "Food deleted";
                 Toast toast = Toast.makeText(context, info, toastDuration);
@@ -75,7 +73,7 @@ public class CreateFood extends AppCompatActivity {
                 finish();
             });
             binding.confirmButton.setOnClickListener(view -> {
-                if(validate()) {
+                if (validate()) {
                     update(this.food);
                     CharSequence info = "Food saved";
                     Toast toast = Toast.makeText(context, info, toastDuration);
@@ -101,7 +99,7 @@ public class CreateFood extends AppCompatActivity {
 
                             if (bundle != null) {
                                 Food food = (Food) bundle.get("food");
-                                Log.w("FOODIN CREATEFOOD AKTIVITÄT", food.toString());
+                                autofill(food, false);
                             }
                         }
                     }
@@ -126,29 +124,29 @@ public class CreateFood extends AppCompatActivity {
                 @Override
                 public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
 
-                        Food nutrients = new Food();
-                        NutrientService nutrientService = NutrientService.getInstance();
+                    Food nutrients = new Food();
+                    NutrientService nutrientService = NutrientService.getInstance();
 
-                        // TODO rework maybe additional constructor similar to Object.assign
-                        nutrients.setName(binding.foodName.getText().toString());
-                        if(binding.carbs.getText().toString().matches("[0-9]+")) {
-                            nutrients.setCarbsGram(Double.parseDouble(binding.carbs.getText().toString()));
-                        }
-                        if(binding.protein.getText().toString().matches("[0-9]+")) {
-                            nutrients.setProteinGram(Double.parseDouble(binding.protein.getText().toString()));
-                        }
-                        if(binding.fat.getText().toString().matches("[0-9]+")) {
-                            nutrients.setFatGram(Double.parseDouble(binding.fat.getText().toString()));
-                        }
-                        if(binding.portionSize.getText().toString().matches("[0-9]+")) {
-                            nutrients.setPortionSize(Double.parseDouble(binding.portionSize.getText().toString()));
-                        }
-                        if(binding.totalSize.getText().toString().matches("[0-9]+")){
-                            nutrients.setGramTotal(Double.parseDouble(binding.totalSize.getText().toString()));
-                        }
-                        nutrientService.calculateNutrients(nutrients);
-                        autofill(nutrients, true);
-                            return true;
+                    // TODO rework maybe additional constructor similar to Object.assign
+                    nutrients.setName(binding.foodName.getText().toString());
+                    if (binding.carbs.getText().toString().matches("[0-9]+")) {
+                        nutrients.setCarbsGram(Double.parseDouble(binding.carbs.getText().toString()));
+                    }
+                    if (binding.protein.getText().toString().matches("[0-9]+")) {
+                        nutrients.setProteinGram(Double.parseDouble(binding.protein.getText().toString()));
+                    }
+                    if (binding.fat.getText().toString().matches("[0-9]+")) {
+                        nutrients.setFatGram(Double.parseDouble(binding.fat.getText().toString()));
+                    }
+                    if (binding.portionSize.getText().toString().matches("[0-9]+")) {
+                        nutrients.setPortionSize(Double.parseDouble(binding.portionSize.getText().toString()));
+                    }
+                    if (binding.totalSize.getText().toString().matches("[0-9]+")) {
+                        nutrients.setGramTotal(Double.parseDouble(binding.totalSize.getText().toString()));
+                    }
+                    nutrientService.calculateNutrients(nutrients);
+                    autofill(nutrients, true);
+                    return true;
                 }
             });
         });
@@ -183,6 +181,7 @@ public class CreateFood extends AppCompatActivity {
     }
 
     public void update(Food food) {
+        Log.w("UPDATE", food.getId().toString());
         Food updatedFood = new Food(
                 this.binding.foodName.getText().toString(),
                 Double.parseDouble(this.binding.carbs.getText().toString()),
@@ -193,7 +192,10 @@ public class CreateFood extends AppCompatActivity {
         );
 
         updatedFood.setId(food.getId());
+        updatedFood.setDayId(food.getDayId());
+        updatedFood.setAggregation(food.isAggregation());
 
+        Log.w("UPDATED FOOD", updatedFood.getId().toString());
         nutrientService.calculateNutrients(updatedFood);
 
         this.model.update(updatedFood);
@@ -204,14 +206,14 @@ public class CreateFood extends AppCompatActivity {
     }
 
     private void autofill(Food food, boolean editing) {
-        if(editing) {
+        if (editing) {
             this.binding.totalCalories.setText(String.valueOf(food.getCalTotal()));
             this.binding.calPerPortion.setText(String.valueOf(food.getCalPerPortion()));
         } else {
             this.binding.foodName.setText(food.getName());
-            this.binding.fat.setText(String.valueOf(food.getFatCal()));
-            this.binding.carbs.setText(String.valueOf(food.getProteinCal()));
-            this.binding.protein.setText(String.valueOf(food.getProteinCal()));
+            this.binding.fat.setText(String.valueOf(food.getFatGram()));
+            this.binding.carbs.setText(String.valueOf(food.getCarbsGram()));
+            this.binding.protein.setText(String.valueOf(food.getProteinGram()));
             this.binding.portionSize.setText(String.valueOf(food.getPortionSize()));
             this.binding.totalSize.setText(String.valueOf(food.getGramTotal()));
 
@@ -224,39 +226,41 @@ public class CreateFood extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        NavController navController = Navigation.findNavController(MainActivity.getInstance(), R.id.nav_host_fragment_activity_main);
-        navController.navigate(R.id.navigation_foodhub);
+        if (this.mode == ActivityMode.CREATE) {
+            NavController navController = Navigation.findNavController(MainActivity.getInstance(), R.id.nav_host_fragment_activity_main);
+            navController.navigate(R.id.navigation_foodhub);
+        }
     }
 
     private boolean validate() {
         boolean validated = true;
-        if(!this.binding.foodName.getText().toString().matches("[a-zA-Z]+")) {
-            this.binding.foodName.setError("Please enter name with characters A-Z a-z");
+//        if(!this.binding.foodName.getText().toString().matches("[a-zA-Z]+")) {
+//            this.binding.foodName.setError("Please enter name with characters A-Z a-z");
+//            validated = false;
+//        }
+        this.binding.totalSize.setError(null);
+        this.binding.calPerPortion.setError(null);
+        this.binding.portionSize.setError(null);
+        if (!this.binding.carbs.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
+            this.binding.carbs.setError("Please enter whole number");
             validated = false;
         }
-            this.binding.totalSize.setError(null);
-            this.binding.calPerPortion.setError(null);
-            this.binding.portionSize.setError(null);
-            if (!this.binding.carbs.getText().toString().matches("[0-9]+")) {
-                this.binding.carbs.setError("Please enter whole number");
-                validated = false;
-            }
-            if (!this.binding.protein.getText().toString().matches("[0-9]+")) {
-                this.binding.protein.setError("Please enter whole number");
-                validated = false;
-            }
-            if (!this.binding.fat.getText().toString().matches("[0-9]+")) {
-                this.binding.fat.setError("Please enter whole number");
-                validated = false;
-            }
-            if (!this.binding.portionSize.getText().toString().matches("[0-9]+")) {
-                this.binding.portionSize.setError("Please enter whole number");
-                validated = false;
-            }
-            if (!this.binding.totalSize.getText().toString().matches("[0-9]+")) {
-                this.binding.totalSize.setError("Please enter whole number");
-                validated = false;
-            }
+        if (!this.binding.protein.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
+            this.binding.protein.setError("Please enter whole number");
+            validated = false;
+        }
+        if (!this.binding.fat.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
+            this.binding.fat.setError("Please enter whole number");
+            validated = false;
+        }
+        if (!this.binding.portionSize.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
+            this.binding.portionSize.setError("Please enter whole number");
+            validated = false;
+        }
+        if (!this.binding.totalSize.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
+            this.binding.totalSize.setError("Please enter whole number");
+            validated = false;
+        }
 
         return validated;
     }

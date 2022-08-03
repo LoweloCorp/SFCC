@@ -16,13 +16,11 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO Scanner optimiziation
-// TODO Toast service
-// TODO settings button tab
-// TODO Meal SERVING PACK CUSTOM Hide
 // TODO Themeing
 // TODO ONBOARDING AND DONATE BUTTON
 // TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
+// TODO Toast service
+// TODO Scanner optimiziation
 
 // TODO Action bar and navigate to Foodhub when typing in search if not already
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_graphs, R.id.navigation_dashboard, R.id.navigation_foodhub)
+                R.id.navigation_graphs, R.id.navigation_dashboard, R.id.navigation_foodhub, R.id.navigation_settings)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

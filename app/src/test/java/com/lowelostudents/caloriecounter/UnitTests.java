@@ -152,8 +152,8 @@ public class UnitTests {
     public void foodAggregation() {
         NutrientService nutrientService = NutrientService.getInstance();
         ArrayList<Food> foods = new ArrayList<>();
-        foods.add(new Food("One", 1, 1, 1, 3, 3));
-        foods.add(new Food("Two", 1, 1, 1, 3, 3));
+        foods.add(new Food("One", 1.0, 1.0, 1.0, 3.0, 3.0));
+        foods.add(new Food("Two", 1.0, 1.0, 1.0, 3.0, 3.0));
         nutrientService.calculateNutrients(foods.get(0));
         nutrientService.calculateNutrients(foods.get(1));
 

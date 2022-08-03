@@ -5,10 +5,13 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.lowelostudents.caloriecounter.MainActivity;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
@@ -31,6 +34,13 @@ public class SettingsActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NavController navController = Navigation.findNavController(MainActivity.getInstance(), R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.navigation_dashboard);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
