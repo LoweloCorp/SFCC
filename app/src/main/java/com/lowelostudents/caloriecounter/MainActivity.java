@@ -19,8 +19,8 @@ import java.lang.ref.WeakReference;
 // TODO Themeing
 // TODO ONBOARDING AND DONATE BUTTON
 // TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
+// TODO rework create meal
 // TODO Toast service
-// TODO Scanner optimiziation
 
 // TODO Action bar and navigate to Foodhub when typing in search if not already
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests

@@ -175,7 +175,7 @@ public class ScannerActivity extends AppCompatActivity {
                 buildPreview();
                 buildImageAnalysis();
                 Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, this.scanner.cameraSelector, this.scanner.imageAnalysis, this.scanner.preview);
-                camera.getCameraControl().cancelFocusAndMetering();
+//                camera.getCameraControl().cancelFocusAndMetering();
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
                 // This should never be reached.
