@@ -167,6 +167,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                 }
             });
 
+            if(quantitySelect != null)
             quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -228,8 +229,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, methodName, duration);
                         toast.show();
-
-                        notifyDataSetChanged();
+                        notifyItemRemoved(position);
 
                 }
             });

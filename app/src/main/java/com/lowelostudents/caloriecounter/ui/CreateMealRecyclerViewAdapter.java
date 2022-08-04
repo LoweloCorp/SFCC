@@ -37,6 +37,13 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
         String cardType = data.getClass().getSimpleName();
         String cardTitle = data.getName();
 
+//        if(this.activityMode == ActivityMode.UPDATE) {
+//            this.mealViewModel.checkedFoods.put(dataSet.get(position).getId(), dataSet.get(position));
+//            Log.w("ITEM AT", dataSet.get(position).toString());
+//        };
+
+        Log.w("ITEM AT", this.activityMode.toString());
+
         try {
             setEventHandlers(holder.cardItem, cardType, data, position);
         } catch (Exception e) {
@@ -47,6 +54,15 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
         holder.cardType.setText(cardType);
         holder.cardTitle.setText(cardTitle);
         holder.cardNutrients.setText(cardNutrients);
+        ImageButton button = holder.cardItem.findViewById(R.id.toggleForDay);
+
+        if(this.mealViewModel.checkedFoods.get(dataSet.get(position).getId()) != null) {
+            button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
+            button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
+        } else {
+            button.setImageResource(R.drawable.ic_baseline_add_box_24);
+            button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.Green));
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -70,6 +86,7 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
             }
         });
 
+        if(quantitySelect != null)
         quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -112,22 +129,25 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
     }
 
     public void updateList(int position, View cardItem) {
-        ImageButton button = cardItem.findViewById(R.id.toggleForDay);
         EditText quantity = cardItem.findViewById(R.id.quantity);
-        Food foodAtPosition = this.mealViewModel.checkedFoods.get(position);
+        Food foodAtPosition = this.mealViewModel.checkedFoods.get(dataSet.get(position).getId());
 
         try {
             if (foodAtPosition == null) {
                 Food nutrients = this.dataSet.get(position);
                 double quantityValue = Double.parseDouble(quantity.getText().toString());
                 Food foodAggregation = nutrientService.createFoodAggregation(nutrients, quantityValue, AggregationType.FOOD);
-                mealViewModel.checkedFoods.put(position, foodAggregation);
-                button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
-                button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
+                mealViewModel.checkedFoods.put(foodAggregation.getId(), foodAggregation);
+
+                this.dataSet.remove(position);
+                notifyItemRemoved(position);
+                Log.w("HERE", "HERE");
             } else {
-                this.mealViewModel.checkedFoods.remove(position);
-                button.setImageResource(R.drawable.ic_baseline_add_box_24);
-                button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.Green));
+                Log.w("ELSE", "ELSE");
+                this.mealViewModel.checkedFoods.remove(dataSet.get(position).getId());
+
+                this.dataSet.remove(position);
+                notifyItemRemoved(position);
             }
         } catch (IndexOutOfBoundsException e) {
             Log.w("Index out of Bounds", e.getCause());

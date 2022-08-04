@@ -134,7 +134,12 @@ public class ScannerActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onResult(Food food) {
-                                        if (food.getCalTotal() == 0 || Double.isNaN(food.getCalTotal())) throw new RuntimeException();
+                                        if (Double.isNaN(food.getCalTotal())) {
+                                            CharSequence info = "Food not found - Please try again";
+                                            Toast toast = Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG);
+                                            toast.show();
+                                            finishActivityWithResult(RESULT_CANCELED, null);
+                                        }
 
                                         Log.w("SCANNEDFOOD", food.toString());
 
@@ -144,7 +149,7 @@ public class ScannerActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Exception e) {
-                                        CharSequence info = "FOOD NOT FOUND";
+                                        CharSequence info = "Food not found - Please try again";
                                         Toast toast = Toast.makeText(getApplicationContext(), info, Toast.LENGTH_LONG);
                                         toast.show();
                                         finishActivityWithResult(Activity.RESULT_CANCELED, null);

@@ -22,7 +22,7 @@ public class MealViewModel extends AndroidViewModel {
     @Getter
     private final Observable<List<Food>> meals;
     private final FoodRepo foodRepo;
-    public final HashMap<Integer, Food> checkedFoods = new HashMap<>();
+    public final HashMap<UUID, Food> checkedFoods = new HashMap<>();
 
     public MealViewModel(Application context) {
         super(context);

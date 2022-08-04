@@ -118,7 +118,6 @@ public class OpenFoodFactsService {
 
         try {
             food.setCarbsGram(product.getJSONObject("nutriments").getDouble("carbohydrates_100g"));
-
         } catch (JSONException ignored) { }
 
         try {
@@ -126,7 +125,7 @@ public class OpenFoodFactsService {
         } catch (JSONException ignored) { }
 
         try {
-            food.setProteinGram(product.getJSONObject("nutriments").getDouble("protein_100g"));
+            food.setProteinGram(product.getJSONObject("nutriments").getDouble("proteins_100g"));
         } catch (JSONException ignored) { }
 
     }

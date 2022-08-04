@@ -1,12 +1,20 @@
 package com.lowelostudents.caloriecounter.ui.models;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -19,6 +27,7 @@ import com.lowelostudents.caloriecounter.MainActivity;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.ActivityCreatemealBinding;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.FilterService;
@@ -30,6 +39,7 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -53,7 +63,7 @@ public class CreateMeal extends AppCompatActivity {
     private final ArrayList<Disposable> disposables = new ArrayList<>();
 
     @SneakyThrows
-    protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, ActivityMode mode) {
+    protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, ActivityMode mode, FoodViewModel foodViewModel) {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Context context = getApplicationContext();
         int toastDuration = Toast.LENGTH_SHORT;
@@ -89,8 +99,31 @@ public class CreateMeal extends AppCompatActivity {
             });
         }
 
-        // TODO potentially deprecatable can call method on filter instead of observing
-//        eventHandlingService.onChangedInvokeMethod(this, this.dataSet, recyclerViewAdapter, handleDatasetChanged);
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            Bundle bundle = null;
+
+                            if (data != null) {
+                                bundle = data.getExtras();
+                            }
+
+                            if (bundle != null) {
+                                Food food = (Food) bundle.get("food");
+                                food.setAggregationType(AggregationType.FOOD);
+                                foodViewModel.insert(food);
+                                foodViewModel.getFoods().take(1).subscribe(dataSet::onNext);
+                            }
+                        }
+                    }
+                });
+
+        eventHandlingService.onClickLaunchActivityFromContext(binding.scanButton, this, ScannerActivity.class, someActivityResultLauncher);
 
         Disposable disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(recyclerViewAdapter::handleDatasetChanged);
 
@@ -98,6 +131,7 @@ public class CreateMeal extends AppCompatActivity {
         eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +142,16 @@ public class CreateMeal extends AppCompatActivity {
 
         if (this.mode == ActivityMode.CREATE) {
             binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(1));
-            foodViewModel.getFoods().take(1).subscribe(foods -> this.dataSet.onNext(foods));
+            foodViewModel.getFoods().take(1).subscribe(this.dataSet::onNext);
+        }
+
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null) {
+            this.mode = (ActivityMode) bundle.get("mode");
+            this.meal = (Food) bundle.get("item");
+
+            binding.mealName.setText(meal.getName());
         }
 
         final RecyclerView foodList = binding.foodList;
@@ -116,7 +159,16 @@ public class CreateMeal extends AppCompatActivity {
         this.recyclerViewAdapter.setActivityMode(this.mode);
         foodList.setLayoutManager(new LinearLayoutManager(this));
         foodList.setAdapter(recyclerViewAdapter);
-        Bundle bundle = getIntent().getExtras();
+
+
+        int id = binding.searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        EditText editText = (EditText) binding.searchView.findViewById(id);
+
+        editText.setOnTouchListener((view, motionEvent) -> {
+            foodViewModel.getFoods().take(1).subscribe(foods -> dataSet.onNext(foods));
+            binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(1));
+            return false;
+        });
 
         this.binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -133,14 +185,12 @@ public class CreateMeal extends AppCompatActivity {
             }
         });
 
-        if (bundle != null) {
-            this.mode = (ActivityMode) bundle.get("mode");
-            this.meal = (Food) bundle.get("item");
-        }
-
         if (this.mode == ActivityMode.UPDATE) {
             binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(0));
-            this.model.getMealFoods(this.meal.getId()).take(1).subscribe( mealFoods -> this.dataSet.onNext(mealFoods.getFoods()));
+            this.model.getMealFoods(this.meal.getId()).take(1).subscribe( mealFoods -> {
+                this.dataSet.onNext(mealFoods.getFoods());
+                mealFoods.getFoods().forEach( food -> this.recyclerViewAdapter.getMealViewModel().checkedFoods.put(food.getId(), food));
+            });
         }
 
         // TODO
@@ -148,16 +198,7 @@ public class CreateMeal extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    if (mode == ActivityMode.CREATE) {
                         recyclerViewAdapter.handleDatasetChanged(new ArrayList<>(recyclerViewAdapter.getMealViewModel().checkedFoods.values()));
-                    } else {
-                        model.getMealFoods(meal.getId()).take(1).subscribe( mealWithFood -> {
-                            ArrayList<Food> nutrients = new ArrayList<>(mealWithFood.getFoods());
-                            nutrients.addAll(recyclerViewAdapter.getMealViewModel().checkedFoods.values());
-
-                            dataSet.onNext(nutrients);
-                        });
-                    }
                 } else {
                         foodViewModel.getFoods().take(1).subscribe(foods -> dataSet.onNext(foods));
                 }
@@ -177,7 +218,7 @@ public class CreateMeal extends AppCompatActivity {
         if (this.mode == ActivityMode.UPDATE)
             binding.deleteForeverButton.setVisibility(View.VISIBLE);
 
-        setEventHandlers(recyclerViewAdapter, this.mode);
+        setEventHandlers(recyclerViewAdapter, this.mode, foodViewModel);
     }
 
     public void save() {
