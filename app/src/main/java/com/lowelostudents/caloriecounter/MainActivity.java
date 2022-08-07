@@ -16,7 +16,6 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO Themeing
 // TODO ONBOARDING AND DONATE BUTTON
 // TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
 // TODO rework create meal

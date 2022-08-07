@@ -18,6 +18,28 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.CalorieCounter.CARD">
+        <item name="colorPrimary">@color/navy_500</item>
+        <item name="colorPrimaryVariant">@color/navy_900</item>
+        <item name="colorSecondary">#2E7D32</item>
+        <item name="colorSecondaryVariant">#558B2F</item>
+        <item name="colorOnPrimary">@color/navy_900</item>
+        <item name="colorAccent">#40F5F5F5</item>
+        <item name="colorOnSecondary">@color/WhiteSmoke</item>
+        <item name="colorOnError">@color/WhiteSmoke</item>
+        <item name="colorError">#C62828</item>
+        <!-- Using default values for colorOnPrimary, colorSurface, colorError, etc. -->
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="editTextColor">@color/navy_900</item>
+
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Theme.CalorieCounter.Switch">
+        <item name="colorAccent">@color/navy_900</item>
+
+        <!-- Customize your theme here. -->
+    </style>
     <style name="Theme.AppCompat.BORDER">
         <item name="colorPrimary">@color/navy_900</item>
         <item name="colorOnPrimary">@color/WhiteSmoke</item>

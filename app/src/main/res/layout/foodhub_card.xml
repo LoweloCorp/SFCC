@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/Theme.CalorieCounter"
+    android:theme="@style/Theme.CalorieCounter.CARD"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
@@ -19,6 +19,7 @@
 
         <LinearLayout
             android:id="@+id/cardLayout"
+            android:background="?colorAccent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -45,13 +46,15 @@
                         android:id="@+id/cardTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Steak/HappyMeal" />
+                        android:text="Steak/HappyMeal"
+                        android:textColor="?colorOnPrimary" />
 
                     <TextView
                         android:id="@+id/cardType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Food/Meal"
+                        android:textColor="?colorOnPrimary"
                         android:textSize="10dp" />
 
 
@@ -60,6 +63,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="100g/100cal"
+                        android:textColor="?colorOnPrimary"
                         android:textSize="10dp" />
 
                     <TextView
@@ -68,6 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="Tap to edit"
+                        android:textColor="?colorOnPrimary"
                         android:textSize="11dp" />
 
                 </LinearLayout>
@@ -95,6 +100,7 @@
 
                 <TextView
                     android:id="@+id/textView"
+                    android:textColor="?colorOnPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="25dp"
@@ -104,6 +110,9 @@
                     android:id="@+id/quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="?colorOnPrimary"
+                    android:textColorHint="?colorOnPrimary"
+                    android:backgroundTint="?colorOnPrimary"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="numberDecimal" />
@@ -112,6 +121,9 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/quantitySelect"
                 android:layout_width="match_parent"
+                app:tabIndicatorColor="?colorOnPrimary"
+                app:tabTextColor="?colorPrimary"
+                app:tabSelectedTextColor="?colorOnPrimary"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.tabs.TabItem

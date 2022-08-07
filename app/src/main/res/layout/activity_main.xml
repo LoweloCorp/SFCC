@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:theme="@style/Theme.CalorieCounter"
     android:layout_height="match_parent"
+    android:background="?colorAccent"
     android:orientation="vertical">
 
     <fragment
@@ -36,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-
         app:itemBackground="@drawable/active_color_inverted_background"
         app:itemIconTint="@drawable/active_color"
         app:itemTextColor="@drawable/active_color"

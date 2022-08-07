@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.CalorieCounter"
+    android:background="?colorAccent"
     tools:context=".MainActivity">
 
     <androidx.camera.view.PreviewView
@@ -18,12 +19,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        android:background="@color/teal_700"
+        android:background="?colorPrimaryVariant"
         android:padding="1.75dp"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/White" />
+        android:textColor="?colorOnPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

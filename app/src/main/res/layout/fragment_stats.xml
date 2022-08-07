@@ -5,6 +5,7 @@
     android:theme="@style/Theme.CalorieCounter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorAccent"
     tools:context=".ui.models.StatsFragment">
 
     <com.github.mikephil.charting.charts.PieChart

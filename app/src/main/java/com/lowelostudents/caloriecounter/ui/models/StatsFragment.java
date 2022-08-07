@@ -1,5 +1,8 @@
 package com.lowelostudents.caloriecounter.ui.models;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +31,7 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.core.Observable;
 import lombok.SneakyThrows;
@@ -38,6 +42,8 @@ public class StatsFragment extends Fragment {
     private Observable<List<PieEntry>> dataSet;
     private User user;
     private PieChart barChart;
+    int navy = Color.parseColor("#073042");
+    int white = Color.parseColor("#F5F5F5");
     @SneakyThrows
     private void setEventHandlers() {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
@@ -65,10 +71,20 @@ public class StatsFragment extends Fragment {
 
         barChart = binding.nutrientGauge;
         barChart.getDescription().setEnabled(false);
-        barChart.setCenterText("Nutrient Gauge");
-        barChart.setEntryLabelColor(Color.BLACK);
+        barChart.setEntryLabelColor(navy);
+
         barChart.setExtraBottomOffset(30f);
         barChart.setExtraLeftOffset(38f);
+
+        barChart.setDrawHoleEnabled(false);
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                barChart.setCenterTextColor(navy);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                barChart.setCenterTextColor(navy);
+                break;
+        }
         barChart.setExtraRightOffset(38f);
         //legend attributes
         // TODO legend not centered for whatever reason
@@ -76,6 +92,14 @@ public class StatsFragment extends Fragment {
         legend.setForm(Legend.LegendForm.CIRCLE);
         legend.setTextSize(12);
         legend.setFormSize(20);
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                legend.setTextColor(white);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                legend.setTextColor(navy);
+                break;
+        }
         legend.setFormToTextSpace(4);
         legend.setYOffset(30);
         legend.setXOffset(-5);
@@ -93,15 +117,39 @@ public class StatsFragment extends Fragment {
     public void handleDatasetChanged(final List<PieEntry> pieEntries) {
         barChart.invalidate();
         PieDataSet barDataSet = new PieDataSet(pieEntries, null);
-        barDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextColor(navy);
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                barDataSet.setColors(ColorTemplate.LIBERTY_COLORS);
+                barDataSet.setValueLineColor(white);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                barDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+                barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+                barDataSet.setValueLineColor(navy);
+                break;
+        }
         barDataSet.setValueTextSize(16f);
 
         PieData barData = new PieData(barDataSet);
 
         barChart.setData(barData);
 
+    }
+
+    public String returnThemeName()
+    {
+        PackageInfo packageInfo;
+        try
+        {
+            packageInfo = requireContext().getPackageManager().getPackageInfo(requireContext().getPackageName(), PackageManager.GET_META_DATA);
+            int themeResId = packageInfo.applicationInfo.theme;
+            return getResources().getResourceEntryName(themeResId);
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            return null;
+        }
     }
 
     @Override

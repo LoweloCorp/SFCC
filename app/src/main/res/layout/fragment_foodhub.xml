@@ -12,13 +12,17 @@
     <Switch
         android:id="@+id/foodToggle"
         android:layout_width="match_parent"
+        android:theme="@style/Theme.CalorieCounter.Switch"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
+        android:textColor="?colorAccent"
         android:checked="true"
         android:text="Food" />
 
     <Switch
         android:id="@+id/mealToggle"
+        android:theme="@style/Theme.CalorieCounter.Switch"
+        android:textColor="?colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.1"
