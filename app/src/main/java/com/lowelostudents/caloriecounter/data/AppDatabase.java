@@ -20,7 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (dbInstance == null)
-            dbInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME).allowMainThreadQueries()
+            dbInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME)
                     .fallbackToDestructiveMigration()
                     .build();
 
@@ -29,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static synchronized AppDatabase getInMemoryInstance(Context context) {
         if (dbInstance == null)
-            dbInstance = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class).allowMainThreadQueries()
+            dbInstance = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
                     .fallbackToDestructiveMigration()
                     .build();
 

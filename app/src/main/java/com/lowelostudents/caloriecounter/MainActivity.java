@@ -1,5 +1,7 @@
 package com.lowelostudents.caloriecounter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
@@ -16,15 +19,15 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO ONBOARDING AND DONATE BUTTON
+// TODO fix create meal index out of bounds
+// TODO DONATE FRAGMENT, Finalize Onboarding Design put back in Preferences
 // TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
-// TODO rework create meal
-// TODO Toast service
+// TODO Create Meal hide Added Items quantity Select
+// TODO Toast service, validation service
 
 // TODO Action bar and navigate to Foodhub when typing in search if not already
 // TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
 // TODO Errorhandling
-// TODO NONBLOCKING way for user
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkUpdates();
+//        checkPreferences();
+        startActivity(new Intent(this, OnboardingActivity.class));
         weakActivity = new WeakReference<>(MainActivity.this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -62,5 +67,15 @@ public class MainActivity extends AppCompatActivity {
         workManager.enqueue(oneTimeWorkRequest);
     }
 
+
+    private void checkPreferences() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        // Check if we need to display our OnboardingSupportFragment
+        if (!sharedPreferences.getBoolean("isOnBoard?", false)) {
+            // The user hasn't seen the OnboardingSupportFragment yet, so show it
+            startActivity(new Intent(this, OnboardingActivity.class));
+        }
+    }
 
 }

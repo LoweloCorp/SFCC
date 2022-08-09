@@ -102,7 +102,7 @@ public class StatsFragment extends Fragment {
         }
         legend.setFormToTextSpace(4);
         legend.setYOffset(30);
-        legend.setXOffset(-5);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         //to wrap legend text
 //        legend.setWordWrapEnabled(true);
         Log.d("legend " ,legend.getEntries().toString());

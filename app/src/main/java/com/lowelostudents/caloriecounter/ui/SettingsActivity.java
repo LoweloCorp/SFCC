@@ -1,6 +1,7 @@
 package com.lowelostudents.caloriecounter.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 // TODO BRÖKEN
 public class SettingsActivity extends AppCompatActivity {
@@ -44,7 +47,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        private User user;
+        private Observable<User> user;
+
+        Disposable disposable;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -53,15 +58,22 @@ public class SettingsActivity extends AppCompatActivity {
             EditTextPreference name = findPreference("name");
             EditTextPreference calories = findPreference("calories");
 
-            this.user = userViewModel.getUser().blockingFirst();
+            this.user = userViewModel.getUser();
+
+            this.disposable = this.user.observeOn(AndroidSchedulers.mainThread()).subscribe( user -> {
+                name.setText(user.getName());
+                calories.setText(String.valueOf(user.getCalTotal()));
+            });
 
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    User updatedUser = new User(user.getToken(), newValue.toString(), user.getCalTotal());
-                    updatedUser.setId(user.getId());
-                    userViewModel.update(updatedUser);
-                    name.setText(newValue.toString());
+                    user.take(1).subscribe( user -> {
+                        Log.w("USER", user.toString());
+                        User updatedUser = new User(user.getToken(), newValue.toString(), user.getCalTotal());
+                        updatedUser.setId(user.getId());
+                        userViewModel.update(updatedUser);
+                    });
                     return false;
                 }
             });
@@ -69,13 +81,22 @@ public class SettingsActivity extends AppCompatActivity {
             calories.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    User updatedUser = new User(user.getToken(), user.getName(), Integer.parseInt(newValue.toString()));
-                    updatedUser.setId(user.getId());
-                    userViewModel.update(updatedUser);
-                    calories.setText(newValue.toString());
+                    user.take(1).subscribe(user -> {
+                        Log.w("USER", user.toString());
+
+                        User updatedUser = new User(user.getToken(), user.getName(), Integer.parseInt(newValue.toString()));
+                        updatedUser.setId(user.getId());
+                        userViewModel.update(updatedUser);
+                    });
                     return false;
                 }
             });
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            this.disposable.dispose();
         }
     }
 }

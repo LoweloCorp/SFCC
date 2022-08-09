@@ -130,6 +130,8 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
 
     public void updateList(int position, View cardItem) {
         EditText quantity = cardItem.findViewById(R.id.quantity);
+
+        // FIXME INDEX OUT OF BOUDNS
         Food foodAtPosition = this.mealViewModel.checkedFoods.get(dataSet.get(position).getId());
 
         try {

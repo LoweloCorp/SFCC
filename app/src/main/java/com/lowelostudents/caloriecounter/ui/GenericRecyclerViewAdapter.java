@@ -122,6 +122,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
 
         if(cardType.equals("Meal")) {
             layout.removeView(quantitySelect);
+            if(quantityLayout != null)
             quantityLayout.setPadding(quantityLayout.getPaddingLeft(), quantityLayout.getPaddingTop(), quantityLayout.getPaddingRight(), 20);
         }
 

@@ -30,6 +30,7 @@
             android:layout_height="match_parent"
             android:backgroundTint="?attr/colorOnPrimary"
             android:ems="10"
+            android:textCursorDrawable = "@null"
             android:hint="Enter meal name"
             android:inputType="textPersonName"
             android:textColor="?attr/colorOnPrimary"
@@ -104,7 +105,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/foodList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="375dp"
             android:layout_marginTop="25dp"
             android:layout_weight="1" />
 

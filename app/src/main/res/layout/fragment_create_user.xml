@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.CalorieCounter"
+    android:background="?colorAccent"
+    android:padding="50dp"
+    tools:context=".CreateUser">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/next"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="50dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?editTextColor"
+            android:hint="Your name"
+            android:inputType="numberDecimal"
+            android:textColor="?editTextColor"
+            android:textColorHint="?editTextColor" />
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:textCursorDrawable = "@null"
+
+            android:backgroundTint="?editTextColor"
+            android:textColor="?editTextColor"
+            android:textColorHint="?editTextColor" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?editTextColor"
+            android:hint="Calories your body needs"
+            android:inputType="numberDecimal"
+            android:textColor="?editTextColor"
+            android:textColorHint="?editTextColor" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?editTextColor"
+            android:hint="(Calculator integration coming soon)"
+            android:inputType="numberDecimal"
+            android:textSize="10dp"
+            android:textColor="?editTextColor"
+            android:textColorHint="?editTextColor" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?editTextColor"
+            android:hint="(For now use an online calculator of your liking)"
+            android:inputType="numberDecimal"
+            android:textSize="10dp"
+            android:textColor="?editTextColor"
+            android:textColorHint="?editTextColor" />
+
+        <EditText
+            android:id="@+id/user_calories"
+            android:layout_width="match_parent"
+            android:textCursorDrawable = "@null"
+
+            android:layout_height="wrap_content"
+            android:backgroundTint="?editTextColor"
+            android:inputType="numberDecimal"
+            android:textColor="?editTextColor"
+            android:textColorHint="?editTextColor" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:background="?colorSecondary"
+        android:textColor="?colorOnSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,14 +35,6 @@ public class DataPopulationTask extends Worker {
         DayDao dayDao = appdb.dayDao();
         Calendar cal = Calendar.getInstance();
 
-        // TODO REMOVE
-        UserDao userDao = appdb.userDao();
-        List<User> userList = userDao.get();
-        if(userList.isEmpty()){
-            User user = new User("teqtoeqojtqoejtq", "Pls enter username", 3000);
-            userDao.insert(user);
-        }
-
         // FIXME also delete relations but also fix because this doesn't ensure day even exists in first place
         if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
             Calendar localCal = Calendar.getInstance();
