@@ -13,7 +13,7 @@ import com.lowelostudents.caloriecounter.models.interfaces.DayDao;
 import com.lowelostudents.caloriecounter.models.interfaces.FoodDao;
 import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 
-@Database(entities = {Day.class, Food.class, User.class}, version = 1)
+@Database(entities = {Day.class, Food.class, User.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "SFCCDatabase";
     private static AppDatabase dbInstance;
