@@ -208,7 +208,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
 
                         // TODO make toast service
                         Context context = view.getContext().getApplicationContext();
-                        CharSequence methodName = "Added To Day";
+                        CharSequence methodName = "Added to day";
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, methodName, duration);
                         toast.show();
@@ -226,7 +226,7 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                         dataSet.remove(position);
 
                         Context context = view.getContext().getApplicationContext();
-                        CharSequence methodName = "Removed from Day";
+                        CharSequence methodName = "Removed from day";
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, methodName, duration);
                         toast.show();

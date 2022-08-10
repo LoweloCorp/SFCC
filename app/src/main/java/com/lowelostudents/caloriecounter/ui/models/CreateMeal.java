@@ -128,7 +128,12 @@ public class CreateMeal extends AppCompatActivity {
         Disposable disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(recyclerViewAdapter::handleDatasetChanged);
 
         this.disposables.add(disposable);
-        eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
+        binding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -261,7 +266,7 @@ public class CreateMeal extends AppCompatActivity {
     private boolean validate() {
         boolean validated = true;
 
-        if (!this.binding.mealName.getText().toString().matches("[a-zA-Z]+")) {
+        if (this.binding.mealName.getText().toString().isEmpty()) {
             this.binding.mealName.setError("Please enter with characters A-Z a-z");
             validated = false;
         }

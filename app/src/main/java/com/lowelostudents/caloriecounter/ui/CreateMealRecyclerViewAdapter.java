@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -140,14 +141,20 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
                 double quantityValue = Double.parseDouble(quantity.getText().toString());
                 Food foodAggregation = nutrientService.createFoodAggregation(nutrients, quantityValue, AggregationType.FOOD);
                 mealViewModel.checkedFoods.put(foodAggregation.getId(), foodAggregation);
-
-                this.dataSet.remove(position);
-                notifyItemRemoved(position);
+                Context context = cardItem.getContext().getApplicationContext();
+                CharSequence methodName = "Added to meal";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, methodName, duration);
+                toast.show();
                 Log.w("HERE", "HERE");
             } else {
                 Log.w("ELSE", "ELSE");
                 this.mealViewModel.checkedFoods.remove(dataSet.get(position).getId());
-
+                Context context = cardItem.getContext().getApplicationContext();
+                CharSequence methodName = "Removed from meal";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, methodName, duration);
+                toast.show();
                 this.dataSet.remove(position);
                 notifyItemRemoved(position);
             }

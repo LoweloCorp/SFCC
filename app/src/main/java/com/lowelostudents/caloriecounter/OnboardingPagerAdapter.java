@@ -13,10 +13,12 @@ public class OnboardingPagerAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
 
         this.fragments = new Fragment[] {
+                new Donate(),
                 new OnboardingFragment(0),
                 new OnboardingFragment(1),
                 new OnboardingFragment(2),
                 new OnboardingFragment(3),
+                new OnboardingFragment(4),
                 new CreateUser(),
         };
     }

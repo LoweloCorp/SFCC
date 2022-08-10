@@ -1,7 +1,10 @@
 package com.lowelostudents.caloriecounter.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,16 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+        findViewById(R.id.donate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse("https://www.paypal.com/donate/?hosted_button_id=49FYWEP529NH6"); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -57,13 +70,14 @@ public class SettingsActivity extends AppCompatActivity {
             UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
             EditTextPreference name = findPreference("name");
             EditTextPreference calories = findPreference("calories");
-
             this.user = userViewModel.getUser();
 
             this.disposable = this.user.observeOn(AndroidSchedulers.mainThread()).subscribe( user -> {
                 name.setText(user.getName());
                 calories.setText(String.valueOf(user.getCalTotal()));
             });
+
+
 
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

@@ -18,7 +18,7 @@ public class OnboardingActivity extends FragmentActivity {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 7;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -51,13 +51,13 @@ public class OnboardingActivity extends FragmentActivity {
         }
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        SharedPreferences.Editor sharedPreferencesEditor =
-//                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-//        sharedPreferencesEditor.putBoolean(
-//                "isOnBoard?", true);
-//        sharedPreferencesEditor.apply();
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences.Editor sharedPreferencesEditor =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+        sharedPreferencesEditor.putBoolean(
+                "isOnBoard?", true);
+        sharedPreferencesEditor.apply();
+    }
 }

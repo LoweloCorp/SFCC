@@ -19,9 +19,8 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO fix create meal index out of bounds
-// TODO DONATE FRAGMENT, Finalize Onboarding Design put back in Preferences
-// TODO PERSISTENT DATABASE, Every Day new day, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
+// TODO feedback button
+// TODO PERSISTENT DATABASE, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
 // TODO Create Meal hide Added Items quantity Select
 // TODO Toast service, validation service
 
@@ -43,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkUpdates();
-//        checkPreferences();
-        startActivity(new Intent(this, OnboardingActivity.class));
+        checkPreferences();
         weakActivity = new WeakReference<>(MainActivity.this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());

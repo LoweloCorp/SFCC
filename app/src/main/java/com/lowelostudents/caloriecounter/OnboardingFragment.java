@@ -50,7 +50,7 @@ public class OnboardingFragment extends Fragment {
 
         Log.w("CurrPOS", String.valueOf(currPos));
 
-        int[] pageImages = new int[]{R.drawable.ic_baseline_auto_graph_24, R.drawable.ic_baseline_auto_graph_24, R.drawable.ic_baseline_auto_graph_24, R.drawable.ic_baseline_auto_graph_24};
+        int[] pageImages = new int[]{R.drawable.today, R.drawable.create_food, R.drawable.create_meal, R.drawable.stats, R.drawable.my_settings};
 
         this.binding.imageView.setImageResource(pageImages[currPos]);
         View root = binding.getRoot();

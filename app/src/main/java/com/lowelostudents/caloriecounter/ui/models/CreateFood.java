@@ -106,7 +106,12 @@ public class CreateFood extends AppCompatActivity {
                 });
 
         eventHandlingService.onClickLaunchActivityFromContext(binding.scanButton, this, ScannerActivity.class, someActivityResultLauncher);
-        eventHandlingService.onClickInvokeMethod(binding.cancelButton, this, finish);
+        binding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -129,21 +134,22 @@ public class CreateFood extends AppCompatActivity {
 
                     // TODO rework maybe additional constructor similar to Object.assign
                     nutrients.setName(binding.foodName.getText().toString());
-                    if (binding.carbs.getText().toString().matches("[0-9]+")) {
+                    if (binding.carbs.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
                         nutrients.setCarbsGram(Double.parseDouble(binding.carbs.getText().toString()));
                     }
-                    if (binding.protein.getText().toString().matches("[0-9]+")) {
+                    if (binding.protein.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
                         nutrients.setProteinGram(Double.parseDouble(binding.protein.getText().toString()));
                     }
-                    if (binding.fat.getText().toString().matches("[0-9]+")) {
+                    if (binding.fat.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
                         nutrients.setFatGram(Double.parseDouble(binding.fat.getText().toString()));
                     }
-                    if (binding.portionSize.getText().toString().matches("[0-9]+")) {
+                    if (binding.portionSize.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
                         nutrients.setPortionSize(Double.parseDouble(binding.portionSize.getText().toString()));
                     }
-                    if (binding.totalSize.getText().toString().matches("[0-9]+")) {
+                    if (binding.totalSize.getText().toString().matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
                         nutrients.setGramTotal(Double.parseDouble(binding.totalSize.getText().toString()));
                     }
+
                     nutrientService.calculateNutrients(nutrients);
                     autofill(nutrients, true);
                     return true;
@@ -234,10 +240,11 @@ public class CreateFood extends AppCompatActivity {
 
     private boolean validate() {
         boolean validated = true;
-//        if(!this.binding.foodName.getText().toString().matches("[a-zA-Z]+")) {
-//            this.binding.foodName.setError("Please enter name with characters A-Z a-z");
-//            validated = false;
-//        }
+
+        if(this.binding.foodName.getText().toString().isEmpty()) {
+            this.binding.foodName.setError("Please enter name with characters A-Z a-z");
+            validated = false;
+        }
         this.binding.totalSize.setError(null);
         this.binding.calPerPortion.setError(null);
         this.binding.portionSize.setError(null);

@@ -33,7 +33,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.SneakyThrows;
 
 // TODO BRÖKEN
@@ -44,12 +46,14 @@ public class StatsFragment extends Fragment {
     private PieChart barChart;
     int navy = Color.parseColor("#073042");
     int white = Color.parseColor("#F5F5F5");
+
+    Disposable disposable;
     @SneakyThrows
     private void setEventHandlers() {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Method method = this.getClass().getMethod("handleDatasetChanged", List.class);
 
-        eventHandlingService.onChangedInvokeMethod(this.dataSet, this, method);
+        this.disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(this::handleDatasetChanged);
     }
 
 
@@ -155,6 +159,7 @@ public class StatsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        this.disposable.dispose();
         binding = null;
     }
 }

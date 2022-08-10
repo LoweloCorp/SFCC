@@ -200,17 +200,16 @@
                 android:layout_weight="1"
                 android:backgroundTint="?editTextColor"
                 android:ems="10"
-                android:hint="Fat (g/Portion)"
+                android:hint="Fat"
                 android:inputType="numberDecimal"
                 android:textColor="?editTextColor"
                 android:textColorHint="?editTextColor" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:hint="g / Serving"
-                android:inputType="numberDecimal"
+                android:hint="Fat (g / Serving)"
                 android:textColor="?editTextColor"
                 android:textColorHint="?editTextColor" />
         </LinearLayout>
@@ -227,16 +226,16 @@
             android:backgroundTint="?editTextColor"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Carbs (g/Portion)"
+            android:hint="Carbs"
             android:inputType="numberDecimal"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:hint="g / Serving"
-            android:inputType="numberDecimal"
+            android:hint="Carbs (g / Serving)"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
     </LinearLayout>
@@ -254,16 +253,16 @@
             android:backgroundTint="?editTextColor"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Protein (g/Portion)"
+            android:hint="Protein"
             android:inputType="numberDecimal"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:hint="g / Serving"
-            android:inputType="numberDecimal"
+            android:hint="Protein (g / Serving)"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
     </LinearLayout>
@@ -279,16 +278,16 @@
             android:backgroundTint="?editTextColor"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Portion (g)"
+            android:hint="Serving"
             android:inputType="numberDecimal"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:hint="g (Serving)"
-            android:inputType="numberDecimal"
+            android:hint="Serving (g)"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
     </LinearLayout>
@@ -304,16 +303,16 @@
             android:backgroundTint="?editTextColor"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Total weight (g)"
+            android:hint="Package"
             android:inputType="numberDecimal"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:hint="g (Package)"
-            android:inputType="numberDecimal"
+            android:hint="Package (g)"
             android:textColor="?editTextColor"
             android:textColorHint="?editTextColor" />
     </LinearLayout>

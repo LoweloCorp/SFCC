@@ -48,7 +48,7 @@ public class CreateUser extends Fragment {
     private boolean validate() {
         boolean validated = true;
 
-        if (!this.binding.username.getText().toString().matches("[a-zA-Z]+")) {
+        if (this.binding.username.getText().toString().isEmpty()) {
             this.binding.username.setError("Please enter with characters A-Z a-z");
             validated = false;
         }

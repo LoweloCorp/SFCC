@@ -89,11 +89,6 @@ public class EventHandlingService {
             @Override
             public void onClick(View view) {
                 try {
-                    Context context = view.getContext().getApplicationContext();
-                    CharSequence methodName = method.getName();
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, methodName, duration);
-                    toast.show();
                     method.invoke(controller, parameters);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
