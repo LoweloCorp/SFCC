@@ -4,13 +4,13 @@
     <PreferenceCategory app:title="User settings">
 
         <EditTextPreference
-            app:key="name"
+            app:key="userName"
             app:title="Name"
             app:useSimpleSummaryProvider="true"
             android:inputType="textPersonName"/>
 
         <EditTextPreference
-            app:key="calories"
+            app:key="userCalories"
             app:title="Calories"
             app:useSimpleSummaryProvider="true"
             android:inputType="numberDecimal"/>

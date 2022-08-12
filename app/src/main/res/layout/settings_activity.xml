@@ -24,9 +24,10 @@
             android:id="@+id/donate"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:background="?colorSecondary"
             android:padding="15dp"
-            android:text="Support My Apps"
+            android:text="Support me"
             android:textColor="?colorOnSecondary" />
 
         <Button

@@ -24,7 +24,7 @@ public class Donate extends Fragment {
         this.binding.donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("https://www.paypal.com/donate/?hosted_button_id=49FYWEP529NH6"); // missing 'http://' will cause crashed
+                Uri uri = Uri.parse("https://github.com/LoweloDev/CalorieCounter-by-Anti-Bloat-Concise-Apps"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
