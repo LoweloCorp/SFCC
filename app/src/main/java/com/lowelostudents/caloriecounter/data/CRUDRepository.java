@@ -1,21 +1,19 @@
 package com.lowelostudents.caloriecounter.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.Data;
 
-// TODO byId, Range, Refactor WeirdChamp
-// TODO CHECK IF NECESSARY WHEN USING EXECUTOR IN FRONTEND
+// TODO add UUID generic queries here and in DAOs
+
 @Data
 public class CRUDRepository<T> {
     protected static ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -25,28 +23,19 @@ public class CRUDRepository<T> {
 
     public CRUDRepository(Context context) {
         this.context = context;
-        this.appdb = AppDatabase.getInMemoryInstance(context);
+        this.appdb = AppDatabase.getInstance(context);
     }
 
-    public Long insert(T t) {
-        AtomicReference<Long> id = new AtomicReference<>();
-
+    public void insert(T t) {
         executor.execute(() -> {
-            id.set(crudDao.insert(t));
-
-            Log.i("ID", String.valueOf(id.get().intValue()));
+            crudDao.insert(t);
         });
-
-        return id.get();
     }
 
-    public Long[] insert(List<T> t) {
-        AtomicReference<Long[]> id = new AtomicReference<>();
-
+    public void insert(List<T> t) {
         executor.execute(() -> {
-            id.set(crudDao.insert(t));
+            crudDao.insert(t);
         });
-        return id.get();
     }
 
     public List<T> get(Class<T> t) {
@@ -82,13 +71,19 @@ public class CRUDRepository<T> {
     }
 
     public void delete(Class<T> tClass, long id) {
-        executor.execute( () -> {
+        executor.execute(() -> {
+            crudDao.delete(tClass, id);
+        });
+    }
+
+    public void delete(Class<T> tClass, UUID id) {
+        executor.execute(() -> {
             crudDao.delete(tClass, id);
         });
     }
 
     public void delete(Class<T> tClass, String name) {
-        executor.execute( () -> {
+        executor.execute(() -> {
             crudDao.delete(tClass, name);
         });
     }

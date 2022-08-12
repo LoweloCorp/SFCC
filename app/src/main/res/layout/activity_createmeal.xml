@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/ThemeOverlay.CalorieCounter.FullscreenContainer"
+    android:theme="@style/Theme.CalorieCounter"
     android:id="@+id/mealFragment"
+    android:background="?colorAccent"
     tools:context=".ui.models.CreateMeal">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -15,7 +16,44 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mealNameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryVariant"
+        android:padding="15dp"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <EditText
+            android:id="@+id/mealName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:ems="10"
+            android:textCursorDrawable = "@null"
+            android:hint="Enter meal name"
+            android:inputType="textPersonName"
+            android:textColor="?attr/colorOnPrimary"
+            android:textColorHint="?attr/colorOnPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.75" />
+
+        <ImageButton
+            android:id="@+id/delete_forever_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="?colorError"
+            app:tint="?attr/colorOnError"
+            android:src="@drawable/ic_baseline_delete_forever_24"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,55 +62,50 @@
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/mealNameLayout">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/mealTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?colorPrimaryVariant"
+            app:tabIndicatorColor="@color/WhiteSmoke"
+            android:padding="5dp"
+            app:tabSelectedTextColor="@color/WhiteSmoke"
+            app:tabTextColor="?colorPrimary">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Added items" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food" />
+
+        </com.google.android.material.tabs.TabLayout>
 
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:background="?colorPrimaryVariant"
             android:focusedByDefault="false"
             android:hint="Meal name"
+            android:queryBackground="@null"
             android:iconifiedByDefault="false"
             android:layoutDirection="ltr"
-            android:queryHint="Search food" />
+            android:queryHint="Search food"
+            android:theme="@style/Theme.AppCompat.BORDER">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        </SearchView>
 
-            <EditText
-                android:id="@+id/mealName"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:hint="Enter meal name"
-                android:inputType="textPersonName"
-                android:textColor="@drawable/fuckgoogle"
-                android:textColorHint="@drawable/fuckgoogle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.75" />
-
-            <ImageButton
-                android:id="@+id/delete_forever_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@color/DarkRed"
-                android:src="@drawable/ic_baseline_delete_forever_24"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:tint="@color/White" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/foodList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="375dp"
             android:layout_marginTop="25dp"
             android:layout_weight="1" />
 
@@ -88,12 +121,13 @@
         tools:context=".HeaderFragment">
 
         <ImageButton
+            android:theme="@style/Theme.AppCompat.BORDER"
             android:id="@+id/scan_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="1dp"
-            android:background="@color/teal_700"
+            android:background="?android:background"
             android:padding="1.75dp"
             android:src="@drawable/ic_baseline_qr_code_scanner_24"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,9 +141,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginBottom="1dp"
-            android:background="@color/teal_700"
+            android:background="?colorError"
             android:text="Cancel"
-            android:textColor="@color/White"
+            android:textColor="?colorOnError"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent="0.49583" />
@@ -121,9 +155,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="1dp"
             android:layout_marginBottom="1dp"
-            android:background="@color/teal_700"
+            android:background="?colorSecondary"
             android:text="Save"
-            android:textColor="@color/White"
+            android:textColor="?colorOnSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.49583" />

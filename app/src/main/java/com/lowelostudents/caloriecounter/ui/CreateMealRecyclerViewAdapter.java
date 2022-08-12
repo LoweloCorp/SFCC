@@ -1,43 +1,49 @@
 package com.lowelostudents.caloriecounter.ui;
 
-import android.app.Application;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
-import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-
-import lombok.Getter;
-import lombok.SneakyThrows;
+import java.util.Locale;
 
 public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
-    @Getter()
-    private MealViewModel mealViewModel;
+
 
     public CreateMealRecyclerViewAdapter(Context context) {
         super(context);
     }
 
-    @SneakyThrows
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Nutrients data = dataSet.get(position);
-        String cardNutrients = data.getGramTotal() + "g" + " / " + (data.getCalTotal() + "cal");
+        Food data = dataSet.get(position);
+        String cardNutrients = String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()) + "g" + " / " + (String.format(Locale.ENGLISH, "%.2f", data.getCalTotal()) + "cal");
         String cardType = data.getClass().getSimpleName();
         String cardTitle = data.getName();
+
+//        if(this.activityMode == ActivityMode.UPDATE) {
+//            this.mealViewModel.checkedFoods.put(dataSet.get(position).getId(), dataSet.get(position));
+//            Log.w("ITEM AT", dataSet.get(position).toString());
+//        };
+
+        Log.w("ITEM AT", this.activityMode.toString());
 
         try {
             setEventHandlers(holder.cardItem, cardType, data, position);
@@ -49,24 +55,73 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
         holder.cardType.setText(cardType);
         holder.cardTitle.setText(cardTitle);
         holder.cardNutrients.setText(cardNutrients);
+        ImageButton button = holder.cardItem.findViewById(R.id.toggleForDay);
+
+        if (this.mealViewModel.checkedFoods.get(dataSet.get(position).getId()) != null) {
+            button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
+            button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
+        } else {
+            button.setImageResource(R.drawable.ic_baseline_add_box_24);
+            button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.Green));
+        }
     }
 
-    protected void setEventHandlers(View cardItem, String cardType, Nutrients data, int position) throws Exception {
+    @SuppressLint("ClickableViewAccessibility")
+    protected void setEventHandlers(View cardItem, String cardType, Food data, int position) throws Exception {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
         Class<?> cardDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.models.Create" + cardType);
-        Class<?> nutrientDataClass = Class.forName("com.lowelostudents.caloriecounter.ui.viewmodels." + cardType + "ViewModel");
-        this.mealViewModel = MealViewModel.class
-                .getConstructor(Application.class)
-                .newInstance(cardItem.getContext().getApplicationContext());
 
         Method method = this.getClass().getMethod("updateList", int.class, View.class);
+
+        TabLayout quantitySelect = cardItem.findViewById(R.id.quantitySelect);
+        EditText quantity = cardItem.findViewById(R.id.quantity);
+
+        quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
+
+
+        quantity.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                quantitySelect.selectTab(quantitySelect.getTabAt(2));
+                return false;
+            }
+        });
+
+        if (quantitySelect != null)
+            quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    quantity.clearFocus();
+                    switch (tab.getPosition()) {
+                        case 0:
+                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
+                            break;
+                        case 1:
+                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()));
+                            break;
+                        case 2:
+                            quantity.requestFocus();
+                            break;
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
 
         cardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, cardDataClass);
                 intent.putExtra("mode", ActivityMode.UPDATE);
-                intent.putExtra("item", (Serializable) dataSet.get(position));
+                intent.putExtra("item", dataSet.get(position));
                 context.startActivity(intent);
             }
         });
@@ -74,20 +129,34 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
         eventHandlingService.onClickInvokeMethod(cardItem.findViewById(R.id.toggleForDay), this, method, position, cardItem);
     }
 
-    public void updateList(int id, View cardItem) {
-        Log.i("MeineID", String.valueOf(id));
-        ImageButton button = cardItem.findViewById(R.id.toggleForDay);
+    public void updateList(int position, View cardItem) {
+        EditText quantity = cardItem.findViewById(R.id.quantity);
+
+        // FIXME INDEX OUT OF BOUDNS
+        Food foodAtPosition = this.mealViewModel.checkedFoods.get(dataSet.get(position).getId());
 
         try {
-            if (this.mealViewModel.checkedNutrients.get(id) == null) {
-                Food food = (Food) this.dataSet.get(id);
-                this.mealViewModel.checkedNutrients.put(id, food);
-                button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
-                button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
+            if (foodAtPosition == null) {
+                Food nutrients = this.dataSet.get(position);
+                double quantityValue = Double.parseDouble(quantity.getText().toString());
+                Food foodAggregation = nutrientService.createFoodAggregation(nutrients, quantityValue, AggregationType.FOOD);
+                mealViewModel.checkedFoods.put(foodAggregation.getId(), foodAggregation);
+                Context context = cardItem.getContext().getApplicationContext();
+                CharSequence methodName = "Added to meal";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, methodName, duration);
+                toast.show();
+                Log.w("HERE", "HERE");
             } else {
-                this.mealViewModel.checkedNutrients.remove(id);
-                button.setImageResource(R.drawable.ic_baseline_add_box_24);
-                button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.Green));
+                Log.w("ELSE", "ELSE");
+                this.mealViewModel.checkedFoods.remove(dataSet.get(position).getId());
+                Context context = cardItem.getContext().getApplicationContext();
+                CharSequence methodName = "Removed from meal";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, methodName, duration);
+                toast.show();
+                this.dataSet.remove(position);
+                notifyItemRemoved(position);
             }
         } catch (IndexOutOfBoundsException e) {
             Log.w("Index out of Bounds", e.getCause());

@@ -1,21 +1,50 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.CalorieCounter" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/Teal</item>
-        <item name="colorPrimaryVariant">@color/Teal</item>
-        <item name="colorOnPrimary">@color/White</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/Charcoal</item>
-        <item name="colorSecondaryVariant">@color/Slate</item>
-        <item name="colorOnSecondary">@color/White</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <item name="colorPrimary">@color/navy_500</item>
+        <item name="colorPrimaryVariant">@color/navy_900</item>
+        <item name="colorSecondary">@color/green_300</item>
+        <item name="colorSecondaryVariant">@color/navy_900</item>
+        <item name="colorOnPrimary">@color/WhiteSmoke</item>
+        <item name="colorAccent">#031822</item>
+        <item name="colorOnSecondary">@color/navy_900</item>
+        <item name="colorOnError">@color/navy_900</item>
+        <item name="colorError">#E57373</item>
+        <item name="editTextColor">@color/WhiteSmoke</item>
+
+        <!-- Using default values for colorOnPrimary, colorSurface, colorError, etc. -->
+
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="ThemeOverlay.CalorieCounter.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
-        <item name="fullscreenTextColor">@color/light_blue_A400</item>
+    <style name="Theme.CalorieCounter.CARD">
+        <item name="colorPrimary">@color/navy_500</item>
+        <item name="colorPrimaryVariant">@color/navy_900</item>
+        <item name="colorSecondary">#2E7D32</item>
+        <item name="colorSecondaryVariant">#558B2F</item>
+        <item name="colorOnPrimary">@color/WhiteSmoke</item>
+        <item name="colorAccent">@color/navy_900</item>
+        <item name="colorOnSecondary">@color/WhiteSmoke</item>
+        <item name="colorOnError">@color/WhiteSmoke</item>
+        <item name="colorError">#C62828</item>
+        <!-- Using default values for colorOnPrimary, colorSurface, colorError, etc. -->
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="editTextColor">@color/navy_900</item>
+
+        <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.CalorieCounter.Switch">
+        <item name="colorAccent">@color/WhiteSmoke</item>
+
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Theme.AppCompat.BORDER">
+        <item name="colorPrimary">@color/navy_900</item>
+        <item name="colorOnPrimary">@color/WhiteSmoke</item>
+        <item name="android:background">?colorPrimaryVariant</item>
+
+    </style>
+
 </resources>

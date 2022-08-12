@@ -12,15 +12,18 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import com.lowelostudents.caloriecounter.services.GenericQueryService;
 
 import java.util.List;
+import java.util.UUID;
 
 // TODO byId, Range
 @Dao
 public abstract class CRUDDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Long[] insert(List<T> obj);
+    @Transaction
+    public abstract void insert(List<T> obj);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Long insert(T obj);
+    @Transaction
+    public abstract void insert(T obj);
 
     // TODO FIX REMOVE
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -59,6 +62,15 @@ public abstract class CRUDDao<T> {
     protected abstract Long delete(SupportSQLiteQuery query);
 
     public Long delete(Class<T> t, long id) {
+        GenericQueryService<T> genericQueryService = new GenericQueryService<>();
+
+        this.delete(genericQueryService.deleteById(t, id));
+
+        return id;
+    }
+
+    @Transaction
+    public UUID delete(Class<T> t, UUID id) {
         GenericQueryService<T> genericQueryService = new GenericQueryService<>();
 
         this.delete(genericQueryService.deleteById(t, id));

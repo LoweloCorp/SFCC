@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -13,6 +14,10 @@ import com.lowelostudents.caloriecounter.enums.ActivityMode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 // TODO check overusage of service, rework of this service build generic eventlistneers instead
 public class EventHandlingService {
@@ -30,6 +35,16 @@ public class EventHandlingService {
             public void onClick(View view) {
                 Intent intent = new Intent(context, activity);
                 context.startActivity(intent);
+            }
+        });
+    }
+
+    public void onClickLaunchActivityFromContext(View view, Context context, Class<?> activity, ActivityResultLauncher<Intent> activityResultLauncher) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, activity);
+                activityResultLauncher.launch(intent);
             }
         });
     }
@@ -69,11 +84,6 @@ public class EventHandlingService {
             @Override
             public void onClick(View view) {
                 try {
-                    Context context = view.getContext().getApplicationContext();
-                    CharSequence methodName = method.getName();
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, methodName, duration);
-                    toast.show();
                     method.invoke(controller, parameters);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -95,6 +105,11 @@ public class EventHandlingService {
         });
     }
 
+    public <T> Disposable onChangedInvokeMethod(Observable<?> dataSet, T controller, Method method) {
+        return dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(value -> {
+            method.invoke(controller, value);
+        });
+    }
 
 
 }

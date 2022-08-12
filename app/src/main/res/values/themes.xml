@@ -1,38 +1,61 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.CalorieCounter" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/Teal</item>
-        <item name="colorPrimaryVariant">@color/Teal</item>
-        <item name="colorOnPrimary">@color/White</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/Charcoal</item>
-        <item name="colorSecondaryVariant">@color/Slate</item>
-        <item name="colorOnSecondary">@color/White</item>
+        <item name="colorPrimary">@color/navy_900</item>
+        <item name="colorPrimaryVariant">@color/navy_900</item>
+        <item name="colorSecondary">#2E7D32</item>
+        <item name="colorSecondaryVariant">#558B2F</item>
+        <item name="colorOnPrimary">@color/WhiteSmoke</item>
+        <item name="colorAccent">@color/WhiteSmoke</item>
+        <item name="colorOnSecondary">@color/WhiteSmoke</item>
+        <item name="colorOnError">@color/WhiteSmoke</item>
+        <item name="colorError">#C62828</item>
+        <!-- Using default values for colorOnPrimary, colorSurface, colorError, etc. -->
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="editTextColor">@color/navy_900</item>
+
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.CalorieCounter.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="Theme.CalorieCounter.CARD">
+        <item name="colorPrimary">@color/navy_500</item>
+        <item name="colorPrimaryVariant">@color/navy_900</item>
+        <item name="colorSecondary">#2E7D32</item>
+        <item name="colorSecondaryVariant">#558B2F</item>
+        <item name="colorOnPrimary">@color/navy_900</item>
+        <item name="colorAccent">#40F5F5F5</item>
+        <item name="colorOnSecondary">@color/WhiteSmoke</item>
+        <item name="colorOnError">@color/WhiteSmoke</item>
+        <item name="colorError">#C62828</item>
+        <!-- Using default values for colorOnPrimary, colorSurface, colorError, etc. -->
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="editTextColor">@color/navy_900</item>
+
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Theme.CalorieCounter.Switch">
+        <item name="colorAccent">@color/navy_900</item>
+
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Theme.AppCompat.BORDER">
+        <item name="colorPrimary">@color/navy_900</item>
+        <item name="colorOnPrimary">@color/WhiteSmoke</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="editTextColor">@color/WhiteSmoke</item>
+
+
     </style>
 
-    <style name="Theme.CalorieCounter.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--    <style name="Theme.CalorieCounter.NoActionBar">-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--    </style>-->
 
-    <style name="Theme.CalorieCounter.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+<!--    <style name="Theme.CalorieCounter.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
-    <style name="ThemeOverlay.CalorieCounter.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
-        <item name="fullscreenTextColor">@color/light_blue_A200</item>
-    </style>
+<!--    <style name="Theme.CalorieCounter.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
-    <style name="Theme.CalorieCounter.Fullscreen" parent="Theme.CalorieCounter">
-        <item name="android:actionBarStyle">
-            @style/Widget.Theme.CalorieCounter.ActionBar.Fullscreen
-        </item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-    </style>
 </resources>

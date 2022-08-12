@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.CalorieCounter.CARD"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/foodItem"
@@ -16,66 +17,136 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/cardLayout"
+            android:background="?colorAccent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="25dp">
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/cardTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Steak/HappyMeal"
+                        android:textColor="?colorOnPrimary" />
+
+                    <TextView
+                        android:id="@+id/cardType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Food/Meal"
+                        android:textColor="?colorOnPrimary"
+                        android:textSize="10dp" />
+
+
+                    <TextView
+                        android:id="@+id/cardNutrients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="100g/100cal"
+                        android:textColor="?colorOnPrimary"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/cardNutrients2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Tap to edit"
+                        android:textColor="?colorOnPrimary"
+                        android:textSize="11dp" />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/toggleForDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_baseline_add_box_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
+                android:id="@+id/quantityLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
                 <TextView
-                    android:id="@+id/cardTitle"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textView"
+                    android:textColor="?colorOnPrimary"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Steak/HappyMeal" />
+                    android:layout_marginRight="25dp"
+                    android:text="Quantity (g):" />
 
-                <TextView
-                    android:id="@+id/cardType"
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/quantity"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Food/Meal"
-                    android:textSize="10dp" />
-
-
-                <TextView
-                    android:id="@+id/cardNutrients"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="100g/100cal"
-                    android:textSize="10dp" />
-
+                    android:textColor="?colorOnPrimary"
+                    android:textColorHint="?colorOnPrimary"
+                    android:backgroundTint="?colorOnPrimary"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:scaleX="0.75"
-                android:scaleY="0.75"
-                android:text="Tap to edit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/quantitySelect"
+                android:layout_width="match_parent"
+                app:tabIndicatorColor="?colorOnPrimary"
+                app:tabTextColor="?colorPrimary"
+                app:tabSelectedTextColor="?colorOnPrimary"
+                android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/toggleForDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_baseline_add_box_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/serving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Serving" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/pack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pack" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom" />
+            </com.google.android.material.tabs.TabLayout>
+
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,14 @@
 package com.lowelostudents.caloriecounter.ui.models;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.SearchView;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,37 +19,43 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lowelostudents.caloriecounter.MainActivity;
 import com.lowelostudents.caloriecounter.R;
-import com.lowelostudents.caloriecounter.data.LiveDataTuple;
 import com.lowelostudents.caloriecounter.databinding.FragmentFoodhubBinding;
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Meal;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
-import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.FilterService;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import info.debatty.java.stringsimilarity.Levenshtein;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.SneakyThrows;
 
 public class FoodhubFragment extends Fragment {
+    private final ArrayList<Disposable> disposables = new ArrayList<>();
+    FilterService filterService = FilterService.getInstance();
     private FragmentFoodhubBinding binding;
-    private LiveDataTuple<Meal, Food> dataSet;
+    private Observable<List<Food>> dataSet;
     private boolean mealChecked = true;
     private boolean foodChecked = true;
     private GenericRecyclerViewAdapter recyclerViewAdapter;
-    // TODO generify, interface
-    @SneakyThrows
-    private void setEventHandlers(Object recyclerViewAdapter) {
-        EventHandlingService eventHandlingService = EventHandlingService.getInstance();
-        Method method = recyclerViewAdapter.getClass().getMethod("handleDatasetChanged", List.class);
 
-        eventHandlingService.onChangedInvokeMethod(getViewLifecycleOwner(), this.dataSet, recyclerViewAdapter, method);
+    @SneakyThrows
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, Switch foodToggle, Switch mealToggle) {
+        Disposable disposable = this.dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(dataSet -> {
+            if (!foodToggle.isChecked())
+                foodToggle.toggle();
+            if (!mealToggle.isChecked())
+                mealToggle.toggle();
+            this.recyclerViewAdapter.handleDatasetChanged(dataSet);
+        });
+
+        this.disposables.add(disposable);
     }
 
     @Override
@@ -66,34 +73,22 @@ public class FoodhubFragment extends Fragment {
         MealViewModel mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
         FoodViewModel foodViewModel = new ViewModelProvider(this).get(FoodViewModel.class);
         this.binding = FragmentFoodhubBinding.inflate(inflater, container, false);
-        this.dataSet = new LiveDataTuple<>(mealViewModel.getMeals(), foodViewModel.getFoods());
+
+        this.dataSet = foodViewModel.getMealsAndFoods();
 
         recyclerViewAdapter = new GenericRecyclerViewAdapter(this.getContext());
         final RecyclerView foodList = binding.foodList;
         foodList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         foodList.setAdapter(recyclerViewAdapter);
 
-        setEventHandlers(recyclerViewAdapter);
+        setEventHandlers(recyclerViewAdapter, binding.foodToggle, binding.mealToggle);
 
         this.binding.foodToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 foodChecked = b;
-                List<Nutrients> allData = recyclerViewAdapter.getAllDataSet();
-
-                if (!foodChecked) {
-                    if(mealChecked)  {
-                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Food.class).collect(Collectors.toList()));
-                    } else {
-                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Food.class && item.getClass() != Meal.class).collect(Collectors.toList()));
-                    }
-                } else {
-                    if (mealChecked) {
-                        recyclerViewAdapter.setDataSet(allData);
-                    } else {
-                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Meal.class).collect(Collectors.toList()));
-                    }
-                }
+                List<Food> allData = recyclerViewAdapter.getAllDataSet();
+                recyclerViewAdapter.setDataSet(filterService.filterListByToggle(allData, foodChecked, mealChecked, AggregationType.FOOD));
 
                 recyclerViewAdapter.notifyDataSetChanged();
             }
@@ -102,22 +97,9 @@ public class FoodhubFragment extends Fragment {
         this.binding.mealToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                List<Food> allData = recyclerViewAdapter.getAllDataSet();
                 mealChecked = b;
-                List<Nutrients> allData = recyclerViewAdapter.getAllDataSet();
-
-                if(!mealChecked){
-                    if(foodChecked) {
-                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Meal.class).collect(Collectors.toList()));
-                    } else {
-                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Meal.class && item.getClass() != Food.class).collect(Collectors.toList()));
-                    }
-                } else {
-                    if (foodChecked) {
-                        recyclerViewAdapter.setDataSet(allData);
-                    } else {
-                        recyclerViewAdapter.setDataSet(allData.stream().filter( item -> item.getClass() != Food.class).collect(Collectors.toList()));
-                    }
-                }
+                recyclerViewAdapter.setDataSet(filterService.filterListByToggle(allData, mealChecked, foodChecked, AggregationType.MEAL));
 
                 recyclerViewAdapter.notifyDataSetChanged();
             }
@@ -141,7 +123,6 @@ public class FoodhubFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                FilterService filterService = FilterService.getInstance();
                 recyclerViewAdapter.setDataSet(filterService.filterListByLevenshtein(recyclerViewAdapter.getDataSet(), s));
                 recyclerViewAdapter.notifyDataSetChanged();
                 return false;
@@ -151,6 +132,7 @@ public class FoodhubFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        this.disposables.forEach(Disposable::dispose);
         super.onDestroyView();
         binding = null;
     }

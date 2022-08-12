@@ -1,9 +1,59 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?colorAccent"
+    android:theme="@style/Theme.CalorieCounter">
 
     <FrameLayout
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/go_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/donate"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="?colorSecondary"
+            android:padding="15dp"
+            android:text="Support My Apps"
+            android:textColor="?colorOnSecondary" />
+
+        <Button
+            android:id="@+id/feedback"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="45dp"
+            android:background="?colorError"
+            android:padding="15dp"
+            android:text="Send Feedback"
+            android:textColor="?colorOnError" />
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/go_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?editTextColor"
+        android:padding="15dp"
+        android:text="Go Back"
+        android:textColor="?colorOnSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

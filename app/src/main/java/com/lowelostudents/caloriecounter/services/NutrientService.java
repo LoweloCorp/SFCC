@@ -1,17 +1,11 @@
 package com.lowelostudents.caloriecounter.services;
 
-import android.util.Log;
-
-import androidx.annotation.Nullable;
-
+import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.models.entities.Meal;
-import com.lowelostudents.caloriecounter.models.entities.Nutrients;
 
+import java.util.ArrayList;
 import java.util.List;
 
-//TODO calculation water or any other thing with mass but almost no calories
-// TODO generify and overload calcCalories with one that returns Hashmap
 public class NutrientService {
     private static NutrientService nutrientService;
 
@@ -21,34 +15,32 @@ public class NutrientService {
         return nutrientService;
     }
 
-    // TODO universal formulas
-
-    public <T extends Nutrients> void calculateNutrients(T nutrients) {
-        int carbsCalPortion, proteinCalPortion, fatCalPortion;
+    public void calculateNutrients(Food nutrients) {
+        double carbsCalPortion, proteinCalPortion, fatCalPortion;
         double carbsCalGram, proteinCalGram, fatCalGram;
 
         carbsCalPortion = nutrients.getCarbsGram() * 4;
         proteinCalPortion = nutrients.getProteinGram() * 4;
         fatCalPortion = nutrients.getFatGram() * 9;
+
         if (nutrients.getCalPerPortion() == 0) {
-            // 8 + 4 + 18 = 30
             nutrients.setCalPerPortion(carbsCalPortion + proteinCalPortion + fatCalPortion);
-            // 2.666
-            carbsCalGram = (double) carbsCalPortion / nutrients.getPortionSize();
-            // 1.333
-            proteinCalGram = (double) proteinCalPortion / nutrients.getPortionSize();
-            // 6
-            fatCalGram = (double) fatCalPortion / nutrients.getPortionSize();
-            nutrients.setCarbsCal((int) Math.round(carbsCalGram * nutrients.getGramTotal()));
-            nutrients.setProteinCal((int) Math.round(proteinCalGram * nutrients.getGramTotal()));
-            // 36
-            nutrients.setFatCal((int) Math.round(fatCalGram * nutrients.getGramTotal()));
+
+            carbsCalGram = carbsCalPortion / nutrients.getPortionSize();
+            proteinCalGram = proteinCalPortion / nutrients.getPortionSize();
+            fatCalGram = fatCalPortion / nutrients.getPortionSize();
+
+            nutrients.setCarbsCal(carbsCalGram * nutrients.getGramTotal());
+            nutrients.setProteinCal(proteinCalGram * nutrients.getGramTotal());
+            nutrients.setFatCal(fatCalGram * nutrients.getGramTotal());
         }
-        nutrients.setCalPerGram((double) nutrients.getCalPerPortion() / nutrients.getPortionSize());
-        nutrients.setCalTotal((int) Math.round(nutrients.getCalPerGram() * nutrients.getGramTotal()));
+
+        nutrients.setCalPerGram(nutrients.getCalPerPortion() / nutrients.getPortionSize());
+
+        nutrients.setCalTotal(nutrients.getCalPerGram() * nutrients.getGramTotal());
     }
 
-    public <T extends Nutrients, R extends Nutrients> void combineNutrients(T nutrients, List<R> nutrientList) {
+    public void combineNutrients(Food nutrients, List<Food> nutrientList) {
         nutrientList.forEach(food -> {
             nutrients.setFatGram(nutrients.getFatGram() + food.getFatGram());
             nutrients.setProteinGram(nutrients.getProteinGram() + food.getProteinGram());
@@ -70,11 +62,33 @@ public class NutrientService {
         });
     }
 
-    public <R extends Nutrients> Nutrients combineNutrients(List<R> nutrientList) {
-        Nutrients nutrients = new Nutrients();
+    // TODO apply multiplier to all affected fields not only the UI affecting ones
+    public void applyMultiplier(Food nutrients, double multiplier) {
+        nutrients.setFatCal(nutrients.getFatCal() * multiplier);
+        nutrients.setProteinCal(nutrients.getProteinCal() * multiplier);
+        nutrients.setCarbsCal(nutrients.getCarbsCal() * multiplier);
+        nutrients.setCalTotal(nutrients.getCalTotal() * multiplier);
+        nutrients.setGramTotal(nutrients.getGramTotal() * multiplier);
+    }
+
+    // TODO See usage because of instantiation maybe relevant
+    public Food combineNutrients(List<Food> nutrientList) {
+        Food nutrients = new Food();
 
         this.combineNutrients(nutrients, nutrientList);
 
         return nutrients;
+    }
+
+    public Food createFoodAggregation(Food data, double quantity, AggregationType aggregationType) {
+        double multiplier = quantity / data.getGramTotal();
+        double necessaryFoodInstances = Math.ceil(multiplier);
+        List<Food> foodList = new ArrayList<>();
+
+        for (int i = 0; i < necessaryFoodInstances; i++) {
+            foodList.add(data);
+        }
+
+        return new Food(data.getName(), foodList, multiplier, aggregationType);
     }
 }

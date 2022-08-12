@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:theme="@style/Theme.CalorieCounter"
     android:padding="15dp"
     tools:context=".ui.models.FoodhubFragment">
 
@@ -12,22 +13,26 @@
         android:id="@+id/foodToggle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1"
+        android:height="40dp"
         android:checked="true"
-        android:text="Food" />
+        android:text="Food"
+        android:textColor="?colorAccent"
+        android:theme="@style/Theme.CalorieCounter.Switch" />
 
     <Switch
         android:id="@+id/mealToggle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1"
+        android:height="40dp"
         android:checked="true"
-        android:text="Meals" />
+        android:text="Meals"
+        android:textColor="?colorAccent"
+        android:theme="@style/Theme.CalorieCounter.Switch" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="15dp"
         android:layout_weight="1" />
 
