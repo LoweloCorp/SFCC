@@ -1,6 +1,7 @@
 # SFCC
 SFCC - SIMPLE F****** CALORIE COUNTER
 
-Simple Calorie Counter app, since apparently nobody on this planet is able to fulfill the simple usecase of tracking your nutrition with an intuitive and simple ui.
-No, instead everyone blows their app up with useless features and tries to make it a social media platform.
-Why not call it Fatbook then?
+[![Donate](https://www.paypal.com/donate/?hosted_button_id=49FYWEP529NH6)
+
+Tired of bloated and inefficient calorie counter apps with tons of features you will never use?
+Well I am glad you are here because I am developing a solution to that problem.
