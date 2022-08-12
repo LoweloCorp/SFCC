@@ -22,6 +22,8 @@ import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
+import java.util.Objects;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -36,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         findViewById(R.id.donate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("https://www.paypal.com/donate/?hosted_button_id=49FYWEP529NH6"); // missing 'http://' will cause crashed
+                Uri uri = Uri.parse("https://github.com/LoweloDev/CalorieCounter-by-Anti-Bloat-Concise-Apps"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
@@ -88,8 +90,8 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
             UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-            EditTextPreference name = findPreference("name");
-            EditTextPreference calories = findPreference("calories");
+            EditTextPreference name = findPreference("userName");
+            EditTextPreference calories = findPreference("userCalories");
             this.user = userViewModel.getUser();
 
             this.disposable = this.user.observeOn(AndroidSchedulers.mainThread()).subscribe(user -> {
@@ -98,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
 
-            name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            Objects.requireNonNull(name).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     user.take(1).subscribe(user -> {
@@ -111,13 +113,13 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            calories.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            Objects.requireNonNull(calories).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     user.take(1).subscribe(user -> {
                         Log.w("USER", user.toString());
 
-                        User updatedUser = new User(user.getToken(), user.getName(), Integer.parseInt(newValue.toString()));
+                        User updatedUser = new User(user.getToken(), user.getName(), Double.parseDouble(newValue.toString()));
                         updatedUser.setId(user.getId());
                         userViewModel.update(updatedUser);
                     });
