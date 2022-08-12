@@ -15,14 +15,23 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/go_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/donate"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="?colorSecondary"
+            android:padding="15dp"
+            android:text="Support My Apps"
+            android:textColor="?colorOnSecondary" />
+
+        <Button
             android:id="@+id/feedback"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="45dp"
             android:background="?colorError"
@@ -30,15 +39,6 @@
             android:text="Send Feedback"
             android:textColor="?colorOnError" />
 
-        <Button
-            android:id="@+id/donate"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="45dp"
-            android:background="?colorSecondary"
-            android:padding="15dp"
-            android:text="DONATE"
-            android:textColor="?colorOnSecondary" />
 
 
     </LinearLayout>

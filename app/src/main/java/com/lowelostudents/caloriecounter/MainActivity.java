@@ -23,13 +23,11 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO PAY FEE, SETUP CI/CD / UPdate process or something like that PUBLISH
 // TODO Create Meal hide Added Items quantity Select
 // TODO Toast service, validation service
 
-// TODO in app review, donate popup
-// TODO Action bar and navigate to Foodhub when typing in search if not already
 // TODO feature calorie calculator
+// TODO in app rating, donate popup
 // TODO check duplicate code, seperation of concerns, write tests, make proper fragments
 // TODO Errorhandling
 // TODO feature planning based on Feedback
