@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.CalorieCounter" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/navy_500</item>
+        <item name="colorPrimary">@color/navy_900</item>
         <item name="colorPrimaryVariant">@color/navy_900</item>
         <item name="colorSecondary">#2E7D32</item>
         <item name="colorSecondaryVariant">#558B2F</item>

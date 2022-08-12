@@ -28,7 +28,7 @@ public class CRUDRepository<T> {
 
     public CRUDRepository(Context context) {
         this.context = context;
-        this.appdb = AppDatabase.getInMemoryInstance(context);
+        this.appdb = AppDatabase.getInstance(context);
     }
 
     public void insert(T t) {

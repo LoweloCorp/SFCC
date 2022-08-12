@@ -1,8 +1,15 @@
 package com.lowelostudents.caloriecounter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -15,18 +22,23 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lowelostudents.caloriecounter.databinding.ActivityMainBinding;
+import com.lowelostudents.caloriecounter.services.AppRater;
+import com.lowelostudents.caloriecounter.services.KeyboardService;
 import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO feedback button
-// TODO PERSISTENT DATABASE, PAY FEE, SETUP CI/CD / UPdate process or something like that, MAKE SCREENSHOTS AND DESCRIPTION, PUBLISH
+// TODO PAY FEE, SETUP CI/CD / UPdate process or something like that PUBLISH
 // TODO Create Meal hide Added Items quantity Select
 // TODO Toast service, validation service
 
+// TODO in app review, donate popup
 // TODO Action bar and navigate to Foodhub when typing in search if not already
-// TODO check duplicate code, seperation of concerns, check overuse eventhandling service, write tests
+// TODO feature calorie calculator
+// TODO check duplicate code, seperation of concerns, write tests, make proper fragments
 // TODO Errorhandling
+// TODO feature planning based on Feedback
+// TODO feature cross platform? convert to Kotlin
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,9 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+    SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppRater.app_launched(this);
         checkUpdates();
         checkPreferences();
         weakActivity = new WeakReference<>(MainActivity.this);
@@ -48,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        this.searchView = findViewById(R.id.searchView);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -57,6 +73,16 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+    }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        searchView.clearFocus();
+
+        KeyboardService.hideSoftKeyboard(ev, this);
+
+        return super.dispatchTouchEvent(ev);
     }
 
     private void checkUpdates() {

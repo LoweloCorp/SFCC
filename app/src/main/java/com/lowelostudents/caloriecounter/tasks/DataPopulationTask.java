@@ -31,7 +31,7 @@ public class DataPopulationTask extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        AppDatabase appdb = AppDatabase.getInMemoryInstance(getApplicationContext());
+        AppDatabase appdb = AppDatabase.getInstance(getApplicationContext());
         DayDao dayDao = appdb.dayDao();
         Calendar cal = Calendar.getInstance();
 

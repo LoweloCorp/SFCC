@@ -12,22 +12,22 @@
     <Switch
         android:id="@+id/foodToggle"
         android:layout_width="match_parent"
-        android:theme="@style/Theme.CalorieCounter.Switch"
         android:layout_height="wrap_content"
-        android:height="50dp"
-        android:textColor="?colorAccent"
+        android:height="40dp"
         android:checked="true"
-        android:text="Food" />
+        android:text="Food"
+        android:textColor="?colorAccent"
+        android:theme="@style/Theme.CalorieCounter.Switch" />
 
     <Switch
         android:id="@+id/mealToggle"
-        android:theme="@style/Theme.CalorieCounter.Switch"
-        android:textColor="?colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:height="50dp"
+        android:height="40dp"
         android:checked="true"
-        android:text="Meals" />
+        android:text="Meals"
+        android:textColor="?colorAccent"
+        android:theme="@style/Theme.CalorieCounter.Switch" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodList"

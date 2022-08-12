@@ -31,6 +31,7 @@ import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.FilterService;
+import com.lowelostudents.caloriecounter.services.KeyboardService;
 import com.lowelostudents.caloriecounter.ui.CreateMealRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
@@ -225,6 +226,16 @@ public class CreateMeal extends AppCompatActivity {
 
         setEventHandlers(recyclerViewAdapter, this.mode, foodViewModel);
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        binding.searchView.clearFocus();
+
+        KeyboardService.hideSoftKeyboard(ev, this);
+
+        return super.dispatchTouchEvent(ev);
+    }
+
 
     public void save() {
         if (validate()) {
