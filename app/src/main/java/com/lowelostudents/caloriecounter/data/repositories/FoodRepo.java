@@ -34,7 +34,7 @@ public class FoodRepo extends CRUDRepository<Food> {
     }
 
     public void insertForDay(List<Food> foods, long id) {
-        foods.forEach( food -> food.setDayId(id));
+        foods.forEach(food -> food.setDayId(id));
 
         executor.execute(() -> this.getCrudDao().insert(foods));
     }
@@ -46,7 +46,7 @@ public class FoodRepo extends CRUDRepository<Food> {
     }
 
     public void insertForMeal(Food meal, List<Food> foods) {
-        foods.forEach( food -> food.setMealId(meal.getId()));
+        foods.forEach(food -> food.setMealId(meal.getId()));
 
         executor.execute(() -> {
             this.getCrudDao().insert(meal);

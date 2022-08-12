@@ -2,7 +2,6 @@ package com.lowelostudents.caloriecounter;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,7 +50,7 @@ public class HeaderFragment extends Fragment {
         List<Fragment> fragmentList = mainActivity.getSupportFragmentManager().getFragments();
 
         int id = binding.searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        EditText editText = (EditText) binding.searchView.findViewById(id);
+        EditText editText = binding.searchView.findViewById(id);
 
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override

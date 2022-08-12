@@ -47,10 +47,10 @@
         android:id="@+id/go_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimary"
+        android:background="?editTextColor"
         android:padding="15dp"
         android:text="Go Back"
-        android:textColor="?colorOnPrimary"
+        android:textColor="?colorOnSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

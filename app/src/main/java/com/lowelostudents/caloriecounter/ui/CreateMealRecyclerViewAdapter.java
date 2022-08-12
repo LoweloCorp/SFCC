@@ -57,7 +57,7 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
         holder.cardNutrients.setText(cardNutrients);
         ImageButton button = holder.cardItem.findViewById(R.id.toggleForDay);
 
-        if(this.mealViewModel.checkedFoods.get(dataSet.get(position).getId()) != null) {
+        if (this.mealViewModel.checkedFoods.get(dataSet.get(position).getId()) != null) {
             button.setImageResource(R.drawable.ic_baseline_indeterminate_check_box_24);
             button.setColorFilter(ContextCompat.getColor(button.getContext(), R.color.DarkRed));
         } else {
@@ -87,41 +87,41 @@ public class CreateMealRecyclerViewAdapter extends GenericRecyclerViewAdapter {
             }
         });
 
-        if(quantitySelect != null)
-        quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                quantity.clearFocus();
-                switch (tab.getPosition()) {
-                    case 0:
-                        quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
-                        break;
-                    case 1:
-                        quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()));
-                        break;
-                    case 2:
-                        quantity.requestFocus();
-                        break;
+        if (quantitySelect != null)
+            quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    quantity.clearFocus();
+                    switch (tab.getPosition()) {
+                        case 0:
+                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
+                            break;
+                        case 1:
+                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()));
+                            break;
+                        case 2:
+                            quantity.requestFocus();
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
 
-            }
+                }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-        });
+                }
+            });
 
         cardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, cardDataClass);
                 intent.putExtra("mode", ActivityMode.UPDATE);
-                intent.putExtra("item", (Serializable) dataSet.get(position));
+                intent.putExtra("item", dataSet.get(position));
                 context.startActivity(intent);
             }
         });

@@ -12,14 +12,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.lowelostudents.caloriecounter.data.AppDatabase;
-import com.lowelostudents.caloriecounter.data.repositories.UserRepo;
 import com.lowelostudents.caloriecounter.models.entities.Day;
-import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.models.interfaces.DayDao;
-import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class DataPopulationTask extends Worker {

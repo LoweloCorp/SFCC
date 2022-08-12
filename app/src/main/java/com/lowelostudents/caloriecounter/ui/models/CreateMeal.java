@@ -40,7 +40,6 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -50,18 +49,17 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 public class CreateMeal extends AppCompatActivity {
+    private final Subject<List<Food>> dataSet = BehaviorSubject.create();
+    private final ArrayList<Disposable> disposables = new ArrayList<>();
     @Getter
     private ActivityCreatemealBinding binding;
     @Getter
     private MealViewModel model;
-    private final Subject<List<Food>> dataSet = BehaviorSubject.create();
     private CreateMealRecyclerViewAdapter recyclerViewAdapter;
     @Getter
     private ActivityMode mode = ActivityMode.CREATE;
     @Getter
     private Food meal;
-
-    private final ArrayList<Disposable> disposables = new ArrayList<>();
 
     @SneakyThrows
     protected void setEventHandlers(GenericRecyclerViewAdapter recyclerViewAdapter, ActivityMode mode, FoodViewModel foodViewModel) {
@@ -168,7 +166,7 @@ public class CreateMeal extends AppCompatActivity {
 
 
         int id = binding.searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        EditText editText = (EditText) binding.searchView.findViewById(id);
+        EditText editText = binding.searchView.findViewById(id);
 
         editText.setOnTouchListener((view, motionEvent) -> {
             foodViewModel.getFoods().take(1).subscribe(foods -> dataSet.onNext(foods));
@@ -193,9 +191,9 @@ public class CreateMeal extends AppCompatActivity {
 
         if (this.mode == ActivityMode.UPDATE) {
             binding.mealTabLayout.selectTab(binding.mealTabLayout.getTabAt(0));
-            this.model.getMealFoods(this.meal.getId()).take(1).subscribe( mealFoods -> {
+            this.model.getMealFoods(this.meal.getId()).take(1).subscribe(mealFoods -> {
                 this.dataSet.onNext(mealFoods.getFoods());
-                mealFoods.getFoods().forEach( food -> this.recyclerViewAdapter.getMealViewModel().checkedFoods.put(food.getId(), food));
+                mealFoods.getFoods().forEach(food -> this.recyclerViewAdapter.getMealViewModel().checkedFoods.put(food.getId(), food));
             });
         }
 
@@ -204,9 +202,9 @@ public class CreateMeal extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                        recyclerViewAdapter.handleDatasetChanged(new ArrayList<>(recyclerViewAdapter.getMealViewModel().checkedFoods.values()));
+                    recyclerViewAdapter.handleDatasetChanged(new ArrayList<>(recyclerViewAdapter.getMealViewModel().checkedFoods.values()));
                 } else {
-                        foodViewModel.getFoods().take(1).subscribe(foods -> dataSet.onNext(foods));
+                    foodViewModel.getFoods().take(1).subscribe(foods -> dataSet.onNext(foods));
                 }
             }
 

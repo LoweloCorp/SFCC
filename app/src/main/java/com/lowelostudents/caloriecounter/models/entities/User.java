@@ -2,14 +2,12 @@ package com.lowelostudents.caloriecounter.models.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.UUID;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -19,9 +17,9 @@ public class User {
     @EqualsAndHashCode.Include
     @NonNull
     protected UUID id;
+    protected double calTotal = 0;
     private String token;
     private String name;
-    protected double calTotal = 0;
 
     public User(String token, String name, double calTotal) {
         this.id = UUID.randomUUID();

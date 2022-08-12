@@ -13,12 +13,12 @@ public class FilterService {
     private static FilterService instance;
 
     public static synchronized FilterService getInstance() {
-        if(instance == null) instance = new FilterService();
+        if (instance == null) instance = new FilterService();
 
         return instance;
     }
 
-    public List<Food> filterListByLevenshtein (List<Food> list, String string) {
+    public List<Food> filterListByLevenshtein(List<Food> list, String string) {
         Levenshtein levenshtein = new Levenshtein();
 
         double[] scores = new double[list.size()];
@@ -50,8 +50,8 @@ public class FilterService {
         List<Food> result;
 
         if (!initial) {
-            if(subsequent)  {
-                result = list.stream().filter( item -> item.getAggregationType() != initialType).collect(Collectors.toList());
+            if (subsequent) {
+                result = list.stream().filter(item -> item.getAggregationType() != initialType).collect(Collectors.toList());
             } else {
                 result = list.stream().filter(item -> item.getAggregationType() != initialType && item.getAggregationType() != subsequentType).collect(Collectors.toList());
             }
@@ -59,7 +59,7 @@ public class FilterService {
             if (subsequent) {
                 result = list;
             } else {
-                result = list.stream().filter( item -> item.getAggregationType() != subsequentType).collect(Collectors.toList());
+                result = list.stream().filter(item -> item.getAggregationType() != subsequentType).collect(Collectors.toList());
             }
         }
 

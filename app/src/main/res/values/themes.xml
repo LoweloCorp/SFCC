@@ -49,13 +49,7 @@
 
     </style>
 
-    <style name="Theme.AppCompat.BORDER.INVERTED">
-        <item name="colorPrimary">@color/navy_900</item>
-        <item name="colorOnPrimary">?colorPrimaryVariant</item>
-        <item name="android:background">#B71C1C</item>
-    </style>
-
-<!--    <style name="Theme.CalorieCounter.NoActionBar">-->
+    <!--    <style name="Theme.CalorieCounter.NoActionBar">-->
 <!--        <item name="windowActionBar">false</item>-->
 <!--        <item name="windowNoTitle">true</item>-->
 <!--    </style>-->

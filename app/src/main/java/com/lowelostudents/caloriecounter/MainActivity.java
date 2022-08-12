@@ -1,14 +1,9 @@
 package com.lowelostudents.caloriecounter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,14 +38,13 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends AppCompatActivity {
 
     public static WeakReference<MainActivity> weakActivity;
+    SearchView searchView;
+    private ActivityMainBinding binding;
+
     // etc..
     public static MainActivity getInstance() {
         return weakActivity.get();
     }
-
-    private ActivityMainBinding binding;
-
-    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

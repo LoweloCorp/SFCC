@@ -3,7 +3,6 @@ package com.lowelostudents.caloriecounter.services;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,7 +25,7 @@ public class OpenFoodFactsService {
     private static OpenFoodFactsService openFoodFactsService;
     private final NutrientService nutrientService = NutrientService.getInstance();
     public RequestQueue requestQueue;
-    private String url = "https://world.openfoodfacts.org/api/v2";
+    private final String url = "https://world.openfoodfacts.org/api/v2";
 
     private OpenFoodFactsService(Context context) {
         this.requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -118,15 +117,18 @@ public class OpenFoodFactsService {
 
         try {
             food.setCarbsGram(product.getJSONObject("nutriments").getDouble("carbohydrates_100g"));
-        } catch (JSONException ignored) { }
+        } catch (JSONException ignored) {
+        }
 
         try {
             food.setFatGram(product.getJSONObject("nutriments").getDouble("fat_100g"));
-        } catch (JSONException ignored) { }
+        } catch (JSONException ignored) {
+        }
 
         try {
             food.setProteinGram(product.getJSONObject("nutriments").getDouble("proteins_100g"));
-        } catch (JSONException ignored) { }
+        } catch (JSONException ignored) {
+        }
 
     }
 }

@@ -6,11 +6,8 @@ import com.lowelostudents.caloriecounter.data.CRUDRepository;
 import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.models.interfaces.UserDao;
 
-import java.util.UUID;
-
 import io.reactivex.rxjava3.core.Observable;
 import lombok.Getter;
-import lombok.Setter;
 
 public class UserRepo extends CRUDRepository<User> {
     @Getter

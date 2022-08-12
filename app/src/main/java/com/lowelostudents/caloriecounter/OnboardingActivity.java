@@ -1,25 +1,22 @@
 package com.lowelostudents.caloriecounter;
 
-import static java.security.AccessController.getContext;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
-
 import com.lowelostudents.caloriecounter.databinding.ActivityOnboardingBinding;
 
 public class OnboardingActivity extends FragmentActivity {
 
-    ActivityOnboardingBinding binding;
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
     private static final int NUM_PAGES = 7;
-
+    ActivityOnboardingBinding binding;
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.

@@ -1,11 +1,7 @@
 package com.lowelostudents.caloriecounter.data;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import com.lowelostudents.caloriecounter.data.repositories.InsertCallback;
 import com.lowelostudents.caloriecounter.models.CRUDDao;
 
 import java.util.ArrayList;
@@ -13,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.Data;
 
@@ -76,19 +71,19 @@ public class CRUDRepository<T> {
     }
 
     public void delete(Class<T> tClass, long id) {
-        executor.execute( () -> {
+        executor.execute(() -> {
             crudDao.delete(tClass, id);
         });
     }
 
     public void delete(Class<T> tClass, UUID id) {
-        executor.execute( () -> {
+        executor.execute(() -> {
             crudDao.delete(tClass, id);
         });
     }
 
     public void delete(Class<T> tClass, String name) {
-        executor.execute( () -> {
+        executor.execute(() -> {
             crudDao.delete(tClass, name);
         });
     }

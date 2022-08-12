@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.SearchView;
 import android.widget.Switch;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,13 +22,11 @@ import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.databinding.FragmentFoodhubBinding;
 import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
-import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.FilterService;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
 import com.lowelostudents.caloriecounter.ui.viewmodels.FoodViewModel;
 import com.lowelostudents.caloriecounter.ui.viewmodels.MealViewModel;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +36,13 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import lombok.SneakyThrows;
 
 public class FoodhubFragment extends Fragment {
+    private final ArrayList<Disposable> disposables = new ArrayList<>();
+    FilterService filterService = FilterService.getInstance();
     private FragmentFoodhubBinding binding;
     private Observable<List<Food>> dataSet;
     private boolean mealChecked = true;
     private boolean foodChecked = true;
     private GenericRecyclerViewAdapter recyclerViewAdapter;
-    FilterService filterService = FilterService.getInstance();
-    private final ArrayList<Disposable> disposables = new ArrayList<>();
 
     @SneakyThrows
     @SuppressLint("UseSwitchCompatOrMaterialCode")

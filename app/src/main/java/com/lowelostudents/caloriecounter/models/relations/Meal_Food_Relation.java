@@ -15,7 +15,7 @@ public class Meal_Food_Relation {
     @Relation(
             parentColumn = "id",
             entityColumn = "mealId"
-            )
+    )
 
     List<Food> foods;
 

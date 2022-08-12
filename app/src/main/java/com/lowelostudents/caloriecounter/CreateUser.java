@@ -1,20 +1,17 @@
 package com.lowelostudents.caloriecounter;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.lowelostudents.caloriecounter.databinding.FragmentCreateUserBinding;
-import com.lowelostudents.caloriecounter.databinding.FragmentOnboardingBinding;
 import com.lowelostudents.caloriecounter.models.entities.User;
 import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class CreateUser extends Fragment {
@@ -30,7 +27,7 @@ public class CreateUser extends Fragment {
         this.binding.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ( validate()) {
+                if (validate()) {
                     User user = new User(UUID.randomUUID().toString(), binding.username.getText().toString(), Double.parseDouble(binding.userCalories.getText().toString()));
                     userViewModel.insert(user);
 

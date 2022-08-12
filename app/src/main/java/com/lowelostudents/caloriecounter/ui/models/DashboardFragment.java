@@ -17,14 +17,12 @@ import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.models.relations.Day_Food_Relation;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.ui.GenericRecyclerViewAdapter;
-import com.lowelostudents.caloriecounter.ui.SettingsActivity;
 import com.lowelostudents.caloriecounter.ui.viewmodels.DashboardViewModel;
 
 import java.lang.reflect.Method;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.subjects.Subject;
 import lombok.SneakyThrows;
 
 public class DashboardFragment extends Fragment {

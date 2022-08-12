@@ -3,15 +3,11 @@ package com.lowelostudents.caloriecounter.ui.viewmodels;
 import android.app.Activity;
 import android.app.Application;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.lowelostudents.caloriecounter.data.repositories.FoodRepo;
-import com.lowelostudents.caloriecounter.data.repositories.InsertCallback;
-import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 

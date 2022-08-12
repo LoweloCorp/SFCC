@@ -81,9 +81,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        private Observable<User> user;
-
         Disposable disposable;
+        private Observable<User> user;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -93,17 +92,16 @@ public class SettingsActivity extends AppCompatActivity {
             EditTextPreference calories = findPreference("calories");
             this.user = userViewModel.getUser();
 
-            this.disposable = this.user.observeOn(AndroidSchedulers.mainThread()).subscribe( user -> {
+            this.disposable = this.user.observeOn(AndroidSchedulers.mainThread()).subscribe(user -> {
                 name.setText(user.getName());
                 calories.setText(String.valueOf(user.getCalTotal()));
             });
 
 
-
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    user.take(1).subscribe( user -> {
+                    user.take(1).subscribe(user -> {
                         Log.w("USER", user.toString());
                         User updatedUser = new User(user.getToken(), newValue.toString(), user.getCalTotal());
                         updatedUser.setId(user.getId());

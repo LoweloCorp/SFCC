@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.tabs.TabLayout;
 import com.lowelostudents.caloriecounter.R;
 import com.lowelostudents.caloriecounter.enums.ActivityMode;
-import com.lowelostudents.caloriecounter.enums.AggregationType;
 import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.EventHandlingService;
 import com.lowelostudents.caloriecounter.services.NutrientService;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +45,12 @@ import lombok.SneakyThrows;
 
 public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecyclerViewAdapter.ViewHolder> {
     @Getter
+    protected final List<Food> foods = new ArrayList<>();
+    @Getter
+    protected final List<Food> meals = new ArrayList<>();
+    protected final Context context;
+    private final LayoutInflater layoutInflater;
+    @Getter
     protected MealViewModel mealViewModel;
     @Getter
     protected FoodViewModel foodViewModel;
@@ -55,12 +59,6 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
     protected List<Food> dataSet = new ArrayList<>();
     @Getter
     protected List<Food> allDataSet = new ArrayList<>();
-    @Getter
-    protected final List<Food> foods = new ArrayList<>();
-    @Getter
-    protected final List<Food> meals = new ArrayList<>();
-    private final LayoutInflater layoutInflater;
-    protected final Context context;
     @Setter
     protected ActivityMode activityMode = ActivityMode.CREATE;
     NutrientService nutrientService = NutrientService.getInstance();
@@ -113,17 +111,17 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             layout.removeView(quantityLayout);
             layout.removeView(quantitySelect);
 
-            cardInfoLayout.setPadding(cardInfoLayout.getPaddingLeft(),cardInfoLayout.getPaddingTop(),cardInfoLayout.getPaddingRight() ,60);
+            cardInfoLayout.setPadding(cardInfoLayout.getPaddingLeft(), cardInfoLayout.getPaddingTop(), cardInfoLayout.getPaddingRight(), 60);
         }
 
         LinearLayout quantityLayout = holder.cardItem.findViewById(R.id.quantityLayout);
         TabLayout quantitySelect = holder.cardItem.findViewById(R.id.quantitySelect);
         LinearLayout layout = holder.cardItem.findViewById(R.id.cardLayout);
 
-        if(cardType.equals("Meal")) {
+        if (cardType.equals("Meal")) {
             layout.removeView(quantitySelect);
-            if(quantityLayout != null)
-            quantityLayout.setPadding(quantityLayout.getPaddingLeft(), quantityLayout.getPaddingTop(), quantityLayout.getPaddingRight(), 20);
+            if (quantityLayout != null)
+                quantityLayout.setPadding(quantityLayout.getPaddingLeft(), quantityLayout.getPaddingTop(), quantityLayout.getPaddingRight(), 20);
         }
 
         holder.cardType.setText(cardType);
@@ -152,12 +150,12 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             public void onClick(View view) {
                 Intent intent = new Intent(context, cardDataClass);
                 intent.putExtra("mode", ActivityMode.UPDATE);
-                intent.putExtra("item", (Serializable) dataSet.get(position));
+                intent.putExtra("item", dataSet.get(position));
                 context.startActivity(intent);
             }
         });
 
-        if(quantity != null) {
+        if (quantity != null) {
             quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
 
             quantity.setOnTouchListener(new View.OnTouchListener() {
@@ -168,34 +166,34 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                 }
             });
 
-            if(quantitySelect != null)
-            quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    quantity.clearFocus();
-                    switch (tab.getPosition()) {
-                        case 0:
-                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
-                            break;
-                        case 1:
-                            quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()));
-                            break;
-                        case 2:
-                            quantity.requestFocus();
-                            break;
+            if (quantitySelect != null)
+                quantitySelect.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        quantity.clearFocus();
+                        switch (tab.getPosition()) {
+                            case 0:
+                                quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getPortionSize()));
+                                break;
+                            case 1:
+                                quantity.setText(String.format(Locale.ENGLISH, "%.2f", data.getGramTotal()));
+                                break;
+                            case 2:
+                                quantity.requestFocus();
+                                break;
+                        }
                     }
-                }
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
 
-                }
+                    }
 
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
 
-                }
-            });
+                    }
+                });
 
             if (this.activityMode == ActivityMode.CREATE) {
                 button.setOnClickListener(new View.OnClickListener() {
@@ -222,15 +220,15 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
                 @Override
                 public void onClick(View view) {
 
-                        foodViewModel.removeFromDay(data);
-                        dataSet.remove(position);
+                    foodViewModel.removeFromDay(data);
+                    dataSet.remove(position);
 
-                        Context context = view.getContext().getApplicationContext();
-                        CharSequence methodName = "Removed from day";
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(context, methodName, duration);
-                        toast.show();
-                        notifyItemRemoved(position);
+                    Context context = view.getContext().getApplicationContext();
+                    CharSequence methodName = "Removed from day";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, methodName, duration);
+                    toast.show();
+                    notifyItemRemoved(position);
 
                 }
             });
@@ -243,6 +241,10 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
         this.allDataSet = new ArrayList<>(dataSet);
 
         notifyDataSetChanged();
+    }
+
+    Food getItem(int id) {
+        return dataSet.get(id);
     }
 
     // stores and recycles views as they are scrolled off screen
@@ -259,10 +261,6 @@ public class GenericRecyclerViewAdapter extends RecyclerView.Adapter<GenericRecy
             cardNutrients = itemView.findViewById(R.id.cardNutrients);
             cardToggleForDay = itemView.findViewById(R.id.toggleForDay);
         }
-    }
-
-    Food getItem(int id) {
-        return dataSet.get(id);
     }
 
 }

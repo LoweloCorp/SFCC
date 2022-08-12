@@ -42,11 +42,6 @@ import lombok.EqualsAndHashCode;
 public class Food implements Serializable {
     @Ignore
     private static final long serialVersionUID = 1L;
-    @Ignore
-    private transient NutrientService nutrientService = NutrientService.getInstance();
-    private Long dayId;
-    private UUID mealId;
-    private AggregationType aggregationType;
     protected boolean isAggregation = false;
     @PrimaryKey()
     @EqualsAndHashCode.Include
@@ -62,16 +57,17 @@ public class Food implements Serializable {
     protected double fatGram = 0;
     @SerializedName("proteins_serving")
     protected double proteinGram = 0;
-
     protected double carbsCal = 0;
     protected double proteinCal = 0;
     protected double fatCal = 0;
-
     protected double portionSize = 0;
     protected double calPerPortion = 0;
     protected double calPerGram = 0;
-
-
+    @Ignore
+    private transient NutrientService nutrientService = NutrientService.getInstance();
+    private Long dayId;
+    private UUID mealId;
+    private AggregationType aggregationType;
 
 
     // TODO NEXT gramTotal Nullable

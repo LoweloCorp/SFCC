@@ -19,10 +19,10 @@ import io.reactivex.rxjava3.core.Observable;
 import lombok.Getter;
 
 public class MealViewModel extends AndroidViewModel {
+    public final HashMap<UUID, Food> checkedFoods = new HashMap<>();
     @Getter
     private final Observable<List<Food>> meals;
     private final FoodRepo foodRepo;
-    public final HashMap<UUID, Food> checkedFoods = new HashMap<>();
 
     public MealViewModel(Application context) {
         super(context);
@@ -48,7 +48,7 @@ public class MealViewModel extends AndroidViewModel {
 //        this.foodRepo.insert(meal);
     }
 
-    public void insert (String mealName) {
+    public void insert(String mealName) {
         final List<Food> foods = new ArrayList<>(checkedFoods.values());
         Food meal = new Food(mealName, foods, 1, AggregationType.MEAL);
         meal.setAggregation(false);

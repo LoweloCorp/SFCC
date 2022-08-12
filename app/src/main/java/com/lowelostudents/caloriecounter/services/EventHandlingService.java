@@ -1,16 +1,11 @@
 package com.lowelostudents.caloriecounter.services;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -111,11 +106,10 @@ public class EventHandlingService {
     }
 
     public <T> Disposable onChangedInvokeMethod(Observable<?> dataSet, T controller, Method method) {
-        return dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe( value -> {
+        return dataSet.observeOn(AndroidSchedulers.mainThread()).subscribe(value -> {
             method.invoke(controller, value);
         });
     }
-
 
 
 }

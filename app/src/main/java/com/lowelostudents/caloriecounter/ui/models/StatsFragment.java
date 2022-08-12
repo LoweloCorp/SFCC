@@ -31,7 +31,6 @@ import com.lowelostudents.caloriecounter.ui.viewmodels.UserViewModel;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -40,14 +39,14 @@ import lombok.SneakyThrows;
 
 // TODO BRÖKEN
 public class StatsFragment extends Fragment {
+    int navy = Color.parseColor("#073042");
+    int white = Color.parseColor("#F5F5F5");
+    Disposable disposable;
     private FragmentStatsBinding binding;
     private Observable<List<PieEntry>> dataSet;
     private User user;
     private PieChart barChart;
-    int navy = Color.parseColor("#073042");
-    int white = Color.parseColor("#F5F5F5");
 
-    Disposable disposable;
     @SneakyThrows
     private void setEventHandlers() {
         EventHandlingService eventHandlingService = EventHandlingService.getInstance();
@@ -65,7 +64,7 @@ public class StatsFragment extends Fragment {
 
         this.binding = FragmentStatsBinding.inflate(inflater, container, false);
 
-        this.dataSet = dashboardViewModel.getDayFoods().take(1).map( dayFoods -> {
+        this.dataSet = dashboardViewModel.getDayFoods().take(1).map(dayFoods -> {
             ChartFactory chartFactory = ChartFactory.getInstance();
             NutrientService nutrientService = NutrientService.getInstance();
             Food nutrients = nutrientService.combineNutrients(dayFoods.getFoods());
@@ -109,7 +108,7 @@ public class StatsFragment extends Fragment {
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         //to wrap legend text
 //        legend.setWordWrapEnabled(true);
-        Log.d("legend " ,legend.getEntries().toString());
+        Log.d("legend ", legend.getEntries().toString());
         barChart.animate();
         setEventHandlers();
 
@@ -141,17 +140,13 @@ public class StatsFragment extends Fragment {
 
     }
 
-    public String returnThemeName()
-    {
+    public String returnThemeName() {
         PackageInfo packageInfo;
-        try
-        {
+        try {
             packageInfo = requireContext().getPackageManager().getPackageInfo(requireContext().getPackageName(), PackageManager.GET_META_DATA);
             int themeResId = packageInfo.applicationInfo.theme;
             return getResources().getResourceEntryName(themeResId);
-        }
-        catch (PackageManager.NameNotFoundException e)
-        {
+        } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
     }

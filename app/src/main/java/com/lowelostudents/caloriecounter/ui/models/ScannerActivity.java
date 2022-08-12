@@ -36,10 +36,7 @@ import com.lowelostudents.caloriecounter.models.entities.Food;
 import com.lowelostudents.caloriecounter.services.OpenFoodFactsService;
 import com.lowelostudents.caloriecounter.services.ResponseCallback;
 
-import org.json.JSONException;
-
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -48,9 +45,9 @@ import java.util.concurrent.Executors;
 import lombok.SneakyThrows;
 
 public class ScannerActivity extends AppCompatActivity {
+    Scanner scanner = new Scanner();
     private ActivityScannerBinding binding;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    Scanner scanner = new Scanner();
 
     @SneakyThrows
     protected void setEventHandlers() {
@@ -174,7 +171,7 @@ public class ScannerActivity extends AppCompatActivity {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 buildPreview();
                 buildImageAnalysis();
-                Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, this.scanner.cameraSelector, this.scanner.imageAnalysis, this.scanner.preview);
+                Camera camera = cameraProvider.bindToLifecycle(this, this.scanner.cameraSelector, this.scanner.imageAnalysis, this.scanner.preview);
 //                camera.getCameraControl().cancelFocusAndMetering();
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
@@ -184,12 +181,10 @@ public class ScannerActivity extends AppCompatActivity {
     }
 
 
-
-
     private void finishActivityWithResult(int resultCode, @Nullable Food food) {
 
         if (resultCode == Activity.RESULT_OK) {
-            setResult(resultCode, new Intent().putExtra("food", (Serializable) food));
+            setResult(resultCode, new Intent().putExtra("food", food));
         }
 
         finish();

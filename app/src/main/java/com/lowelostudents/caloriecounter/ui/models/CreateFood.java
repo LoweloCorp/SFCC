@@ -36,6 +36,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 public class CreateFood extends AppCompatActivity {
+    NutrientService nutrientService = NutrientService.getInstance();
     @Getter
     private ActivityCreatefoodBinding binding;
     @Getter
@@ -44,7 +45,6 @@ public class CreateFood extends AppCompatActivity {
     private ActivityMode mode = ActivityMode.CREATE;
     @Getter
     private Food food;
-    NutrientService nutrientService = NutrientService.getInstance();
     private boolean navigate;
 
     @SneakyThrows
@@ -241,7 +241,7 @@ public class CreateFood extends AppCompatActivity {
     private boolean validate() {
         boolean validated = true;
 
-        if(this.binding.foodName.getText().toString().isEmpty()) {
+        if (this.binding.foodName.getText().toString().isEmpty()) {
             this.binding.foodName.setError("Please enter name with characters A-Z a-z");
             validated = false;
         }

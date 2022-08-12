@@ -12,7 +12,7 @@ public class OnboardingPagerAdapter extends FragmentStateAdapter {
     public OnboardingPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
 
-        this.fragments = new Fragment[] {
+        this.fragments = new Fragment[]{
                 new Donate(),
                 new OnboardingFragment(0),
                 new OnboardingFragment(1),
@@ -26,7 +26,7 @@ public class OnboardingPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-         return this.fragments[position];
+        return this.fragments[position];
     }
 
     @Override
