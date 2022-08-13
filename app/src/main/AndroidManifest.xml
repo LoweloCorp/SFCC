@@ -24,6 +24,7 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:exported="false"
+            android:theme="@style/Theme.CalorieCounter.SETTINGS"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".MainActivity"

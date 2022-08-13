@@ -40,6 +40,13 @@
 
         <!-- Customize your theme here. -->
     </style>
+
+
+    <style name="Theme.CalorieCounter.SETTINGS">
+        <item name="android:textColor">@color/WhiteSmoke</item>
+        <item name="android:background">@color/navy_900</item>
+        <item name="colorAccent">@color/WhiteSmoke</item>
+    </style>
     <style name="Theme.AppCompat.BORDER">
         <item name="colorPrimary">@color/navy_900</item>
         <item name="colorOnPrimary">@color/WhiteSmoke</item>

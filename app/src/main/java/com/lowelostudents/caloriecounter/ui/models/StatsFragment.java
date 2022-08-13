@@ -127,7 +127,6 @@ public class StatsFragment extends Fragment {
                 barDataSet.setValueLineColor(white);
                 break;
             case Configuration.UI_MODE_NIGHT_NO:
-                barDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
                 barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
                 barDataSet.setValueLineColor(navy);
                 break;
