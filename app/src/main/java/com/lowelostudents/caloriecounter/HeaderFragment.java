@@ -2,6 +2,7 @@ package com.lowelostudents.caloriecounter;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,49 +35,33 @@ public class HeaderFragment extends Fragment {
         eventHandlingService.onClickStartActivityFromContext(binding.createMeal, this.getContext(), CreateMeal.class);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         this.binding = FragmentHeaderBinding.inflate(inflater, container, false);
         setEventHandlers();
-        View root = binding.getRoot();
-        return root;
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        List<Fragment> fragmentList = mainActivity.getSupportFragmentManager().getFragments();
+        MainActivity mainActivity = MainActivity.getInstance();
 
         int id = binding.searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        EditText editText = binding.searchView.findViewById(id);
 
+        EditText editText = binding.searchView.findViewById(id);
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String s) {
-                        return false;
-                    }
+                NavController navController = Navigation.findNavController(mainActivity, R.id.nav_host_fragment_activity_main);
 
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-                        NavController navController = Navigation.findNavController(mainActivity, R.id.nav_host_fragment_activity_main);
-
-                        if (Objects.requireNonNull(navController.getCurrentDestination()).getId() != R.id.navigation_foodhub) {
-                            binding.searchView.setOnQueryTextListener(null);
-                            navController.navigate(R.id.navigation_foodhub);
-                        }
-
-                        return true;
-                    }
-                });
+                if (Objects.requireNonNull(navController.getCurrentDestination()).getId() != R.id.navigation_foodhub) {
+                    Log.w("IF IF IF", "IF IF IF");
+                    navController.navigate(R.id.navigation_foodhub);
+                }
 
                 return false;
             }
         });
+
+        View root = binding.getRoot();
+        return root;
     }
 
     @Override
