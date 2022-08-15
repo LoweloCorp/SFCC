@@ -34,6 +34,7 @@ tools:context=".CreateUser">
         android:layout_height="71dp"
         android:adjustViewBounds="true"
         app:tint="?editTextColor"
+        android:backgroundTint="?editTextColor"
         android:src="@drawable/ic_baseline_arrow_forward_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
