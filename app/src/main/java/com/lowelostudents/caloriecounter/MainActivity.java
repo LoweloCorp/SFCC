@@ -23,6 +23,8 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
+// TODO create website
+// TODO maybe utilize UI library / framework
 // TODO Create Meal hide Added Items quantity Select
 // TODO Toast service, validation service
 

@@ -3,6 +3,7 @@ package com.lowelostudents.caloriecounter.ui.models;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,24 @@ public class FoodhubFragment extends Fragment {
 
         setEventHandlers(recyclerViewAdapter, binding.foodToggle, binding.mealToggle);
 
+        MainActivity mainActivity = MainActivity.getInstance();
+
+        SearchView searchView = mainActivity.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.w("CHANGE CHANG ECHANGE", "CHANGECHANGECHANGE");
+                recyclerViewAdapter.setDataSet(filterService.filterListByLevenshtein(recyclerViewAdapter.getDataSet(), s));
+                recyclerViewAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+
         this.binding.foodToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -108,26 +127,6 @@ public class FoodhubFragment extends Fragment {
         View root = binding.getRoot();
 
         return root;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        SearchView searchView = mainActivity.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                recyclerViewAdapter.setDataSet(filterService.filterListByLevenshtein(recyclerViewAdapter.getDataSet(), s));
-                recyclerViewAdapter.notifyDataSetChanged();
-                return false;
-            }
-        });
     }
 
     @Override
