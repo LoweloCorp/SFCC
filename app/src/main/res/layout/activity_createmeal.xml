@@ -72,7 +72,7 @@
             app:tabIndicatorColor="@color/WhiteSmoke"
             android:padding="5dp"
             app:tabSelectedTextColor="@color/WhiteSmoke"
-            app:tabTextColor="?colorPrimary">
+            app:tabTextColor="?colorOnPrimary">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
