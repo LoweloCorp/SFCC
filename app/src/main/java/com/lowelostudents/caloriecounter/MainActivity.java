@@ -23,18 +23,6 @@ import com.lowelostudents.caloriecounter.tasks.DataPopulationTask;
 
 import java.lang.ref.WeakReference;
 
-// TODO create website
-// TODO maybe utilize UI library / framework
-// TODO Create Meal hide Added Items quantity Select
-// TODO Toast service, validation service
-
-// TODO feature calorie calculator
-// TODO in app rating, donate popup
-// TODO check duplicate code, seperation of concerns, write tests, make proper fragments
-// TODO Errorhandling
-// TODO feature planning based on Feedback
-// TODO feature cross platform? convert to Kotlin
-
 public class MainActivity extends AppCompatActivity {
 
     public static WeakReference<MainActivity> weakActivity;
